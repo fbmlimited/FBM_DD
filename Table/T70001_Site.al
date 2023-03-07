@@ -20,11 +20,11 @@ table 70001 FBM_Site
                 // FADimMgt.ModifySiteDim(xRec, Rec);
             end;
         }
-        field(4; Operator; Code[20])
-        {
-            DataClassification = ToBeClassified;
-            TableRelation = "Dimension Value"."Code";
-        }
+        // field(4; Operator; Code[20])
+        // {
+        //     DataClassification = ToBeClassified;
+        //     TableRelation = "Dimension Value"."Code";
+        // }
         field(5; Address; Text[250])
         {
             DataClassification = ToBeClassified;
@@ -60,13 +60,105 @@ table 70001 FBM_Site
         //DevOps #619 -- begin
         field(11; "Contract Code"; Code[4])
         {
-            //this field was created to be used for indentation of pages making use if this table, if required
+
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
             begin
                 // if "Contract Code" <> '' then FADimMgt.ContractDimension(Rec);
             end;
+        }
+        field(12; "Vat Number"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(13; "Bank Filter"; text[2048])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(14; "Item Filter"; text[2048])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(15; "SubGroup"; Text[100])
+        {
+            Caption = 'SubGroup Customer';
+            Description = 'ONETECH';
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup.SubGroup where("Group" = field("Group"), IsGroup = const(false));
+
+
+
+        }
+
+        field(16; "Group"; Text[100])
+        {
+            Caption = 'Group Customer';
+            Description = 'ONETECH';
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup.Group where("Group" = field("Group"), IsGroup = const(true));
+
+        }
+        field(17; Status; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(18; "Current Status"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(19; "Category"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        // field(20; "Operator Name"; Text[100])
+        // {
+        //     FieldClass = Normal;
+        // }
+        field(21; "Business Name"; Text[100])
+        {
+            FieldClass = Normal;
+        }
+        field(22; "Anniversary"; Date)
+        {
+            FieldClass = Normal;
+        }
+        field(23; "Cardinal Points"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(24; "Area"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(25; "Region"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(26; "Central Place"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(27; "Municipal"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(1000; "Valid From"; Date)
+        {
+            Caption = 'Valid from';
+        }
+        field(1001; "Valid To"; Date)
+        {
+            Caption = 'Valid to';
+        }
+        field(1002; "Record Owner"; code[30])
+        {
+            Caption = 'Record Owner';
+        }
+        field(1003; "Change Note"; Text[1024])
+        {
+            Caption = 'Change Note';
         }
     }
     keys
