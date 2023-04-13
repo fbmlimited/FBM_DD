@@ -1564,7 +1564,7 @@ table 70004 FBM_Customer
         {
             Caption = 'Contact Graph Id';
         }
-         field(1000; "Valid From"; Date)
+        field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
         }
@@ -1580,6 +1580,38 @@ table 70004 FBM_Customer
         {
             Caption = 'Change Note';
         }
+        field(70001; "FBM_Separate Halls Inv."; Boolean)
+        {
+            Caption = 'Separate Halls Invoice';
+        }
+        field(70002; "FBM_Customer Since"; Date)
+        {
+            Caption = 'Customer Since';
+        }
+
+
+
+        field(70030; "FBM_SubGroup"; Text[100])
+        {
+            Caption = 'SubGroup Customer';
+            Description = 'ONETECH';
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup.SubGroup where("Group Name" = field("FBM_Group"), IsGroup = const(false));
+
+            ValidateTableRelation = false;
+
+        }
+
+        field(70031; "FBM_Group"; Text[100])
+        {
+            Caption = 'Group Customer';
+            Description = 'ONETECH';
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
+            ValidateTableRelation = false;
+
+        }
+
     }
 
     keys

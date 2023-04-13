@@ -1,10 +1,15 @@
-table 70001 FBM_Site
+table 70006 FBM_SiteSubs
 {
     DataClassification = ToBeClassified;
     DataPerCompany = false;
 
     fields
     {
+        field(1; "Group Site Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = FBM_Site;
+        }
 
         field(2; "Site Code"; Code[20])
         {
@@ -112,10 +117,7 @@ table 70001 FBM_Site
         {
             FieldClass = Normal;
         }
-        // field(20; "Operator Name"; Text[100])
-        // {
-        //     FieldClass = Normal;
-        // }
+
         field(21; "Business Name"; Text[100])
         {
             FieldClass = Normal;
@@ -189,13 +191,13 @@ table 70001 FBM_Site
     begin
         //check for unique site code
         CheckUniqueSite(Rec."Site Code");
-        FADimMgt.CreateSiteDim(Rec);
+        //FADimMgt.CreateSiteDim(Rec);
         //UpdateCustOpSite(Rec);
     end;
 
     trigger OnModify()
     begin
-        FADimMgt.UpdateSiteDim(Rec);
+        //FADimMgt.UpdateSiteDim(Rec);
     end;
 
     trigger OnDelete()
@@ -222,7 +224,7 @@ table 70001 FBM_Site
 
     trigger OnRename()
     begin
-        FADimMgt.RenameSiteDim(xRec, Rec);
+        // FADimMgt.RenameSiteDim(xRec, Rec);
     end;
 
     procedure CheckUniqueSite(SiteCode: Code[20])

@@ -321,7 +321,7 @@ codeunit 70000 FBM_FADimMgt_DD
     procedure UpdateSiteDim(CustSite: Record FBM_Site)
     var
         DimValue_Site: Record "Dimension Value";
-        ParentChild: Record "Parent Child Relation";
+        //ParentChild: Record "Parent Child Relation";
         FASetup: Record "FA Setup";
         companyinfo: Record "Company Information";
     begin

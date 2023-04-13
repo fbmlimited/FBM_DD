@@ -9,17 +9,17 @@ table 70002 FBM_CustOpSite
             DataClassification = ToBeClassified;
             TableRelation = Customer;
         }
-        // field(2; "Operator No."; Code[20])
-        // {
-        //     DataClassification = ToBeClassified;
-        //     TableRelation = Customer ;
-        // }
+        field(2; "Operator No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = FBM_Operator;
+        }
         field(3; "Site Code"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = FBM_Site;
         }
-        
+
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
@@ -36,11 +36,17 @@ table 70002 FBM_CustOpSite
         {
             Caption = 'Change Note';
         }
+        field(2000; Subsidiary; text[250])
+        {
+            Caption = 'Subsidiary';
+            FieldClass = FlowField;
+            CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
+        }
 
     }
     keys
     {
-        key(PK; "Customer No.",  "Site Code")
+        key(PK; "Customer No.", "Site Code")
         {
             Clustered = true;
         }
