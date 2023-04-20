@@ -12,12 +12,12 @@ table 70002 FBM_CustOpSite
         field(2; "Operator No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = FBM_Operator;
+            TableRelation = Customer;
         }
         field(3; "Site Code"; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = FBM_Site;
+            TableRelation = FBM_Site where(Active = const(true));
         }
 
         field(1000; "Valid From"; Date)

@@ -329,6 +329,28 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
             Description = 'Onetech';
             FieldClass = FlowFilter;
         }
+        field(71000; "FBM_Valid From"; Date)
+        {
+            Caption = 'Valid from';
+        }
+        field(71001; "FBM_Valid To"; Date)
+        {
+            Caption = 'Valid to';
+        }
+        field(71002; "FBM_Record Owner"; code[30])
+        {
+            Caption = 'Record Owner';
+        }
+        field(71003; "FBM_Change Note"; Text[1024])
+        {
+            Caption = 'Change Note';
+        }
+        field(72000; FBM_Subsidiary; text[250])
+        {
+            Caption = 'Subsidiary';
+            FieldClass = FlowField;
+            CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
+        }
 
 
     }

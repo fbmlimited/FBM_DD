@@ -164,6 +164,14 @@ table 70001 FBM_Site
         {
             Caption = 'Change Note';
         }
+        field(1004; Version; Integer)
+        {
+            Caption = 'Version';
+        }
+        field(1005; Active; Boolean)
+        {
+            Caption = 'Active Record';
+        }
         field(2000; Subsidiary; text[250])
         {
             Caption = 'Subsidiary';

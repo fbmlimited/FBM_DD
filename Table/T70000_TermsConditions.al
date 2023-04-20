@@ -17,10 +17,15 @@ table 70000 FBM_TermsConditions
         field(3; "Terms Conditions"; Text[1000])
         {
         }
+        field(10; DocType; Option)
+        {
+            OptionMembers = SI,PO;
+            caption = 'Document Type';
+        }
     }
     keys
     {
-        key(PK; country, "Line No.")
+        key(PK; country, DocType, "Line No.")
         {
             Clustered = true;
         }

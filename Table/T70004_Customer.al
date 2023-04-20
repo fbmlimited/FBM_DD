@@ -1580,6 +1580,14 @@ table 70004 FBM_Customer
         {
             Caption = 'Change Note';
         }
+        field(1004; Version; Integer)
+        {
+            Caption = 'Version';
+        }
+        field(1005; Active; Boolean)
+        {
+            Caption = 'Active Record';
+        }
         field(70001; "FBM_Separate Halls Inv."; Boolean)
         {
             Caption = 'Separate Halls Invoice';
@@ -1616,7 +1624,7 @@ table 70004 FBM_Customer
 
     keys
     {
-        key(Key1; "No.")
+        key(Key1; "No.", Version)
         {
             Clustered = true;
         }
