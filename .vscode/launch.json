@@ -37,6 +37,24 @@
       "longRunningSqlStatementsThreshold": 500,
       "numberOfSqlStatements": 10,
       "schemaUpdateMode": "ForceSync"
-  }
+  },
+  {
+    "name": "test",
+    "type": "al",
+    "request": "launch",
+    "server": "http://10.0.0.4/acetest",
+    "serverInstance": "ACETest",
+    "port": 6004,
+    "authentication": "UserPassword",
+    "startupObjectId": 22,
+    "breakOnError": true,
+    "breakOnRecordWrite": false,
+    "launchBrowser": true,
+    "enableSqlInformationDebugger": true,
+    "enableLongRunningSqlStatements": true,
+    "longRunningSqlStatementsThreshold": 500,
+    "numberOfSqlStatements": 10,
+    "schemaUpdateMode": "ForceSync"
+}
     ]
   }

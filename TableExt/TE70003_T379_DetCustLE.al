@@ -11,6 +11,12 @@ tableextension 70003 FBM_DetCustLEExt_DD extends "Detailed Cust. Ledg. Entry"
         {
             DataClassification = ToBeClassified;
         }
+        field(70003; FBM_Segment; Option)
+        {
+            caption = 'Segment';
+            OptionMembers = " ",Bingo,Spin;
+
+        }
     }
     var
 }

@@ -571,7 +571,8 @@ codeunit 70000 FBM_FADimMgt_DD
         //end;
     end;
     //DEVOPS #619 -- begin
-    procedure ContractDimension(Custsite: Record "Customer-Site")
+
+    procedure ContractDimension(Custsite: Record FBM_Site)
     var
         ContractDim: Record "Dimension Value";
         FASetup: Record "FA Setup";
@@ -581,16 +582,27 @@ codeunit 70000 FBM_FADimMgt_DD
             //if FASetup."Enable FA Site Tracking" then begin
             //check if contract dimension exists, if not create it
             ContractDim.Reset();
-            if not ContractDim.Get(FASetup."Contract Dimension", Custsite."Contract Code") then begin
-                ContractDim.Reset();
-                ContractDim.Init();
-                ContractDim."Dimension Code" := FASetup."Contract Dimension";
-                ContractDim."Code" := CustSite."Contract Code";
-                ContractDim.Name := CustSite."Contract Code";
-                ContractDim.Insert(true);
-            end;
+            if Custsite."Contract Code" <> '' then
+                if not ContractDim.Get(FASetup."Contract Dimension", Custsite."Contract Code") then begin
+                    ContractDim.Reset();
+                    ContractDim.Init();
+                    ContractDim."Dimension Code" := FASetup."Contract Dimension";
+                    ContractDim."Code" := CustSite."Contract Code";
+                    ContractDim.Name := CustSite."Contract Code";
+                    ContractDim.Insert(true);
+                end;
+            if Custsite."Contract Code2" <> '' then
+                if not ContractDim.Get(FASetup."Contract Dimension", Custsite."Contract Code2") then begin
+                    ContractDim.Reset();
+                    ContractDim.Init();
+                    ContractDim."Dimension Code" := FASetup."Contract Dimension";
+                    ContractDim."Code" := CustSite."Contract Code2";
+                    ContractDim.Name := CustSite."Contract Code2";
+                    ContractDim.Insert(true);
+                end;
             //end;
         end;
     end;
+
     //DEVOPS #619 -- end
 }

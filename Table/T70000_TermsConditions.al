@@ -1,5 +1,7 @@
 table 70000 FBM_TermsConditions
 {
+    DataPerCompany = false;
+
     DataClassification = ToBeClassified;
 
     fields

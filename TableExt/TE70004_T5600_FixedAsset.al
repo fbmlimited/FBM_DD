@@ -56,7 +56,18 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         {
             FieldClass = Normal;
         }
+        field(70012; FBM_Is_EGM; Boolean)
+        {
+            Caption = 'Is EGM';
+            FieldClass = FlowField;
+            CalcFormula = lookup("FA Subclass".FBM_EGM where(code = field("FA Subclass Code")));
 
+        }
+        field(70013; FBM_Status; Enum "FBM_FA Status_DD")
+        {
+            Caption = 'FA Status';
+
+        }
 
 
     }

@@ -1,6 +1,7 @@
 table 70002 FBM_CustOpSite
 {
     DataClassification = ToBeClassified;
+    DataPerCompany = false;
 
     fields
     {
@@ -39,14 +40,13 @@ table 70002 FBM_CustOpSite
         field(2000; Subsidiary; text[250])
         {
             Caption = 'Subsidiary';
-            FieldClass = FlowField;
-            CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
+
         }
 
     }
     keys
     {
-        key(PK; "Customer No.", "Site Code")
+        key(PK; Subsidiary, "Customer No.", "Site Code")
         {
             Clustered = true;
         }

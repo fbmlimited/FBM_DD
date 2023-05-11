@@ -148,6 +148,16 @@ table 70001 FBM_Site
         {
             FieldClass = Normal;
         }
+        field(29; "Contract Code2"; Code[4])
+        {
+
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+                if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
+            end;
+        }
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';

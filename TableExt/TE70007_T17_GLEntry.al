@@ -11,6 +11,12 @@ tableextension 70007 FBM_GLEntryExt_DD extends "G/L Entry"
         {
             DataClassification = ToBeClassified;
         }
+        field(70003; FBM_Segment; Option)
+        {
+            caption = 'Segment ';
+            OptionMembers = " ",Bingo,Spin;
+
+        }
     }
     var
 }

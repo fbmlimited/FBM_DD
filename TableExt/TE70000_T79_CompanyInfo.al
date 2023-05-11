@@ -16,6 +16,11 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
             DataClassification = ToBeClassified;
             Caption = 'TIN Number';
         }
+        field(70013; FBM_EnSpin; Boolean)
+        {
+
+            caption = 'Enable Spin';
+        }
     }
 
 }

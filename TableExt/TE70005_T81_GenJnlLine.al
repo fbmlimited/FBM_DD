@@ -10,6 +10,12 @@ tableextension 70005 FBM_GenJnlLineExt_DD extends "Gen. Journal Line"
         {
             DataClassification = ToBeClassified;
         }
+        field(70003; FBM_Segment; Option)
+        {
+            caption = 'Segment ';
+            OptionMembers = " ",Bingo,Spin;
+
+        }
     }
     var
 }

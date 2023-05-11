@@ -351,6 +351,16 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
             FieldClass = FlowField;
             CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
         }
+        field(70034; "FBM_Payment Bank Code"; Code[20])//no
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Payment Bank Accounts"."Bank Code";
+        }
+        field(70035; "FBM_Payment Bank Code2"; Code[20])//no
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Payment Bank Accounts"."Bank Code";
+        }
 
 
     }
