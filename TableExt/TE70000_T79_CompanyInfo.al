@@ -21,6 +21,24 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Enable Spin';
         }
+        Field(70014; FBM_FALessee; text[20])
+        {
+            Caption = 'Lessee';
+            TableRelation = FBM_Subsidiary.Lessee;
+            ValidateTableRelation = false;
+        }
+        field(70015; FBM_FAProperty; text[3])
+        {
+            Caption = 'Property';
+            TableRelation = FBM_Subsidiary.EGM_Property;
+            ValidateTableRelation = false;
+        }
+        field(70016; FBM_FABrand; Option)
+        {
+            Caption = 'Brand';
+            OptionCaption = ' ,FBM,DINGO';
+            OptionMembers = " ",FBM,DINGO;
+        }
     }
 
 }
