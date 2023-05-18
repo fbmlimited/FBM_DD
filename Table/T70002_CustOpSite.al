@@ -8,12 +8,12 @@ table 70002 FBM_CustOpSite
         field(1; "Customer No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Customer;
+            TableRelation = FBM_Customer where(Active = const(true));
         }
         field(2; "Operator No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Customer;
+            TableRelation = FBM_Customer where(Active = const(true));
         }
         field(3; "Site Code"; Code[20])
         {

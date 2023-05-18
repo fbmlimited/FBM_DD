@@ -41,6 +41,12 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'Property';
 
         }
+        field(70015; FBM_Subsidiary; text[20])
+        {
+            Caption = 'Subsidiary';
+
+        }
+
 
     }
     var

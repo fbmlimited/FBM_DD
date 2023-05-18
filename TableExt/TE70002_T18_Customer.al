@@ -13,6 +13,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         }
         field(70003; "FBM_GrCode"; Code[20])
         {
+            Editable = false;
         }
         field(70004; "FBM_Current Month"; Decimal)
         {
@@ -351,12 +352,16 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
             FieldClass = FlowField;
             CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
         }
-        field(70034; "FBM_Payment Bank Code"; Code[20])//no
+        field(70036; "FBM_Name 3"; text[100])
+        {
+
+        }
+        field(70034; "FBM_Payment Bank Code"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Payment Bank Accounts"."Bank Code";
         }
-        field(70035; "FBM_Payment Bank Code2"; Code[20])//no
+        field(70035; "FBM_Payment Bank Code2"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Payment Bank Accounts"."Bank Code";

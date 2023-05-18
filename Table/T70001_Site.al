@@ -9,6 +9,7 @@ table 70001 FBM_Site
         field(2; "Site Code"; Code[20])
         {
             DataClassification = ToBeClassified;
+            Editable = false;
         }
         field(3; "Site Name"; Text[250])
         {
@@ -20,11 +21,11 @@ table 70001 FBM_Site
                 // FADimMgt.ModifySiteDim(xRec, Rec);
             end;
         }
-        // field(4; Operator; Code[20])
-        // {
-        //     DataClassification = ToBeClassified;
-        //     TableRelation = "Dimension Value"."Code";
-        // }
+        field(4; "Site Name 2"; Text[250])
+        {
+
+        }
+
         field(5; Address; Text[250])
         {
             DataClassification = ToBeClassified;
