@@ -8,7 +8,7 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
-                if approved = true then begin
+                if FBM_approved = true then begin
                     "FBM_approved date" := System.CurrentDateTime();
                     "FBM_approved user" := UserId;
                 end
@@ -38,13 +38,6 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
             Editable = true;
         }
-        field(70004; "FBM_Default Bank Account"; Code[20])
-        {
-            TableRelation = "Bank Account";
-            Caption = 'Default Bank Account';
 
-            FieldClass = FlowField;
-            CalcFormula = lookup(Vendor."FBM_Default Bank Account" where("No." = field("Vendor No.")));
-        }
     }
 }

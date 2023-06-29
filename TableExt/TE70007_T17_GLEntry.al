@@ -17,6 +17,13 @@ tableextension 70007 FBM_GLEntryExt_DD extends "G/L Entry"
             OptionMembers = " ",Bingo,Spin;
 
         }
+        field(70004; FBM_Site; Code[20])
+        {
+            Caption = 'Site';
+
+
+        }
     }
-    var
 }
+
+

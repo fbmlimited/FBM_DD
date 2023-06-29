@@ -3,15 +3,14 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
     fields
     {
 
-
-
-
-        field(70005; "FBM_Fa Posting Group Depr"; Code[20])
+        field(70001; IsActive; Boolean)
         {
-            Caption = 'Fa Posting Group Depr';
-            FieldClass = FlowField;
-            CalcFormula = lookup("FA Depreciation Book"."FA Posting Group" where("FA No." = field("No."), "Depreciation Book Code" = filter('COMPANY')));
+            Caption = 'Is Active';
+
         }
+
+
+
 
         field(70007; "FBM_Site"; code[20])
         {
@@ -24,13 +23,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
 
 
 
-        field(70012; FBM_Is_EGM; Boolean)
-        {
-            Caption = 'Is EGM';
-            FieldClass = FlowField;
-            CalcFormula = lookup("FA Subclass".FBM_EGM where(code = field("FA Subclass Code")));
 
-        }
         field(70013; FBM_Status; Enum "FBM_FA Status_DD")
         {
             Caption = 'FA Status';
@@ -46,10 +39,36 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'Subsidiary';
 
         }
+        modify("Serial No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                FA.Reset();
+                FA.SetFilter("Serial No.", Rec."Serial No.");
+                if FA.FindFirst() then error(Text000, FA."No.");
+            end;
+        }
+
+        field(70016; "FBM_DatePrepared"; Date)
+        {
+            Caption = 'Date Prepared';
+        }
+        field(70017; FBM_Brand; Option)
+        {
+            Caption = 'Brand';
+            OptionCaption = ' ,FBM,DINGO';
+            OptionMembers = " ",FBM,DINGO;
+        }
+        field(70018; FBM_Lessee; text[20])
+        {
+            Caption = 'Lessee';
+
+        }
 
 
     }
     var
         FA: Record "Fixed Asset";
+        Text000: Label 'Fixed Asset %1 has the same Serial No.!';
 
 }

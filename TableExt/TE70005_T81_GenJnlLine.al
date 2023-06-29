@@ -16,6 +16,12 @@ tableextension 70005 FBM_GenJnlLineExt_DD extends "Gen. Journal Line"
             OptionMembers = " ",Bingo,Spin;
 
         }
+        field(70004; FBM_Site; Code[20])
+        {
+            Caption = 'Site';
+
+
+        }
     }
     var
 }

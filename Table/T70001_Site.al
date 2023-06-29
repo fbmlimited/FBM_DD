@@ -58,17 +58,7 @@ table 70001 FBM_Site
             //this field was created to be used for indentation of pages making use if this table, if required
             DataClassification = ToBeClassified;
         }
-        //DevOps #619 -- begin
-        field(11; "Contract Code"; Code[4])
-        {
 
-            DataClassification = ToBeClassified;
-
-            trigger OnValidate()
-            begin
-                // if "Contract Code" <> '' then FADimMgt.ContractDimension(Rec);
-            end;
-        }
         field(12; "Vat Number"; Code[20])
         {
             DataClassification = ToBeClassified;
@@ -149,16 +139,16 @@ table 70001 FBM_Site
         {
             FieldClass = Normal;
         }
-        field(29; "Contract Code2"; Code[4])
-        {
+        // field(29; "Contract Code2"; Code[4])
+        // {
 
-            DataClassification = ToBeClassified;
+        //     DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
+        //     end;
+        // }
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
@@ -179,16 +169,11 @@ table 70001 FBM_Site
         {
             Caption = 'Version';
         }
-        field(1005; Active; Boolean)
+        field(1005; ActiveRec; Boolean)
         {
             Caption = 'Active Record';
         }
-        field(2000; Subsidiary; text[250])
-        {
-            Caption = 'Subsidiary';
-            FieldClass = FlowField;
-            CalcFormula = Lookup("Company Information"."Custom System Indicator Text");
-        }
+
     }
     keys
     {
@@ -228,12 +213,12 @@ table 70001 FBM_Site
         DimensionValue.Reset();
         SalesHeader.Reset();
         SalesHeader.Reset();
-        SalesHeader.SetFilter(Site, Rec."Site Code");
+        SalesHeader.SetFilter(fbm_site, Rec."Site Code");
         if SalesHeader.FindFirst() then Error(Text003, SalesHeader."No.");
-        DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Code", FASetup."Site Dimension");
+        DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Code", FASetup."FBM_Site Dimension");
         DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Value Code", Rec."Site Code");
         if DimensionSetEntry.FindFirst() then error(Text002);
-        if DimensionValue.Get(FASetup."Site Dimension", Rec."Site Code") then begin
+        if DimensionValue.Get(FASetup."FBM_Site Dimension", Rec."Site Code") then begin
             DimensionValue.Validate(Blocked, true);
             DimensionValue.Modify();
         end;
@@ -246,7 +231,7 @@ table 70001 FBM_Site
 
     procedure CheckUniqueSite(SiteCode: Code[20])
     var
-        CustSite: Record "Customer-Site";
+        CustSite: Record FBM_CustomerSite_C;
     begin
         CustSite.Reset();
         CustSite.SetFilter(CustSite."Site Code", "Site Code");

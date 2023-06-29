@@ -5,12 +5,11 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         field(70000; FBM_Site; Code[20])
         {
             Caption = 'Site';
-            TableRelation = "Cust-Op-Site"."Site Code";
         }
         //DevOps #619 -- begin
         field(70001; "FBM_Contract Code"; Code[4])
         {
-            TableRelation = "Customer-Site"."Contract Code" WHERE("Customer No." = field("Sell-to Customer No."));
+
 
             trigger OnValidate()
             begin
@@ -35,19 +34,7 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
             caption = 'Local Currency Amount';
 
         }
-        field(70006; "FBM_Cust Payment Bank Code2"; Code[100])
-        {
 
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
-
-        field(70007; "FBM_Cust Payment Bank Name2"; Code[100])
-        {
-
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
         field(70008; "FBM_Currency2"; code[10])
         {
             caption = 'Local Currency ';
@@ -64,24 +51,32 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
             caption = 'Payment Bank Beneficiary 2 ';
 
         }
-        field(70013; "FBM_Billing Statement"; Boolean)
-        {
-
-
-        }
-        field(70011; "FBM_Cust Payment Bank Code"; Code[100])
-        {
-
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
-
         field(700012; "FBM_Cust Payment Bank Name"; Code[100])
         {
 
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
+
         }
+        field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
+        {
+
+
+        }
+
+
+        field(70013; "FBM_Billing Statement"; Boolean)
+        {
+            Caption = 'Billing Statement';
+
+        }
+
+        field(70023; FBM_Signature_pic; MediaSet)
+        {
+            caption = 'Signature';
+
+
+        }
+
+
     }
     var
 }

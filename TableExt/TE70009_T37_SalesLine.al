@@ -18,7 +18,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                     "FBM_Period Start" := "Shipment Date";
                 if "FBM_Period End" = 0D then
                     "FBM_Period End" := "Shipment Date";
-                perioddiff := "FBM_Period End" - "Period Start";
+                perioddiff := "FBM_Period End" - "FBM_Period Start";
                 if perioddiff < 0 then
                     Error('Period Start is greater than Period End!');
 
@@ -34,14 +34,15 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                     end;
             end;
         }
-        //DEVOPS #622 -- end
-        field(70002; FBM_IsPeriodEnabled; Boolean) //used for enabling/disabling date fields on form
+
+        field(70002; FBM_IsPeriodEnabled; Boolean)
         {
         }
         field(70003; FBM_Site; Code[20])
         {
             Caption = 'Site';
-            TableRelation = "Cust-Op-Site"."Site Code";
+            TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
+
         }
         modify("No.")
         {
@@ -51,7 +52,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
             begin
                 if rec.Type = Rec.Type::"G/L Account" then begin
                     if GlAccount.Get("No.") then begin
-                        if GlAccount."Periods Required" then begin
+                        if GlAccount."FBM_Periods Required" then begin
                             // get sales header
                             // Message(Format("Line No."));
                             if ("Line No." <> 0) then begin
@@ -146,7 +147,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
     var
         i: Integer;
     begin
-        //UpdateIsPeriodEnabled();  //DEVOPS #622
+
         if SalesHeader.get("Document Type", "Document No.") then begin
 
             if (Rec."No." = 'S0001') or (Rec."No." = 'S0002') then begin
@@ -162,19 +163,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
             end;
         end;
 
-        //if ("Period Start" = 0D) or ("Period End" = 0D) then begin
-        //    while i < 2 do begin
-        //        if Confirm(STRSUBSTNO('Period Start / Period End values can’t be empty.\Do you want to continue?(Step %1)', i + 1), true) then
-        //            i := i + 1
-        //        else begin
-        //            Error('Period Start - Period End values can’t be empty!');
-        //            break;
-        //        end;
 
-        //    end;
-        //    "Period Start" := "Shipment Date";
-        //    "Period End" := "Shipment Date";
-        //end;
 
 
     end;
@@ -214,7 +203,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
 
     local procedure ClearIsPeriod()
     begin
-        IsPeriodEnabled := false;
+        FBM_IsPeriodEnabled := false;
         Clear("FBM_Period Start");
         Clear("FBM_Period End");
     end;

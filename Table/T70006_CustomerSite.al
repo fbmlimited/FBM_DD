@@ -8,40 +8,85 @@ table 70006 FBM_CustomerSite_C
         {
             DataClassification = ToBeClassified;
             TableRelation = Customer."No.";
+            Caption = 'Customer Code';
         }
         field(2; "SiteGrCode"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = FBM_Site;
+            Caption = 'Site Group Code';
 
         }
         field(3; "Site Code"; Code[20])
         {
+            Caption = 'Site Loc. Code';
             DataClassification = ToBeClassified;
+        }
+        field(4; "Site Name_FF"; Text[250])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site."Site Name" where("Site Code" = field("Site Code"), ActiveRec = const(true)));
+            Caption = 'Site Name';
+        }
+        field(5; Address; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(6; "Address 2"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(7; City; Text[30])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = IF ("Country/Region Code" = CONST()) "Post Code".City
+            ELSE
+            IF ("Country/Region Code" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+        }
+        field(8; "Post Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = IF ("Country/Region Code" = CONST()) "Post Code"
+            ELSE
+            IF ("Country/Region Code" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+        }
+        field(9; "Country/Region Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Country/Region";
+        }
+        field(10; County; Text[30])
+        {
+            CaptionClass = '5,1,' + "Country/Region Code";
+            Caption = 'County';
         }
         field(11; "Contract Code"; Code[4])
         {
-            //this field was created to be used for indentation of pages making use if this table, if required
+            Caption = 'Contract Code (Bingo)';
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
             begin
-                //if "Contract Code" <> '' then FADimMgt.ContractDimension(Rec);
+                if "Contract Code" <> '' then FADimMgt.ContractDimension(Rec);
             end;
         }
-        field(12; Contact; Text[250])
+        field(12; "Vat Number"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(13; Contact; Text[250])
         {
             DataClassification = ToBeClassified;
         }
 
         field(14; "Contract Code2"; Code[4])
         {
-            //this field was created to be used for indentation of pages making use if this table, if required
+            Caption = 'Contract Code (Spin)';
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
             begin
-                //if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
+                if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
             end;
         }
 
@@ -57,7 +102,7 @@ table 70006 FBM_CustomerSite_C
 
 
     var
-        FADimMgt: Codeunit FixedAssetDimMgt;
+        FADimMgt: Codeunit FBM_FADimMgt_DD;
         Text000: Label 'Site Code %1 already exists for Customer %2';
         Text001: Label 'Site code already exists for customer %1!';
         Text002: Label 'You cannot delete this site - it has been used in posted transactions!';
@@ -105,16 +150,16 @@ table 70006 FBM_CustomerSite_C
 
     procedure CheckUniqueSite(SiteCode: Code[20])
     var
-        CustSite: Record "Customer-Site";
+        CustSite: Record FBM_CustomerSite_C;
     begin
         // CustSite.Reset();
         // CustSite.SetFilter(CustSite."Site Code", "Site Code");
         // if CustSite.FindFirst() then Error(Text001, CustSite."Customer No.");
     end;
 
-    procedure UpdateCustOpSite(CustSite: Record "Customer-Site")
+    procedure UpdateCustOpSite(CustSite: Record FBM_CustomerSite_C)
     var
-        COS: Record "Cust-Op-Site";
+        COS: Record FBM_CustOpSite;
         CompanyInfo: record "Company Information";
         FASetup: Record "FA Setup";
     begin

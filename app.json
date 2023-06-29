@@ -2,7 +2,7 @@
   "id": "9d836a4f-3b97-4179-ae7d-608f099ba7f3",
   "name": "FBM Data Dictionary",
   "publisher": "FBM Group",
-  "version": "1.0.0.0",
+  "version": "1.0.0.1",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -11,16 +11,11 @@
   "url": "",
   "logo": "",
   "dependencies": [
-    {
-      "id": "287c2f5e-e9bb-40dd-bf05-b55c4a360c77",
-  "name": "DrakoLtdBCExt",
-  "publisher": "Bluefort Ltd",
-  "version": "1.0.1.4"
-    }
+    
   ],
   "screenshots": [],
   "platform": "1.0.0.0",
-  "application": "20.0.0.0",
+  "application": "22.0.0.0",
   "idRanges": [
     {
       "from": 70000,
@@ -32,7 +27,7 @@
     "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "9.0",
+  "runtime": "11.0",
   "features": [
     "NoImplicitWith"
   ],

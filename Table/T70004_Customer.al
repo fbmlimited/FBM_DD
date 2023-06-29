@@ -1584,7 +1584,7 @@ table 70004 FBM_Customer
         {
             Caption = 'Version';
         }
-        field(1005; Active; Boolean)
+        field(1005; ActiveRec; Boolean)
         {
             Caption = 'Active Record';
         }
@@ -1622,12 +1622,12 @@ table 70004 FBM_Customer
         field(70034; "FBM_Payment Bank Code"; Code[20])//no
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Payment Bank Accounts"."Bank Code";
+            TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
         field(70035; "FBM_Payment Bank Code2"; Code[20])//no
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Payment Bank Accounts"."Bank Code";
+            TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
 
     }

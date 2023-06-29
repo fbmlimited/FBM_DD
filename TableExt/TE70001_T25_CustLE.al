@@ -11,19 +11,20 @@ tableextension 70001 FBM_CustLEExt_DD extends "Cust. Ledger Entry"
         {
             DataClassification = ToBeClassified;
         }
-        field(70002; "FBM_Gen. Bus. Posting Group"; Code[20])
-        {
-            CalcFormula = Lookup(Customer."Gen. Bus. Posting Group" WHERE("No." = FIELD("Customer No.")));
-            CaptionML = ENU = 'Gen. Bus. Posting Group',
-                        SQI = 'Gr.Pergj.Biznesi';
-            FieldClass = FlowField;
-        }
+
         field(70003; FBM_Segment; Option)
         {
             caption = 'Segment';
             OptionMembers = " ",Bingo,Spin;
 
         }
+        field(70004; FBM_Site; Code[20])
+        {
+            Caption = 'Site';
+
+
+        }
+
     }
     var
 }

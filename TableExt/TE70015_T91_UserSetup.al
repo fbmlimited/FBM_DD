@@ -20,6 +20,12 @@ tableextension 70015 FBM_UserSetupExt_DD extends "User Setup"
             DataClassification = ToBeClassified;
 
         }
+        field(70023; FBM_Signature_pic; MediaSet)
+        {
+            caption = 'Signature';
+
+
+        }
     }
     var
 }

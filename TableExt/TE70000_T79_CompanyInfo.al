@@ -39,6 +39,30 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
             OptionCaption = ' ,FBM,DINGO';
             OptionMembers = " ",FBM,DINGO;
         }
+
+        field(70017; "FBM_CustIsOp"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Customer Is Operator';
+        }
+
+
+        field(70018; FBM_EnMigr; Boolean)
+        {
+
+            caption = 'Enable Migration';
+        }
+
+        field(70019; FBM_EnAppr; Boolean)
+        {
+
+            caption = 'Enable Approvals';
+        }
+        field(70020; FBM_BankAddress; Text[250])
+        {
+
+            caption = 'Bank Address';
+        }
     }
 
 }

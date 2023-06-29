@@ -4,6 +4,7 @@ tableextension 70006 FBM_GLAccountExt_DD extends "G/L Account"
     {
         field(70000; "FBM_Periods Required"; Boolean)
         {
+
         }
 
     }

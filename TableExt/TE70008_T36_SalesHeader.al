@@ -2,6 +2,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 {
     fields
     {
+
         modify("Sell-to Customer No.")
         {
             trigger OnAfterValidate()
@@ -9,7 +10,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 Notif: Notification;
             begin
                 if Cust.Get("Sell-to Customer No.") then begin
-                    if Cust."Separate Halls Inv." then
+                    if Cust."FBM_Separate Halls Inv." then
                         Notif.Message := Text000
                     //Message(Text000)
                     else
@@ -21,15 +22,18 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         }
         field(70000; FBM_Site; Code[20])
         {
-            TableRelation = "Cust-Op-Site"."Site Code";
+            TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
 
-            //DevOps #619 -- begin
+
             trigger OnValidate()
             begin
                 CustSite.Reset();
-                if CustSite.Get("Sell-to Customer No.", Site) then begin
+                if CustSite.Get("Sell-to Customer No.", FBM_Site) then begin
                     if CustSite."Contract Code" <> '' then begin
-                        Rec.Validate("Contract Code", CustSite."Contract Code");
+                        if rec.FBM_Segment = rec.FBM_Segment::Bingo then
+                            Rec.Validate("FBM_Contract Code", CustSite."Contract Code")
+                        else
+                            Rec.Validate("FBM_Contract Code", CustSite."Contract Code2");
                         Rec.Modify();
                     end;
                 end;
@@ -40,25 +44,21 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 // SalesLineRec.SetRange(Type, SalesLineRec.Type::Item);
                 IF SalesLineRec.FindSet() THEN
                     repeat
-                        SalesLineRec.Site := Rec.Site;
+                        SalesLineRec.FBM_Site := Rec.FBM_Site;
                         SalesLineRec.Modify();
                     until SalesLineRec.Next() = 0;
             end;
-            //DevOps #619 -- end
+
         }
-        //DevOps #619 -- begin
+
         field(70001; "FBM_Contract Code"; Code[4])
         {
-            TableRelation = "Customer-Site"."Contract Code" WHERE("Customer No." = field("Sell-to Customer No."));
 
-            trigger OnValidate()
-            begin
-            end;
         }
-        //DevOps #619 -- end
-        //DEVOPS #622 -- begin
+
         field(70002; "FBM_Period Start"; Date)
         {
+
             trigger OnValidate()
             begin
                 UpdateDateLines(Rec);
@@ -82,38 +82,16 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
             caption = 'Local Currency Amount';
 
         }
-        field(70006; "FBM_Cust Payment Bank Code2"; Code[100])
-        {
 
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
 
-        field(70007; "FBM_Cust Payment Bank Name2"; Code[100])
-        {
 
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
-        field(70011; "FBM_Cust Payment Bank Code"; Code[100])
-        {
-
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
-
-        field(700012; "FBM_Cust Payment Bank Name"; Code[100])
-        {
-
-            FieldClass = "Flowfield";
-            CalcFormula = lookup(Customer."FBM_Payment Bank Code2" where("No." = field("Sell-to Customer No.")));
-        }
         field(70008; "FBM_Currency2"; code[10])
         {
             caption = 'Local Currency ';
             TableRelation = Currency;
 
         }
+
         field(70009; "FBM_BeneficiaryBank"; text[100])
         {
             caption = 'Payment Bank Beneficiary ';
@@ -124,6 +102,19 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
             caption = 'Payment Bank Beneficiary 2 ';
 
         }
+        field(700012; "FBM_Cust Payment Bank Name"; Code[100])
+        {
+
+
+        }
+        field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
+        {
+
+
+        }
+
+
+
 
 
 
@@ -131,6 +122,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
         field(70013; "FBM_Billing Statement"; Boolean)
         {
+            Caption = 'Billing Statement';
+
+
+        }
+        field(70023; FBM_Signature_pic; MediaSet)
+        {
+            caption = 'Signature';
 
 
         }
@@ -140,7 +138,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         SalesLineRec: Record "Sales Line";
         Text000: Label 'This customer requires Separate Halls Invoicing.';
         Text001: Label 'This customer requires one invoice for all Halls.';
-        CustSite: Record "Customer-Site";
+        CustSite: Record FBM_CustomerSite_C;
 
     local procedure UpdateDateLines(SalesHeader: Record "Sales Header")
     var
@@ -150,20 +148,18 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         SalesLine.Reset();
         SalesLine.SetFilter("Document Type", '%1', SalesHeader."Document Type");
         SalesLine.SetFilter("Document No.", SalesHeader."No.");
-        //SalesLine.SetFilter(Type, '%1', SalesLine.Type::"G/L Account");
+
         SalesLine.SetFilter("No.", '<>%1', '');
         if SalesLine.FindSet() then begin
             repeat begin
-                //if GLAccount.Get(SalesLine."No.") then begin
-                // if GLAccount."Periods Required" then begin
-                SalesLine.Validate("FBM_Period Start", SalesHeader."Period Start");
-                SalesLine.Validate("FBM_Period End", SalesHeader."Period End");
+
+                SalesLine.Validate("FBM_Period Start", SalesHeader."FBM_Period Start");
+                SalesLine.Validate("FBM_Period End", SalesHeader."FBM_Period End");
                 SalesLine.Modify();
-                /// end;
-                // end;
+
             end;
             until (SalesLine.Next = 0);
         end;
     end;
-    //DEVOPS #622 -- end
+
 }
