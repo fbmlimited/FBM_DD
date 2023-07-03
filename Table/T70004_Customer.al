@@ -3,8 +3,8 @@ table 70004 FBM_Customer
     DataPerCompany = false;
     Caption = 'Group Customer';
     DataCaptionFields = "No.", Name;
-    //DrillDownPageID = ;
-    //LookupPageID = "Customer Lookup";
+    DrillDownPageID = FBM_CustListMaster_DD;
+    LookupPageID = FBM_CustCardMaster_DD;
     Permissions = TableData "Cust. Ledger Entry" = r,
                   TableData Job = r,
                   TableData "VAT Registration Log" = rd,
@@ -28,12 +28,7 @@ table 70004 FBM_Customer
         {
             Caption = 'No.';
 
-            trigger OnValidate()
-            begin
-                TestNoSeries();
-                if "Invoice Disc. Code" = '' then
-                    "Invoice Disc. Code" := "No.";
-            end;
+
         }
         field(2; Name; Text[100])
         {
@@ -73,30 +68,26 @@ table 70004 FBM_Customer
 
             trigger OnLookup()
             begin
-                OnBeforeLookupCity(Rec, PostCode);
 
                 PostCode.LookupPostCode(City, "Post Code", County, "Country/Region Code");
 
-                OnAfterLookupCity(Rec, PostCode);
+
             end;
 
             trigger OnValidate()
             begin
-                OnBeforeValidateCity(Rec, PostCode);
+
 
                 PostCode.ValidateCity(City, "Post Code", County, "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
 
-                OnAfterValidateCity(Rec, xRec);
+
             end;
         }
         field(8; Contact; Text[100])
         {
             Caption = 'Contact';
 
-            trigger OnLookup()
-            begin
-                LookupContactList;
-            end;
+
 
 
         }
@@ -137,10 +128,7 @@ table 70004 FBM_Customer
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1),
                                                           Blocked = CONST(false));
 
-            trigger OnValidate()
-            begin
-                ValidateShortcutDimCode(1, "Global Dimension 1 Code");
-            end;
+
         }
         field(17; "Global Dimension 2 Code"; Code[20])
         {
@@ -149,10 +137,7 @@ table 70004 FBM_Customer
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
                                                           Blocked = CONST(false));
 
-            trigger OnValidate()
-            begin
-                ValidateShortcutDimCode(2, "Global Dimension 2 Code");
-            end;
+
         }
         field(18; "Chain Name"; Code[10])
         {
@@ -179,10 +164,7 @@ table 70004 FBM_Customer
             Caption = 'Currency Code';
             TableRelation = Currency;
 
-            trigger OnValidate()
-            begin
-                UpdateCurrencyId;
-            end;
+
         }
         field(23; "Customer Price Group"; Code[10])
         {
@@ -209,10 +191,7 @@ table 70004 FBM_Customer
             Caption = 'Payment Terms Code';
             TableRelation = "Payment Terms";
 
-            trigger OnValidate()
-            begin
-                UpdatePaymentTermsId;
-            end;
+
         }
         field(28; "Fin. Charge Terms Code"; Code[10])
         {
@@ -224,20 +203,14 @@ table 70004 FBM_Customer
             Caption = 'Salesperson Code';
             TableRelation = "Salesperson/Purchaser";
 
-            trigger OnValidate()
-            begin
-                ValidateSalesPersonCode;
-            end;
+
         }
         field(30; "Shipment Method Code"; Code[10])
         {
             Caption = 'Shipment Method Code';
             TableRelation = "Shipment Method";
 
-            trigger OnValidate()
-            begin
-                UpdateShipmentMethodId;
-            end;
+
         }
         field(31; "Shipping Agent Code"; Code[10])
         {
@@ -273,13 +246,7 @@ table 70004 FBM_Customer
             Caption = 'Country/Region Code';
             TableRelation = "Country/Region";
 
-            trigger OnValidate()
-            begin
-                PostCode.CheckClearPostCodeCityCounty(City, "Post Code", County, "Country/Region Code", xRec."Country/Region Code");
 
-                if "Country/Region Code" <> xRec."Country/Region Code" then
-                    VATRegistrationValidation();
-            end;
         }
         field(36; "Collection Method"; Code[20])
         {
@@ -334,15 +301,7 @@ table 70004 FBM_Customer
             Caption = 'Payment Method Code';
             TableRelation = "Payment Method";
 
-            trigger OnValidate()
-            begin
-                UpdatePaymentMethodId;
 
-                if "Payment Method Code" = '' then
-                    exit;
-
-                UpdateDirectDebitPmtTermsCode();
-            end;
         }
         field(53; "Last Modified Date Time"; DateTime)
         {
@@ -400,19 +359,7 @@ table 70004 FBM_Customer
         {
             Caption = 'VAT Registration No.';
 
-            trigger OnValidate()
-            var
-                IsHandled: Boolean;
-            begin
-                IsHandled := false;
-                OnBeforeValidateVATRegistrationNo(Rec, xRec, CurrFieldNo, IsHandled);
-                if IsHandled then
-                    exit;
 
-                "VAT Registration No." := UpperCase("VAT Registration No.");
-                if "VAT Registration No." <> xRec."VAT Registration No." then
-                    VATRegistrationValidation();
-            end;
         }
         field(87; "Combine Shipments"; Boolean)
         {
@@ -464,20 +411,20 @@ table 70004 FBM_Customer
 
             trigger OnLookup()
             begin
-                OnBeforeLookupPostCode(Rec, PostCode);
+
 
                 PostCode.LookupPostCode(City, "Post Code", County, "Country/Region Code");
 
-                OnAfterLookupPostCode(Rec, PostCode);
+
             end;
 
             trigger OnValidate()
             begin
-                OnBeforeValidatePostCode(Rec, PostCode);
+
 
                 PostCode.ValidatePostCode(City, "Post Code", County, "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
 
-                OnAfterValidatePostCode(Rec, xRec);
+
             end;
         }
         field(92; County; Text[30])
@@ -499,10 +446,7 @@ table 70004 FBM_Customer
             Caption = 'Email';
             ExtendedDatatype = EMail;
 
-            trigger OnValidate()
-            begin
-                ValidateEmail();
-            end;
+
         }
         field(103; "Home Page"; Text[80])
         {
@@ -526,10 +470,7 @@ table 70004 FBM_Customer
             Caption = 'Tax Area Code';
             TableRelation = "Tax Area";
 
-            trigger OnValidate()
-            begin
-                UpdateTaxAreaId;
-            end;
+
         }
         field(109; "Tax Liable"; Boolean)
         {
@@ -540,10 +481,7 @@ table 70004 FBM_Customer
             Caption = 'VAT Bus. Posting Group';
             TableRelation = "VAT Business Posting Group";
 
-            trigger OnValidate()
-            begin
-                UpdateTaxAreaId;
-            end;
+
         }
         field(111; "Currency Filter"; Code[10])
         {
@@ -562,10 +500,7 @@ table 70004 FBM_Customer
         {
             Caption = 'Block Payment Tolerance';
 
-            trigger OnValidate()
-            begin
-                UpdatePaymentTolerance((CurrFieldNo <> 0) and GuiAllowed);
-            end;
+
         }
 
 
@@ -629,40 +564,9 @@ table 70004 FBM_Customer
             Caption = 'Primary Contact No.';
             TableRelation = Contact;
 
-            trigger OnLookup()
-            begin
-                LookupContactList;
-            end;
 
-            // trigger OnValidate()
-            // var
-            //     Cont: Record Contact;
-            // begin
-            //     Contact := '';
-            //     if "Primary Contact No." <> '' then begin
-            //         Cont.Get("Primary Contact No.");
 
-            //         CheckCustomerContactRelation(Cont);
 
-            //         if Cont.Type = Cont.Type::Person then begin
-            //             Contact := Cont.Name;
-            //             exit;
-            //         end;
-
-            //         if Cont.Image.HasValue then
-            //             CopyContactPicture(Cont);
-
-            //         if Cont."Phone No." <> '' then
-            //             "Phone No." := Cont."Phone No.";
-            //         if Cont."E-Mail" <> '' then
-            //             "E-Mail" := Cont."E-Mail";
-            //         if Cont."Mobile Phone No." <> '' then
-            //             "Mobile Phone No." := Cont."Mobile Phone No.";
-
-            //     end else
-            //         if Image.HasValue then
-            //             Clear(Image);
-            // end;
         }
         field(5050; "Contact Type"; Enum "Contact Type")
         {
@@ -764,49 +668,34 @@ table 70004 FBM_Customer
             Caption = 'Currency Id';
             TableRelation = Currency.SystemId;
 
-            trigger OnValidate()
-            begin
-                UpdateCurrencyCode;
-            end;
+
         }
         field(8002; "Payment Terms Id"; Guid)
         {
             Caption = 'Payment Terms Id';
             TableRelation = "Payment Terms".SystemId;
 
-            trigger OnValidate()
-            begin
-                UpdatePaymentTermsCode;
-            end;
+
         }
         field(8003; "Shipment Method Id"; Guid)
         {
             Caption = 'Shipment Method Id';
             TableRelation = "Shipment Method".SystemId;
 
-            trigger OnValidate()
-            begin
-                UpdateShipmentMethodCode;
-            end;
+
         }
         field(8004; "Payment Method Id"; Guid)
         {
             Caption = 'Payment Method Id';
             TableRelation = "Payment Method".SystemId;
 
-            trigger OnValidate()
-            begin
-                UpdatePaymentMethodCode;
-            end;
+
         }
         field(9003; "Tax Area ID"; Guid)
         {
             Caption = 'Tax Area ID';
 
-            trigger OnValidate()
-            begin
-                UpdateTaxAreaCode;
-            end;
+
         }
 
         field(9005; "Contact ID"; Guid)
@@ -1025,172 +914,7 @@ table 70004 FBM_Customer
 
     }
 
-    trigger OnDelete()
-    var
-        CampaignTargetGr: Record "Campaign Target Group";
-        ContactBusRel: Record "Contact Business Relation";
-        Job: Record Job;
-        StdCustSalesCode: Record "Standard Customer Sales Code";
-        CustomReportSelection: Record "Custom Report Selection";
-        MyCustomer: Record "My Customer";
-        ServHeader: Record "Service Header";
-        ItemReference: Record "Item Reference";
-        CampaignTargetGrMgmt: Codeunit "Campaign Target Group Mgt";
-        VATRegistrationLogMgt: Codeunit "VAT Registration Log Mgt.";
-        ConfirmManagement: Codeunit "Confirm Management";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeOnDelete(Rec, IsHandled);
-        if IsHandled then
-            exit;
 
-        //ApprovalsMgmt.OnCancelCustomerApprovalRequest(Rec);
-
-        ServiceItem.SetRange("Customer No.", "No.");
-        if ServiceItem.FindFirst() then
-            if ConfirmManagement.GetResponseOrDefault(
-                 StrSubstNo(Text008, TableCaption, "No.", ServiceItem.FieldCaption("Customer No.")), true)
-            then
-                ServiceItem.ModifyAll("Customer No.", '')
-            else
-                Error(Text009);
-
-        Job.SetRange("Bill-to Customer No.", "No.");
-        if not Job.IsEmpty() then
-            Error(Text015, TableCaption, "No.", Job.TableCaption);
-
-        //MoveEntries.MoveCustEntries(Rec);
-
-        CommentLine.SetRange("Table Name", CommentLine."Table Name"::Customer);
-        CommentLine.SetRange("No.", "No.");
-        CommentLine.DeleteAll();
-
-        CustBankAcc.SetRange("Customer No.", "No.");
-        CustBankAcc.DeleteAll();
-
-        ShipToAddr.SetRange("Customer No.", "No.");
-        ShipToAddr.DeleteAll();
-
-        SalesPrepmtPct.SetCurrentKey("Sales Type", "Sales Code");
-        SalesPrepmtPct.SetRange("Sales Type", SalesPrepmtPct."Sales Type"::Customer);
-        SalesPrepmtPct.SetRange("Sales Code", "No.");
-        SalesPrepmtPct.DeleteAll();
-
-        StdCustSalesCode.SetRange("Customer No.", "No.");
-        StdCustSalesCode.DeleteAll(true);
-
-        CheckIfSalesOrderLinesExist();
-
-        CampaignTargetGr.SetRange("No.", "No.");
-        CampaignTargetGr.SetRange(Type, CampaignTargetGr.Type::Customer);
-        if CampaignTargetGr.Find('-') then begin
-            ContactBusRel.SetRange("Link to Table", ContactBusRel."Link to Table"::Customer);
-            ContactBusRel.SetRange("No.", "No.");
-            ContactBusRel.FindFirst();
-            // repeat
-            //CampaignTargetGrMgmt.ConverttoContact(Rec, ContactBusRel."Contact No.");
-            //until CampaignTargetGr.Next() = 0;
-        end;
-
-        ServHeader.SetCurrentKey("Customer No.", "Order Date");
-        ServHeader.SetRange("Customer No.", "No.");
-        if ServHeader.FindFirst() then
-            Error(ServiceDocumentExistErr, "No.", ServHeader."Document Type");
-
-        ServHeader.SetRange("Customer No.");
-        ServHeader.SetRange("Bill-to Customer No.", "No.");
-        if ServHeader.FindFirst() then
-            Error(ServiceDocumentExistErr, "No.", ServHeader."Document Type");
-
-        ItemReference.SetCurrentKey("Reference Type", "Reference Type No.");
-        ItemReference.SetRange("Reference Type", ItemReference."Reference Type"::Customer);
-        ItemReference.SetRange("Reference Type No.", Rec."No.");
-        ItemReference.DeleteAll();
-
-        //UpdateContFromCust.OnDelete(Rec);
-
-        CustomReportSelection.SetRange("Source Type", DATABASE::Customer);
-        CustomReportSelection.SetRange("Source No.", "No.");
-        CustomReportSelection.DeleteAll();
-
-        MyCustomer.SetRange("Customer No.", "No.");
-        MyCustomer.DeleteAll();
-        //VATRegistrationLogMgt.DeleteCustomerLog(Rec);
-
-        DimMgt.DeleteDefaultDim(DATABASE::Customer, "No.");
-
-        CalendarManagement.DeleteCustomizedBaseCalendarData(CustomizedCalendarChange."Source Type"::Customer, "No.");
-    end;
-
-    trigger OnInsert()
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeInsert(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        if "No." = '' then begin
-            SalesSetup.Get();
-            SalesSetup.TestField("Customer Nos.");
-            NoSeriesMgt.InitSeries(SalesSetup."Customer Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-        end;
-
-        if "Invoice Disc. Code" = '' then
-            "Invoice Disc. Code" := "No.";
-
-        if (not (InsertFromContact or (InsertFromTemplate and (Contact <> '')) or IsTemporary)) or ForceUpdateContact then
-            //UpdateContFromCust.OnInsert(Rec);
-
-        if "Salesperson Code" = '' then
-                SetDefaultSalesperson;
-
-        DimMgt.UpdateDefaultDim(
-          DATABASE::Customer, "No.",
-          "Global Dimension 1 Code", "Global Dimension 2 Code");
-
-        UpdateReferencedIds;
-        SetLastModifiedDateTime;
-
-        OnAfterOnInsert(Rec, xRec);
-    end;
-
-    trigger OnModify()
-    begin
-        UpdateReferencedIds;
-        SetLastModifiedDateTime;
-        if IsContactUpdateNeeded then begin
-            Modify;
-            //UpdateContFromCust.OnModify(Rec);
-            if not Find then begin
-                Reset;
-                if Find then;
-            end;
-        end;
-    end;
-
-    trigger OnRename()
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeOnRename(Rec, xRec, IsHandled);
-        if IsHandled then
-            exit;
-
-        ApprovalsMgmt.OnRenameRecordInApprovalRequest(xRec.RecordId, RecordId);
-        DimMgt.RenameDefaultDim(DATABASE::Customer, xRec."No.", "No.");
-        CommentLine.RenameCommentLine(CommentLine."Table Name"::Customer, xRec."No.", "No.");
-
-        SetLastModifiedDateTime;
-        if xRec."Invoice Disc. Code" = xRec."No." then
-            "Invoice Disc. Code" := "No.";
-        UpdateCustomerTemplateInvoiceDiscCodes();
-
-        CalendarManagement.RenameCustomizedBaseCalendarData(CustomizedCalendarChange."Source Type"::Customer, "No.", xRec."No.");
-    end;
 
     var
         Text000: Label 'You cannot delete %1 %2 because there is at least one outstanding Sales %3 for this customer.';
@@ -1244,1527 +968,5 @@ table 70004 FBM_Customer
         PhoneNoCannotContainLettersErr: Label 'must not contain letters';
         ForceUpdateContact: Boolean;
 
-    procedure AssistEdit(OldCust: Record FBM_Customer): Boolean
-    var
-        Cust: Record FBM_Customer;
-    begin
-        with Cust do begin
-            Cust := Rec;
-            SalesSetup.Get();
-            SalesSetup.TestField("Customer Nos.");
-            if NoSeriesMgt.SelectSeries(SalesSetup."Customer Nos.", OldCust."No. Series", "No. Series") then begin
-                NoSeriesMgt.SetSeries("No.");
-                Rec := Cust;
-                OnAssistEditOnBeforeExit(Cust);
-                exit(true);
-            end;
-        end;
-    end;
 
-    procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode, IsHandled);
-        if IsHandled then
-            exit;
-
-        DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
-        if not IsTemporary then begin
-            DimMgt.SaveDefaultDim(DATABASE::Customer, "No.", FieldNumber, ShortcutDimCode);
-            Modify;
-        end;
-
-        OnAfterValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode);
-    end;
-
-    procedure ShowContact()
-    var
-        ContBusRel: Record "Contact Business Relation";
-        Cont: Record Contact;
-        OfficeContact: Record Contact;
-        OfficeMgt: Codeunit "Office Management";
-        ConfirmManagement: Codeunit "Confirm Management";
-        ContactPageID: Integer;
-    begin
-        if OfficeMgt.GetContact(OfficeContact, "No.") and (OfficeContact.Count = 1) then begin
-            ContactPageID := PAGE::"Contact Card";
-            OnShowContactOnBeforeOpenContactCard(OfficeContact, ContactPageID);
-            PAGE.Run(ContactPageID, OfficeContact);
-        end else begin
-            if "No." = '' then
-                exit;
-
-            ContBusRel.SetCurrentKey("Link to Table", "No.");
-            ContBusRel.SetRange("Link to Table", ContBusRel."Link to Table"::Customer);
-            ContBusRel.SetRange("No.", "No.");
-            if not ContBusRel.FindFirst() then begin
-                if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(Text002, TableCaption, "No."), true) then
-                    exit;
-                //UpdateContFromCust.InsertNewContact(Rec, false);
-                ContBusRel.FindFirst();
-            end;
-            Commit();
-
-            Cont.FilterGroup(2);
-            Cont.SetRange("Company No.", ContBusRel."Contact No.");
-            if Cont.IsEmpty() then begin
-                Cont.SetRange("Company No.");
-                Cont.SetRange("No.", ContBusRel."Contact No.");
-            end;
-            ContactPageID := PAGE::"Contact List";
-            OnShowContactOnBeforeOpenContactList(Cont, ContactPageID);
-            PAGE.Run(ContactPageID, Cont);
-        end;
-    end;
-
-    local procedure LookupContactList()
-    var
-        ContactBusinessRelation: Record "Contact Business Relation";
-        Cont: Record Contact;
-        TempCust: Record Customer temporary;
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeLookupContactList(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        Cont.FilterGroup(2);
-        if ContactBusinessRelation.FindByRelation(ContactBusinessRelation."Link to Table"::Customer, "No.") then
-            Cont.SetRange("Company No.", ContactBusinessRelation."Contact No.")
-        else
-            Cont.SetRange("Company No.", '');
-
-        if "Primary Contact No." <> '' then
-            if Cont.Get("Primary Contact No.") then;
-        if PAGE.RunModal(0, Cont) = ACTION::LookupOK then begin
-            TempCust.Copy(Rec);
-            Find;
-            TransferFields(TempCust, false);
-            Validate("Primary Contact No.", Cont."No.");
-        end;
-    end;
-
-    procedure SetInsertFromContact(FromContact: Boolean)
-    begin
-        InsertFromContact := FromContact;
-    end;
-
-    procedure CheckBlockedCustOnDocs(Cust2: Record FBM_Customer; DocType: Enum "Sales Document Type"; Shipment: Boolean; Transaction: Boolean)
-    var
-        Source: Option Journal,Document;
-    begin
-        if IsOnBeforeCheckBlockedCustHandled(Cust2, Source::Document, DocType, Shipment, Transaction) then
-            exit;
-
-        with Cust2 do begin
-            if "Privacy Blocked" then
-                CustPrivacyBlockedErrorMessage(Cust2, Transaction);
-
-            if ((Blocked = Blocked::All) or
-                ((Blocked = Blocked::Invoice) and
-                 (DocType in [DocType::Quote, DocType::Order, DocType::Invoice, DocType::"Blanket Order"])) or
-                ((Blocked = Blocked::Ship) and (DocType in [DocType::Quote, DocType::Order, DocType::"Blanket Order"]) and
-                 (not Transaction)) or
-                ((Blocked = Blocked::Ship) and (DocType in [DocType::Quote, DocType::Order, DocType::Invoice, DocType::"Blanket Order"]) and
-                 Shipment and Transaction))
-            then
-                CustBlockedErrorMessage(Cust2, Transaction);
-        end;
-    end;
-
-    procedure CheckBlockedCustOnJnls(Cust2: Record FBM_Customer; DocType: Enum "Gen. Journal Document Type"; Transaction: Boolean)
-    var
-        Source: Option Journal,Document;
-    begin
-        if IsOnBeforeCheckBlockedCustHandled(Cust2, Source::Journal, DocType, false, Transaction) then
-            exit;
-
-        with Cust2 do begin
-            if "Privacy Blocked" then
-                CustPrivacyBlockedErrorMessage(Cust2, Transaction);
-
-            if (Blocked = Blocked::All) or
-               ((Blocked = Blocked::Invoice) and (DocType in [DocType::Invoice, DocType::" "]))
-            then
-                CustBlockedErrorMessage(Cust2, Transaction)
-        end;
-    end;
-
-    procedure CheckBlockedCustOnJnls(Cust2: Record FBM_Customer; var GenJnlLine: Record "Gen. Journal Line"; Transaction: Boolean)
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCheckBlockedCustOnJnls(Cust2, GenJnlLine, Transaction, IsHandled);
-        if IsHandled then
-            exit;
-
-        CheckBlockedCustOnJnls(Cust2, GenJnlLine."Document Type", Transaction);
-    end;
-
-    procedure CustBlockedErrorMessage(Cust2: Record FBM_Customer; Transaction: Boolean)
-    var
-        "Action": Text[30];
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCustBlockedErrorMessage(Cust2, Transaction, IsHandled);
-        if IsHandled then
-            exit;
-
-        if Transaction then
-            Action := Text004
-        else
-            Action := Text005;
-        Error(
-            ErrorInfo.Create(
-                StrSubstNo(
-                    Text006, Action, Cust2."No.", Cust2.Blocked),
-                true,
-                Cust2,
-                Cust2.FieldNo(Blocked)));
-    end;
-
-    procedure CustPrivacyBlockedErrorMessage(Cust2: Record FBM_Customer; Transaction: Boolean)
-    var
-        "Action": Text[30];
-    begin
-        if Transaction then
-            Action := Text004
-        else
-            Action := Text005;
-
-        Error(
-            ErrorInfo.Create(
-                StrSubstNo(
-                    PrivacyBlockedActionErr, Action, Cust2."No."),
-                true,
-                Cust2));
-    end;
-
-    procedure GetPrivacyBlockedGenericErrorText(Cust2: Record FBM_Customer): Text[250]
-    begin
-        exit(StrSubstNo(PrivacyBlockedGenericTxt, Cust2."No."));
-    end;
-
-    procedure DisplayMap()
-    var
-        OnlineMapSetup: Record "Online Map Setup";
-        OnlineMapManagement: Codeunit "Online Map Management";
-    begin
-        OnlineMapSetup.SetRange(Enabled, true);
-        if OnlineMapSetup.FindFirst() then
-            OnlineMapManagement.MakeSelection(DATABASE::Customer, GetPosition)
-        else
-            Message(OnLineMapMustBeFilledMsg);
-    end;
-
-    procedure GetPriceCalculationMethod() Method: Enum "Price Calculation Method";
-    begin
-        if "Price Calculation Method" <> Method::" " then
-            Method := "Price Calculation Method"
-        else begin
-            Method := GetCustomerPriceGroupPriceCalcMethod();
-            if Method = Method::" " then begin
-                SalesSetup.Get();
-                Method := SalesSetup."Price Calculation Method";
-            end;
-        end;
-    end;
-
-    procedure GetPrimaryContact(CustomerNo: Code[20]; var PrimaryContact: Record Contact)
-    var
-        Customer: Record Customer;
-    begin
-        Clear(PrimaryContact);
-        if Customer.Get(CustomerNo) then
-            if PrimaryContact.Get(Customer."Primary Contact No.") then;
-    end;
-
-    local procedure GetCustomerPriceGroupPriceCalcMethod(): Enum "Price Calculation Method";
-    var
-        CustomerPriceGroup: Record "Customer Price Group";
-    begin
-        if "Customer Price Group" <> '' then
-            if CustomerPriceGroup.Get("Customer Price Group") then
-                exit(CustomerPriceGroup."Price Calculation Method");
-    end;
-
-
-
-
-
-
-
-    procedure GetTopCustomerHeadlineQueryDocumentTypeFilter() DocumentTypeFilter: Text
-    begin
-        DocumentTypeFilter := '';
-
-        OnAfterGetTopCustomerHeadlineQueryDocumentTypeFilter(DocumentTypeFilter);
-    end;
-
-
-
-
-
-
-    procedure CalcOverdueBalance() OverDueBalance: Decimal
-    var
-        [SecurityFiltering(SecurityFilter::Filtered)]
-        CustLedgEntryRemainAmtQuery: Query "Cust. Ledg. Entry Remain. Amt.";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCalcOverdueBalance(Rec, OverDueBalance, IsHandled);
-        if IsHandled then
-            exit(OverDueBalance);
-
-        CustLedgEntryRemainAmtQuery.SetRange(Customer_No, "No.");
-        CustLedgEntryRemainAmtQuery.SetFilter(Due_Date, '<%1', Today);
-        CustLedgEntryRemainAmtQuery.SetFilter(Date_Filter, '..%1', Today);
-        CustLedgEntryRemainAmtQuery.Open;
-
-        if CustLedgEntryRemainAmtQuery.Read then
-            OverDueBalance := CustLedgEntryRemainAmtQuery.Sum_Remaining_Amt_LCY;
-    end;
-
-    procedure GetLegalEntityType(): Text
-    begin
-        exit(Format("Partner Type"));
-    end;
-
-    procedure GetLegalEntityTypeLbl(): Text
-    begin
-        exit(FieldCaption("Partner Type"));
-    end;
-
-
-
-    procedure HasValidDDMandate(Date: Date): Boolean
-    var
-        SEPADirectDebitMandate: Record "SEPA Direct Debit Mandate";
-    begin
-        exit(SEPADirectDebitMandate.GetDefaultMandate("No.", Date) <> '');
-    end;
-
-    procedure GetReturnRcdNotInvAmountLCY(): Decimal
-    var
-        [SecurityFiltering(SecurityFilter::Ignored)]
-        SalesLine: Record "Sales Line";
-    begin
-        SalesLine.SetCurrentKey("Document Type", "Bill-to Customer No.");
-        SalesLine.SetRange("Document Type", SalesLine."Document Type"::"Return Order");
-        SalesLine.SetRange("Bill-to Customer No.", "No.");
-        SalesLine.CalcSums("Return Rcd. Not Invd. (LCY)");
-        exit(SalesLine."Return Rcd. Not Invd. (LCY)");
-    end;
-
-    procedure GetInvoicedPrepmtAmountLCY() InvoicedPrepmtAmountLCY: Decimal
-    var
-        [SecurityFiltering(SecurityFilter::Ignored)]
-        SalesLine: Record "Sales Line";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeGetInvoicedPrepmtAmountLCY(Rec, InvoicedPrepmtAmountLCY, IsHandled);
-        if IsHandled then
-            exit(InvoicedPrepmtAmountLCY);
-
-        SalesLine.SetCurrentKey("Document Type", "Bill-to Customer No.");
-        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
-        SalesLine.SetRange("Bill-to Customer No.", "No.");
-        SalesLine.CalcSums("Prepmt. Amount Inv. (LCY)", "Prepmt. VAT Amount Inv. (LCY)");
-        exit(SalesLine."Prepmt. Amount Inv. (LCY)" + SalesLine."Prepmt. VAT Amount Inv. (LCY)");
-    end;
-
-
-
-    procedure CreateAndShowNewInvoice()
-    var
-        SalesHeader: Record "Sales Header";
-    begin
-        SalesHeader."Document Type" := SalesHeader."Document Type"::Invoice;
-        SalesHeader.SetRange("Sell-to Customer No.", "No.");
-        SalesHeader.SetDefaultPaymentServices;
-        SalesHeader.Insert(true);
-        Commit();
-        PAGE.Run(PAGE::"Sales Invoice", SalesHeader)
-    end;
-
-    procedure CreateAndShowNewOrder()
-    var
-        SalesHeader: Record "Sales Header";
-    begin
-        SalesHeader."Document Type" := SalesHeader."Document Type"::Order;
-        SalesHeader.SetRange("Sell-to Customer No.", "No.");
-        SalesHeader.SetDefaultPaymentServices;
-        SalesHeader.Insert(true);
-        Commit();
-        PAGE.Run(PAGE::"Sales Order", SalesHeader)
-    end;
-
-    procedure CreateAndShowNewCreditMemo()
-    var
-        SalesHeader: Record "Sales Header";
-    begin
-        SalesHeader."Document Type" := SalesHeader."Document Type"::"Credit Memo";
-        SalesHeader.SetRange("Sell-to Customer No.", "No.");
-        SalesHeader.Insert(true);
-        Commit();
-        PAGE.Run(PAGE::"Sales Credit Memo", SalesHeader)
-    end;
-
-    procedure CreateAndShowNewQuote()
-    var
-        SalesHeader: Record "Sales Header";
-    begin
-        SalesHeader."Document Type" := SalesHeader."Document Type"::Quote;
-        SalesHeader.SetRange("Sell-to Customer No.", "No.");
-        SalesHeader.Insert(true);
-        Commit();
-        PAGE.Run(PAGE::"Sales Quote", SalesHeader)
-    end;
-
-    local procedure UpdatePaymentTolerance(UseDialog: Boolean)
-    begin
-        if "Block Payment Tolerance" then begin
-            if UseDialog then
-                if not Confirm(RemovePaymentRoleranceQst, false) then
-                    exit;
-            //PaymentToleranceMgt.DelTolCustLedgEntry(Rec);
-        end else begin
-            if UseDialog then
-                if not Confirm(AllowPaymentToleranceQst, false) then
-                    exit;
-            //PaymentToleranceMgt.CalcTolCustLedgEntry(Rec);
-        end;
-    end;
-
-    procedure GetBillToCustomerNo(): Code[20]
-    begin
-        if "Bill-to Customer No." <> '' then
-            exit("Bill-to Customer No.");
-        exit("No.");
-    end;
-
-    procedure HasAddressIgnoreCountryCode() Result: Boolean
-    begin
-        Result := (Address <> '') or
-                  ("Address 2" <> '') or
-                  (City <> '') or
-                  (County <> '') or
-                  ("Post Code" <> '') or
-                  (Contact <> '');
-        OnAfterHasAddressIgnoreCountryCode(Rec, Result);
-    end;
-
-    procedure HasAddress(): Boolean
-    begin
-        exit(HasAddressIgnoreCountryCode or ("Country/Region Code" <> ''));
-    end;
-
-    procedure HasDifferentAddress(OtherCustomer: Record FBM_Customer) Result: Boolean
-    begin
-        Result := (Address <> OtherCustomer.Address) or
-                  ("Address 2" <> OtherCustomer."Address 2") or
-                  (City <> OtherCustomer.City) or
-                  (County <> OtherCustomer.County) or
-                  ("Post Code" <> OtherCustomer."Post Code") or
-                  ("Country/Region Code" <> OtherCustomer."Country/Region Code");
-        OnAfterHasDifferentAddress(Rec, OtherCustomer, Result)
-    end;
-
-    procedure GetBalanceAsVendor(var LinkedVendorNo: Code[20]) BalanceAsVendor: Decimal;
-    var
-        Vendor: Record Vendor;
-    begin
-        BalanceAsVendor := 0;
-        LinkedVendorNo := GetLinkedVendor();
-        if Vendor.Get(LinkedVendorNo) then begin
-            OnGetBalanceAsVendorOnBeforeCalcBalance(Vendor);
-            Vendor.CalcFields("Balance (LCY)");
-            BalanceAsVendor := Vendor."Balance (LCY)";
-        end;
-    end;
-
-    procedure GetLinkedVendor(): Code[20];
-    var
-        ContBusRel: Record "Contact Business Relation";
-    begin
-        exit(
-            ContBusRel.GetLinkedTables(
-                "Contact Business Relation Link To Table"::Customer, "No.",
-                "Contact Business Relation Link To Table"::Vendor))
-    end;
-
-    procedure GetCustNo(CustomerText: Text): Text
-    begin
-        exit(GetCustNoOpenCard(CustomerText, true, true));
-    end;
-
-    procedure GetCustNoOpenCard(CustomerText: Text; ShowCustomerCard: Boolean; ShowCreateCustomerOption: Boolean): Code[20]
-    var
-        Customer: Record FBM_Customer;
-        CustomerNo: Code[20];
-        NoFiltersApplied: Boolean;
-        CustomerWithoutQuote: Text;
-        CustomerFilterFromStart: Text;
-        CustomerFilterContains: Text;
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeGetCustNoOpenCard(CustomerText, ShowCustomerCard, ShowCreateCustomerOption, CustomerNo, IsHandled);
-        If IsHandled then
-            exit(CustomerNo);
-
-        if CustomerText = '' then
-            exit('');
-
-        if StrLen(CustomerText) <= MaxStrLen(Customer."No.") then
-            if Customer.Get(CopyStr(CustomerText, 1, MaxStrLen(Customer."No."))) then
-                exit(Customer."No.");
-
-        OnGetCustNoOpenCardOnBeforeFilterCustomer(Customer);
-        Customer.SetRange(Blocked, Customer.Blocked::" ");
-        Customer.SetRange(Name, CustomerText);
-        if Customer.FindFirst() then
-            exit(Customer."No.");
-
-        Customer.SetCurrentKey(Name);
-
-        CustomerWithoutQuote := ConvertStr(CustomerText, '''', '?');
-        Customer.SetFilter(Name, '''@' + CustomerWithoutQuote + '''');
-        OnGetCustNoOpenCardOnBeforeCustomerFindSet(Customer);
-        if Customer.FindFirst() then
-            exit(Customer."No.");
-        Customer.SetRange(Name);
-
-        CustomerFilterFromStart := '''@' + CustomerWithoutQuote + '*''';
-
-        Customer.FilterGroup := -1;
-        Customer.SetFilter("No.", CustomerFilterFromStart);
-
-        Customer.SetFilter(Name, CustomerFilterFromStart);
-        OnGetCustNoOpenCardOnAfterOnAfterCustomerFilterFromStart(Customer);
-
-        if Customer.FindFirst() then
-            exit(Customer."No.");
-
-        CustomerFilterContains := '''@*' + CustomerWithoutQuote + '*''';
-
-        Customer.SetFilter("No.", CustomerFilterContains);
-        Customer.SetFilter(Name, CustomerFilterContains);
-        Customer.SetFilter(City, CustomerFilterContains);
-        Customer.SetFilter(Contact, CustomerFilterContains);
-        Customer.SetFilter("Phone No.", CustomerFilterContains);
-        Customer.SetFilter("Post Code", CustomerFilterContains);
-        OnGetCustNoOpenCardOnAfterSetCustomerFilters(Customer, CustomerFilterContains);
-
-        if Customer.Count = 0 then
-            MarkCustomersWithSimilarName(Customer, CustomerText);
-
-        if Customer.Count = 1 then begin
-            Customer.FindFirst();
-            exit(Customer."No.");
-        end;
-
-        if not GuiAllowed then
-            Error(SelectCustErr);
-
-        if Customer.Count = 0 then begin
-            if Customer.WritePermission then
-                if ShowCreateCustomerOption then
-                    case StrMenu(
-                           StrSubstNo(
-                             '%1,%2', StrSubstNo(CreateNewCustTxt, ConvertStr(CustomerText, ',', '.')), SelectCustTxt), 1, CustNotRegisteredTxt) of
-                        0:
-                            Error(SelectCustErr);
-                        1:
-                            exit(CreateNewCustomer(CopyStr(CustomerText, 1, MaxStrLen(Customer.Name)), ShowCustomerCard));
-                    end
-                else
-                    exit('');
-            Customer.Reset();
-            NoFiltersApplied := true;
-        end;
-
-        if ShowCustomerCard then
-            CustomerNo := PickCustomer(Customer, NoFiltersApplied)
-        else begin
-            LookupRequested := true;
-            exit('');
-        end;
-
-        if CustomerNo <> '' then
-            exit(CustomerNo);
-
-        Error(SelectCustErr);
-    end;
-
-    local procedure MarkCustomersWithSimilarName(var Customer: Record FBM_Customer; CustomerText: Text)
-    var
-        TypeHelper: Codeunit "Type Helper";
-        CustomerCount: Integer;
-        CustomerTextLength: Integer;
-        Treshold: Integer;
-    begin
-        if CustomerText = '' then
-            exit;
-        if StrLen(CustomerText) > MaxStrLen(Customer.Name) then
-            exit;
-        CustomerTextLength := StrLen(CustomerText);
-        Treshold := CustomerTextLength div 5;
-        if Treshold = 0 then
-            exit;
-
-        Customer.Reset();
-        Customer.Ascending(false); // most likely to search for newest customers
-        Customer.SetRange(Blocked, Customer.Blocked::" ");
-        OnMarkCustomersWithSimilarNameOnBeforeCustomerFindSet(Customer);
-        if Customer.FindSet() then
-            repeat
-                CustomerCount += 1;
-                if Abs(CustomerTextLength - StrLen(Customer.Name)) <= Treshold then
-                    if TypeHelper.TextDistance(UpperCase(CustomerText), UpperCase(Customer.Name)) <= Treshold then
-                        Customer.Mark(true);
-            until Customer.Mark or (Customer.Next() = 0) or (CustomerCount > 1000);
-        Customer.MarkedOnly(true);
-    end;
-
-    procedure CreateNewCustomer(CustomerName: Text[100]; ShowCustomerCard: Boolean) NewCustomerCode: Code[20]
-    var
-        Customer: Record Customer;
-        CustomerTemplMgt: Codeunit "Customer Templ. Mgt.";
-        CustomerCard: Page "Customer Card";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCreateNewCustomer(CustomerName, ShowCustomerCard, NewCustomerCode, IsHandled);
-        IF IsHandled then
-            exit(NewCustomerCode);
-
-        Customer.Name := CustomerName;
-        if not CustomerTemplMgt.InsertCustomerFromTemplate(Customer) then
-            Customer.Insert(true)
-        else
-            if CustomerName <> Customer.Name then begin
-                Customer.Name := CustomerName;
-                Customer.Modify(true);
-            end;
-
-        Commit();
-        if not ShowCustomerCard then
-            exit(Customer."No.");
-        Customer.SetRange("No.", Customer."No.");
-        CustomerCard.SetTableView(Customer);
-        if not (CustomerCard.RunModal = ACTION::OK) then
-            Error(SelectCustErr);
-
-        exit(Customer."No.");
-    end;
-
-    local procedure PickCustomer(var Customer: Record FBM_Customer; NoFiltersApplied: Boolean): Code[20]
-    var
-        CustomerList: Page "Customer List";
-    begin
-        if not NoFiltersApplied then
-            MarkCustomersByFilters(Customer);
-
-        CustomerList.SetTableView(Customer);
-        CustomerList.SetRecord(Customer);
-        CustomerList.LookupMode := true;
-        if CustomerList.RunModal = ACTION::LookupOK then
-            CustomerList.GetRecord(Customer)
-        else
-            Clear(Customer);
-
-        exit(Customer."No.");
-    end;
-
-    procedure SelectCustomer(var Customer: Record Customer): Boolean
-    begin
-        exit(LookupCustomer(Customer));
-    end;
-
-    // [Scope('OnPrem')]
-    procedure LookupCustomer(var Customer: Record Customer): Boolean
-    var
-        CustomerLookup: Page "Customer Lookup";
-        Result: Boolean;
-    begin
-        CustomerLookup.SetTableView(Customer);
-        CustomerLookup.SetRecord(Customer);
-        CustomerLookup.LookupMode := true;
-        Result := CustomerLookup.RunModal = ACTION::LookupOK;
-        if Result then
-            CustomerLookup.GetRecord(Customer)
-        else
-            Clear(Customer);
-
-        exit(Result);
-    end;
-
-    local procedure MarkCustomersByFilters(var Customer: Record FBM_Customer)
-    begin
-        if Customer.FindSet() then
-            repeat
-                Customer.Mark(true);
-            until Customer.Next() = 0;
-        if Customer.FindFirst() then;
-        Customer.MarkedOnly := true;
-    end;
-
-    procedure ToPriceSource(var PriceSource: Record "Price Source")
-    begin
-        PriceSource.Init();
-        PriceSource."Price Type" := "Price Type"::Sale;
-        PriceSource.Validate("Source Type", PriceSource."Source Type"::Customer);
-        PriceSource.Validate("Source No.", "No.");
-    end;
-
-    local procedure TestNoSeries()
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeTestNoSeries(Rec, xRec, IsHandled);
-        if IsHandled then
-            exit;
-
-        if "No." <> xRec."No." then begin
-            SalesSetup.Get();
-            NoSeriesMgt.TestManual(SalesSetup."Customer Nos.");
-            "No. Series" := '';
-        end;
-    end;
-
-    procedure OpenCustomerLedgerEntries(FilterOnDueEntries: Boolean)
-    var
-        DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
-        CustLedgerEntry: Record "Cust. Ledger Entry";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeOpenCustomerLedgerEntries(Rec, DetailedCustLedgEntry, FilterOnDueEntries, IsHandled);
-        if IsHandled then
-            exit;
-
-        DetailedCustLedgEntry.SetRange("Customer No.", "No.");
-        CopyFilter("Global Dimension 1 Filter", DetailedCustLedgEntry."Initial Entry Global Dim. 1");
-        CopyFilter("Global Dimension 2 Filter", DetailedCustLedgEntry."Initial Entry Global Dim. 2");
-        if FilterOnDueEntries and (GetFilter("Date Filter") <> '') then begin
-            CopyFilter("Date Filter", DetailedCustLedgEntry."Initial Entry Due Date");
-            DetailedCustLedgEntry.SetFilter("Posting Date", '<=%1', GetRangeMax("Date Filter"));
-        end;
-        CopyFilter("Currency Filter", DetailedCustLedgEntry."Currency Code");
-        CustLedgerEntry.DrillDownOnEntries(DetailedCustLedgEntry);
-    end;
-
-    procedure SetInsertFromTemplate(FromTemplate: Boolean)
-    begin
-        InsertFromTemplate := FromTemplate;
-    end;
-
-    procedure IsLookupRequested() Result: Boolean
-    begin
-        Result := LookupRequested;
-        LookupRequested := false;
-    end;
-
-    procedure IsContactUpdateNeeded(): Boolean
-    var
-        CustContUpdate: Codeunit "CustCont-Update";
-        UpdateNeeded: Boolean;
-    begin
-        UpdateNeeded :=
-          (Name <> xRec.Name) or
-          ("Search Name" <> xRec."Search Name") or
-          ("Name 2" <> xRec."Name 2") or
-          (Address <> xRec.Address) or
-          ("Address 2" <> xRec."Address 2") or
-          (City <> xRec.City) or
-          ("Phone No." <> xRec."Phone No.") or
-          ("Mobile Phone No." <> xRec."Mobile Phone No.") or
-          ("Telex No." <> xRec."Telex No.") or
-          ("Territory Code" <> xRec."Territory Code") or
-          ("Currency Code" <> xRec."Currency Code") or
-          ("Language Code" <> xRec."Language Code") or
-          ("Salesperson Code" <> xRec."Salesperson Code") or
-          ("Country/Region Code" <> xRec."Country/Region Code") or
-          ("Fax No." <> xRec."Fax No.") or
-          ("Telex Answer Back" <> xRec."Telex Answer Back") or
-          ("VAT Registration No." <> xRec."VAT Registration No.") or
-          ("Post Code" <> xRec."Post Code") or
-          (County <> xRec.County) or
-          ("E-Mail" <> xRec."E-Mail") or
-          ("Home Page" <> xRec."Home Page") or
-          (Contact <> xRec.Contact);
-
-        if not UpdateNeeded and not IsTemporary then
-            UpdateNeeded := CustContUpdate.ContactNameIsBlank("No.");
-
-        if ForceUpdateContact then
-            UpdateNeeded := true;
-
-        OnBeforeIsContactUpdateNeeded(Rec, xRec, UpdateNeeded, ForceUpdateContact);
-        exit(UpdateNeeded);
-    end;
-
-    procedure IsBlocked(): Boolean
-    begin
-        if Blocked <> Blocked::" " then
-            exit(true);
-
-        if "Privacy Blocked" then
-            exit(true);
-
-        exit(false);
-    end;
-
-    procedure HasAnyOpenOrPostedDocuments(): Boolean
-    var
-        SalesHeader: Record "Sales Header";
-        SalesLine: Record "Sales Line";
-        CustLedgerEntry: Record "Cust. Ledger Entry";
-        HasAnyDocs: Boolean;
-    begin
-        SalesHeader.SetRange("Sell-to Customer No.", "No.");
-        if SalesHeader.FindFirst() then
-            exit(true);
-
-        SalesLine.SetCurrentKey("Document Type", "Bill-to Customer No.");
-        SalesLine.SetRange("Bill-to Customer No.", "No.");
-        if SalesLine.FindFirst() then
-            exit(true);
-
-        SalesLine.SetRange("Bill-to Customer No.");
-        SalesLine.SetRange("Sell-to Customer No.", "No.");
-        if SalesLine.FindFirst() then
-            exit(true);
-
-        CustLedgerEntry.SetRange("Customer No.", "No.");
-        if not CustLedgerEntry.IsEmpty() then
-            exit(true);
-
-        HasAnyDocs := false;
-        OnAfterHasAnyOpenOrPostedDocuments(Rec, HasAnyDocs);
-        exit(HasAnyDocs);
-    end;
-
-#if not CLEAN18
-    [Obsolete('Will be removed with other functionality related to "old" templates. Replaced by CopyFromNewCustomerTemplate(CustomerTemplate: Record "Customer Templ.")', '18.0')]
-    procedure CopyFromCustomerTemplate(CustomerTemplate: Record "Customer Template")
-    begin
-        "Territory Code" := CustomerTemplate."Territory Code";
-        "Global Dimension 1 Code" := CustomerTemplate."Global Dimension 1 Code";
-        "Global Dimension 2 Code" := CustomerTemplate."Global Dimension 2 Code";
-        "Customer Posting Group" := CustomerTemplate."Customer Posting Group";
-        "Currency Code" := CustomerTemplate."Currency Code";
-        "Invoice Disc. Code" := CustomerTemplate."Invoice Disc. Code";
-        "Customer Price Group" := CustomerTemplate."Customer Price Group";
-        "Customer Disc. Group" := CustomerTemplate."Customer Disc. Group";
-        "Country/Region Code" := CustomerTemplate."Country/Region Code";
-        "Allow Line Disc." := CustomerTemplate."Allow Line Disc.";
-        "Gen. Bus. Posting Group" := CustomerTemplate."Gen. Bus. Posting Group";
-        "VAT Bus. Posting Group" := CustomerTemplate."VAT Bus. Posting Group";
-        Validate("Payment Terms Code", CustomerTemplate."Payment Terms Code");
-        Validate("Payment Method Code", CustomerTemplate."Payment Method Code");
-        "Prices Including VAT" := CustomerTemplate."Prices Including VAT";
-        "Shipment Method Code" := CustomerTemplate."Shipment Method Code";
-
-        OnAfterCopyFromCustomerTemplate(Rec, CustomerTemplate);
-    end;
-#endif
-
-    procedure CopyFromNewCustomerTemplate(CustomerTemplate: Record "Customer Templ.")
-    begin
-        "Territory Code" := CustomerTemplate."Territory Code";
-        "Global Dimension 1 Code" := CustomerTemplate."Global Dimension 1 Code";
-        "Global Dimension 2 Code" := CustomerTemplate."Global Dimension 2 Code";
-        "Customer Posting Group" := CustomerTemplate."Customer Posting Group";
-        "Currency Code" := CustomerTemplate."Currency Code";
-        "Invoice Disc. Code" := CustomerTemplate."Invoice Disc. Code";
-        "Customer Price Group" := CustomerTemplate."Customer Price Group";
-        "Customer Disc. Group" := CustomerTemplate."Customer Disc. Group";
-        "Country/Region Code" := CustomerTemplate."Country/Region Code";
-        "Allow Line Disc." := CustomerTemplate."Allow Line Disc.";
-        "Gen. Bus. Posting Group" := CustomerTemplate."Gen. Bus. Posting Group";
-        "VAT Bus. Posting Group" := CustomerTemplate."VAT Bus. Posting Group";
-        Validate("Payment Terms Code", CustomerTemplate."Payment Terms Code");
-        Validate("Payment Method Code", CustomerTemplate."Payment Method Code");
-        "Prices Including VAT" := CustomerTemplate."Prices Including VAT";
-        "Shipment Method Code" := CustomerTemplate."Shipment Method Code";
-
-        OnAfterCopyFromNewCustomerTemplate(Rec, CustomerTemplate);
-    end;
-
-    // local procedure CopyContactPicture(var Cont: Record Contact)
-    // var
-    //     TempNameValueBuffer: Record "Name/Value Buffer" temporary;
-    //     FileManagement: Codeunit "File Management";
-    //     ConfirmManagement: Codeunit "Confirm Management";
-    //     ExportPath: Text;
-    // begin
-    //     if Image.HasValue then
-    //         if not ConfirmManagement.GetResponseOrDefault(OverrideImageQst, true) then
-    //             exit;
-
-    //     ExportPath := TemporaryPath + Cont."No." + Format(Cont.Image.MediaId);
-    //     Cont.Image.ExportFile(ExportPath);
-    //     FileManagement.GetServerDirectoryFilesList(TempNameValueBuffer, TemporaryPath);
-    //     TempNameValueBuffer.SetFilter(Name, StrSubstNo('%1*', ExportPath));
-    //     TempNameValueBuffer.FindFirst();
-
-    //     Clear(Image);
-    //     Image.ImportFile(TempNameValueBuffer.Name, '');
-    //     Modify;
-    //     if FileManagement.DeleteServerFile(TempNameValueBuffer.Name) then;
-    // end;
-
-    procedure GetInsertFromContact(): Boolean
-    begin
-        exit(InsertFromContact);
-    end;
-
-    procedure GetInsertFromTemplate(): Boolean
-    begin
-        exit(InsertFromTemplate);
-    end;
-
-    protected procedure SetDefaultSalesperson()
-    var
-        UserSetup: Record "User Setup";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeSetDefaultSalesperson(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        if not UserSetup.Get(UserId) then
-            exit;
-
-        if UserSetup."Salespers./Purch. Code" <> '' then
-            Validate("Salesperson Code", UserSetup."Salespers./Purch. Code");
-    end;
-
-    protected procedure SetLastModifiedDateTime()
-    begin
-        "Last Modified Date Time" := CurrentDateTime();
-        "Last Date Modified" := Today();
-        OnAfterSetLastModifiedDateTime(Rec);
-    end;
-
-    procedure VATRegistrationValidation()
-    var
-        VATRegistrationNoFormat: Record "VAT Registration No. Format";
-        VATRegistrationLog: Record "VAT Registration Log";
-        VATRegNoSrvConfig: Record "VAT Reg. No. Srv Config";
-        VATRegistrationLogMgt: Codeunit "VAT Registration Log Mgt.";
-        ResultRecordRef: RecordRef;
-        ApplicableCountryCode: Code[10];
-        IsHandled: Boolean;
-        LogNotVerified: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeVATRegistrationValidation(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        if not VATRegistrationNoFormat.Test("VAT Registration No.", "Country/Region Code", "No.", DATABASE::Customer) then
-            exit;
-
-        LogNotVerified := true;
-        if ("Country/Region Code" <> '') or (VATRegistrationNoFormat."Country/Region Code" <> '') then begin
-            ApplicableCountryCode := "Country/Region Code";
-            if ApplicableCountryCode = '' then
-                ApplicableCountryCode := VATRegistrationNoFormat."Country/Region Code";
-            if VATRegNoSrvConfig.VATRegNoSrvIsEnabled then begin
-                LogNotVerified := false;
-                VATRegistrationLogMgt.ValidateVATRegNoWithVIES(
-                    ResultRecordRef, Rec, "No.", VATRegistrationLog."Account Type"::Customer.AsInteger(), ApplicableCountryCode);
-                ResultRecordRef.SetTable(Rec);
-            end;
-        end;
-
-        //if LogNotVerified then
-        //VATRegistrationLogMgt.LogCustomer(Rec);
-    end;
-
-    local procedure ValidateEmail()
-    var
-        MailManagement: Codeunit "Mail Management";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeValidateEmail(Rec, IsHandled, xRec);
-        if IsHandled then
-            exit;
-
-        if "E-Mail" = '' then
-            exit;
-        MailManagement.CheckValidEmailAddresses("E-Mail");
-    end;
-
-    procedure SetAddress(CustomerAddress: Text[100]; CustomerAddress2: Text[50]; CustomerPostCode: Code[20]; CustomerCity: Text[30]; CustomerCounty: Text[30]; CustomerCountryCode: Code[10]; CustomerContact: Text[100])
-    begin
-        Address := CustomerAddress;
-        "Address 2" := CustomerAddress2;
-        "Post Code" := CustomerPostCode;
-        City := CustomerCity;
-        County := CustomerCounty;
-        "Country/Region Code" := CustomerCountryCode;
-        //UpdateContFromCust.OnModify(Rec);
-        Contact := CustomerContact;
-    end;
-
-    procedure FindByEmail(var Customer: Record Customer; Email: Text): Boolean
-    var
-        LocalContact: Record Contact;
-        ContactBusinessRelation: Record "Contact Business Relation";
-        MarketingSetup: Record "Marketing Setup";
-    begin
-        Customer.SetRange("E-Mail", Email);
-        if Customer.FindFirst() then
-            exit(true);
-
-        Customer.SetRange("E-Mail");
-        LocalContact.SetRange("E-Mail", Email);
-        if LocalContact.FindSet() then begin
-            MarketingSetup.Get();
-            repeat
-                if ContactBusinessRelation.Get(LocalContact."No.", MarketingSetup."Bus. Rel. Code for Customers") then begin
-                    Customer.Get(ContactBusinessRelation."No.");
-                    exit(true);
-                end;
-            until LocalContact.Next() = 0
-        end;
-    end;
-
-    procedure UpdateReferencedIds()
-    var
-        GraphMgtGeneralTools: Codeunit "Graph Mgt - General Tools";
-    begin
-        if IsTemporary then
-            exit;
-
-        if not GraphMgtGeneralTools.IsApiEnabled() then
-            exit;
-
-        UpdateCurrencyId();
-        UpdatePaymentTermsId();
-        UpdateShipmentMethodId();
-        UpdatePaymentMethodId();
-        UpdateTaxAreaId();
-    end;
-
-    procedure GetReferencedIds(var TempField: Record "Field" temporary)
-    var
-        DataTypeManagement: Codeunit "Data Type Management";
-    begin
-        DataTypeManagement.InsertFieldToBuffer(TempField, DATABASE::Customer, FieldNo("Currency Id"));
-        DataTypeManagement.InsertFieldToBuffer(TempField, DATABASE::Customer, FieldNo("Payment Terms Id"));
-        DataTypeManagement.InsertFieldToBuffer(TempField, DATABASE::Customer, FieldNo("Payment Method Id"));
-        DataTypeManagement.InsertFieldToBuffer(TempField, DATABASE::Customer, FieldNo("Shipment Method Id"));
-        DataTypeManagement.InsertFieldToBuffer(TempField, DATABASE::Customer, FieldNo("Tax Area ID"));
-    end;
-
-    procedure SetForceUpdateContact(NewForceUpdateContact: Boolean)
-    begin
-        ForceUpdateContact := NewForceUpdateContact;
-    end;
-
-    local procedure UpdateCurrencyCode()
-    var
-        Currency: Record Currency;
-    begin
-        if not IsNullGuid("Currency Id") then
-            Currency.GetBySystemId("Currency Id");
-
-        Validate("Currency Code", Currency.Code);
-    end;
-
-    local procedure UpdatePaymentTermsCode()
-    var
-        PaymentTerms: Record "Payment Terms";
-    begin
-        if not IsNullGuid("Payment Terms Id") then
-            PaymentTerms.GetBySystemId("Payment Terms Id");
-
-        Validate("Payment Terms Code", PaymentTerms.Code);
-    end;
-
-    local procedure UpdateShipmentMethodCode()
-    var
-        ShipmentMethod: Record "Shipment Method";
-    begin
-        if not IsNullGuid("Shipment Method Id") then
-            ShipmentMethod.GetBySystemId("Shipment Method Id");
-
-        Validate("Shipment Method Code", ShipmentMethod.Code);
-    end;
-
-    local procedure UpdatePaymentMethodCode()
-    var
-        PaymentMethod: Record "Payment Method";
-    begin
-        if not IsNullGuid("Payment Method Id") then
-            PaymentMethod.GetBySystemId("Payment Method Id");
-
-        Validate("Payment Method Code", PaymentMethod.Code);
-    end;
-
-    procedure UpdateCurrencyId()
-    var
-        Currency: Record Currency;
-    begin
-        if "Currency Code" = '' then begin
-            Clear("Currency Id");
-            exit;
-        end;
-
-        if not Currency.Get("Currency Code") then
-            exit;
-
-        "Currency Id" := Currency.SystemId;
-    end;
-
-    procedure UpdatePaymentTermsId()
-    var
-        PaymentTerms: Record "Payment Terms";
-    begin
-        if "Payment Terms Code" = '' then begin
-            Clear("Payment Terms Id");
-            exit;
-        end;
-
-        if not PaymentTerms.Get("Payment Terms Code") then
-            exit;
-
-        "Payment Terms Id" := PaymentTerms.SystemId;
-    end;
-
-    procedure UpdateShipmentMethodId()
-    var
-        ShipmentMethod: Record "Shipment Method";
-    begin
-        if "Shipment Method Code" = '' then begin
-            Clear("Shipment Method Id");
-            exit;
-        end;
-
-        if not ShipmentMethod.Get("Shipment Method Code") then
-            exit;
-
-        "Shipment Method Id" := ShipmentMethod.SystemId;
-    end;
-
-    procedure UpdatePaymentMethodId()
-    var
-        PaymentMethod: Record "Payment Method";
-    begin
-        if "Payment Method Code" = '' then begin
-            Clear("Payment Method Id");
-            exit;
-        end;
-
-        if not PaymentMethod.Get("Payment Method Code") then
-            exit;
-
-        "Payment Method Id" := PaymentMethod.SystemId;
-    end;
-
-    local procedure UpdateDirectDebitPmtTermsCode()
-    var
-        PaymentMethod: Record "Payment Method";
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeUpdateDirectDebitPmtTermsCode(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        PaymentMethod.Get("Payment Method Code");
-        if PaymentMethod."Direct Debit" and ("Payment Terms Code" = '') then
-            Validate("Payment Terms Code", PaymentMethod."Direct Debit Pmt. Terms Code");
-
-    end;
-
-    procedure UpdateTaxAreaId()
-    var
-        VATBusinessPostingGroup: Record "VAT Business Posting Group";
-        TaxArea: Record "Tax Area";
-        GeneralLedgerSetup: Record "General Ledger Setup";
-    begin
-        if GeneralLedgerSetup.UseVat then begin
-            if "VAT Bus. Posting Group" = '' then begin
-                Clear("Tax Area ID");
-                exit;
-            end;
-
-            if not VATBusinessPostingGroup.Get("VAT Bus. Posting Group") then
-                exit;
-
-            "Tax Area ID" := VATBusinessPostingGroup.SystemId;
-        end else begin
-            if "Tax Area Code" = '' then begin
-                Clear("Tax Area ID");
-                exit;
-            end;
-
-            if not TaxArea.Get("Tax Area Code") then
-                exit;
-
-            "Tax Area ID" := TaxArea.SystemId;
-        end;
-    end;
-
-    local procedure UpdateTaxAreaCode()
-    var
-        TaxArea: Record "Tax Area";
-        VATBusinessPostingGroup: Record "VAT Business Posting Group";
-        GeneralLedgerSetup: Record "General Ledger Setup";
-    begin
-        if IsNullGuid("Tax Area ID") then
-            exit;
-
-        if GeneralLedgerSetup.UseVat then begin
-            VATBusinessPostingGroup.GetBySystemId("Tax Area ID");
-            "VAT Bus. Posting Group" := VATBusinessPostingGroup.Code;
-        end else begin
-            TaxArea.GetBySystemId("Tax Area ID");
-            "Tax Area Code" := TaxArea.Code;
-        end;
-    end;
-
-    local procedure ValidateSalesPersonCode()
-    begin
-        if "Salesperson Code" <> '' then
-            if SalespersonPurchaser.Get("Salesperson Code") then
-                if SalespersonPurchaser.VerifySalesPersonPurchaserPrivacyBlocked(SalespersonPurchaser) then
-                    Error(SalespersonPurchaser.GetPrivacyBlockedGenericText(SalespersonPurchaser, true))
-    end;
-
-    local procedure CheckCustomerContactRelation(Cont: Record Contact)
-    var
-        ContBusRel: Record "Contact Business Relation";
-        IsHandled: Boolean;
-    begin
-        ContBusRel.FindOrRestoreContactBusinessRelation(Cont, Rec, ContBusRel."Link to Table"::Customer);
-
-        IsHandled := false;
-        OnBeforeCheckCustomerContactRelation(Cont, ContBusRel, IsHandled);
-        if not IsHandled then
-            if Cont."Company No." <> ContBusRel."Contact No." then
-                Error(Text003, Cont."No.", Cont.Name, "No.", Name);
-    end;
-
-    local procedure CheckIfSalesOrderLinesExist()
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCheckIfOrderSalesLinesExist(Rec, IsHandled);
-        if IsHandled then
-            exit;
-
-        SalesOrderLine.SetCurrentKey("Document Type", "Bill-to Customer No.");
-        SalesOrderLine.SetRange("Bill-to Customer No.", "No.");
-        if SalesOrderLine.FindFirst() then
-            Error(Text000, TableCaption, "No.", SalesOrderLine."Document Type");
-
-        SalesOrderLine.SetRange("Bill-to Customer No.");
-        SalesOrderLine.SetRange("Sell-to Customer No.", "No.");
-        if SalesOrderLine.FindFirst() then
-            Error(Text000, TableCaption, "No.", SalesOrderLine."Document Type");
-    end;
-
-    local procedure UpdateCustomerTemplateInvoiceDiscCodes()
-    var
-        CustomerTempl: Record "Customer Templ.";
-    begin
-        CustomerTempl.SetRange("Invoice Disc. Code", xRec."No.");
-        CustomerTempl.ModifyAll("Invoice Disc. Code", "No.");
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeIsContactUpdateNeeded(Customer: Record FBM_Customer; xCustomer: Record FBM_Customer; var UpdateNeeded: Boolean; ForceUpdateContact: Boolean)
-    begin
-    end;
-
-#if not CLEAN18
-    [Obsolete('Will be removed with other functionality related to "old" templates. Replaced by OnAfterCopyFromNewCustomerTemplate()', '18.0')]
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromCustomerTemplate(var Customer: Record FBM_Customer; CustomerTemplate: Record "Customer Template")
-    begin
-    end;
-#endif
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromNewCustomerTemplate(var Customer: Record FBM_Customer; CustomerTemplate: Record "Customer Templ.")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterGetTopCustomerHeadlineQueryDocumentTypeFilter(var DocumentTypeFilter: Text)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterHasAnyOpenOrPostedDocuments(var Customer: Record FBM_Customer; var HasAnyDocs: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterHasAddressIgnoreCountryCode(Customer: Record FBM_Customer; var Result: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterHasDifferentAddress(Customer: Record FBM_Customer; OtherCustomer: Record FBM_Customer; var Result: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterLookupCity(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterLookupPostCode(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterOnInsert(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterSetLastModifiedDateTime(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateCity(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterValidatePostCode(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateShortcutDimCode(var Customer: Record FBM_Customer; var xCustomer: Record FBM_Customer; FieldNumber: Integer; var ShortcutDimCode: Code[20])
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnAssistEditOnBeforeExit(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    local procedure IsOnBeforeCheckBlockedCustHandled(Customer: Record FBM_Customer; Source: Option Journal,Document; DocType: Enum "Gen. Journal Document Type"; Shipment: Boolean; Transaction: Boolean) IsHandled: Boolean
-    begin
-        OnBeforeCheckBlockedCust(Customer, Source, DocType.AsInteger(), Shipment, Transaction, IsHandled)
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckBlockedCust(Customer: Record FBM_Customer; Source: Option Journal,Document; DocType: Option; Shipment: Boolean; Transaction: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckBlockedCustOnJnls(Customer: Record FBM_Customer; var GenJnlLine: Record "Gen. Journal Line"; Transaction: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckIfOrderSalesLinesExist(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCreateNewCustomer(CustomerName: Text[100]; ShowCustomerCard: Boolean; var NewCustomerCode: Code[20]; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetCustNoOpenCard(CustomerText: Text; ShowCustomerCard: Boolean; var ShowCreateCustomerOption: Boolean; var CustomerNo: Code[20]; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcOverdueBalance(var Customer: Record FBM_Customer; var OverdueBalance: Decimal; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetInvoicedPrepmtAmountLCY(var Customer: Record FBM_Customer; var InvoicedPrepmtAmountLCY: Decimal; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetTotalAmountLCY(var Customer: Record FBM_Customer; var TotalAmountLCY: Decimal; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetTotalAmountLCYUI(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetTotalAmountLCYCommon(var Customer: Record FBM_Customer; var AdditionalAmountLCY: Decimal; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetSalesLCY(var Customer: Record FBM_Customer; var CustomerSalesYTD: Record FBM_Customer; var SalesLCY: Decimal; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsert(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeLookupCity(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeLookupContactList(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeLookupPostCode(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeOpenCustomerLedgerEntries(var Customer: Record FBM_Customer; var DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry"; FilterOnDueEntries: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnDelete(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnRename(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeSetDefaultSalesperson(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestNoSeries(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateDirectDebitPmtTermsCode(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateCity(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateVATRegistrationNo(var Customer: Record FBM_Customer; xCustomer: Record FBM_Customer; FieldNumber: Integer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidatePostCode(var Customer: Record FBM_Customer; var PostCodeRec: Record "Post Code")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateShortcutDimCode(var Customer: Record FBM_Customer; var xCustomer: Record FBM_Customer; FieldNumber: Integer; var ShortcutDimCode: Code[20]; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeVATRegistrationValidation(var Customer: Record FBM_Customer; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnGetCustNoOpenCardOnBeforeCustomerFindSet(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnGetCustNoOpenCardOnBeforeFilterCustomer(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnGetCustNoOpenCardOnAfterSetCustomerFilters(var Customer: Record FBM_Customer; var CustomerFilterContains: Text);
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnMarkCustomersWithSimilarNameOnBeforeCustomerFindSet(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckCustomerContactRelation(Cont: Record Contact; ContBusRel: Record "Contact Business Relation"; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(true, false)]
-    local procedure OnBeforeValidateContact(var IsHandled: Boolean; var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateEmail(var Customer: Record FBM_Customer; var IsHandled: Boolean; xCustomer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnShowContactOnBeforeOpenContactCard(var Contact: Record Contact; var ContactPageID: Integer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnShowContactOnBeforeOpenContactList(var Contact: Record Contact; var ContactPageID: Integer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnGetCustNoOpenCardOnAfterOnAfterCustomerFilterFromStart(var Customer: Record FBM_Customer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCustBlockedErrorMessage(Cust2: Record FBM_Customer; Transaction: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcAvailableCreditCommon(var Rec: Record FBM_Customer; CalledFromUI: Boolean; var CreditLimitLCY: Decimal)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnGetBalanceAsVendorOnBeforeCalcBalance(var Vendor: Record Vendor)
-    begin
-    end;
 }

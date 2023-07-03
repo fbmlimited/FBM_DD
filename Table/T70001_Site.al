@@ -2,6 +2,8 @@ table 70001 FBM_Site
 {
     DataClassification = ToBeClassified;
     DataPerCompany = false;
+    DrillDownPageID = FBM_SiteMasterList_DD;
+    LookupPageID = FBM_SiteMaster_DD;
 
     fields
     {
@@ -251,6 +253,33 @@ table 70001 FBM_Site
             Clustered = true;
         }
     }
+    trigger
+    OnRename()
+    var
+        cos: record FBM_CustOpSite;
+        csite: Record FBM_CustomerSite_C;
+        comp: record Company;
+        cinfo: record "Company Information";
+
+    begin
+        cos.SetRange("Site Code", xrec."Site Code");
+        if cos.findfirst then
+            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", rec."Site Code");
+        comp.FindFirst();
+        repeat
+            cinfo.ChangeCompany(comp.Name);
+            cinfo.get;
+            if cinfo.FBM_EnSiteWS then begin
+                csite.SetRange(SiteGrCode, xrec."Site Code");
+                if csite.FindFirst() then begin
+                    csite.SiteGrCode := rec."Site Code";
+                    csite.Modify();
+                end;
+            end;
+        until comp.next = 0;
+
+    end;
+
     var
         //FADimMgt: Codeunit FBM_FADimMgt_DD;
         Text000: Label 'Site Code %1 already exists for Customer %2';
