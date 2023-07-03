@@ -21,7 +21,7 @@ table 70000 FBM_TermsConditions
         }
         field(10; DocType; Option)
         {
-            OptionMembers = SI,PO;
+            OptionMembers = SI,PO,CM;
             caption = 'Document Type';
         }
     }

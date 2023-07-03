@@ -6,6 +6,7 @@ tableextension 70018 FBM_VendorExt_DD extends Vendor
         field(70002; "FBM_Default Bank Account"; Code[20])
         {
             TableRelation = "Bank Account";
+            Caption = 'Default Bank Account';
 
 
         }

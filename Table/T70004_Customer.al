@@ -3,8 +3,8 @@ table 70004 FBM_Customer
     DataPerCompany = false;
     Caption = 'Group Customer';
     DataCaptionFields = "No.", Name;
-    DrillDownPageID = "Customer List";
-    LookupPageID = "Customer Lookup";
+    //DrillDownPageID = ;
+    //LookupPageID = "Customer Lookup";
     Permissions = TableData "Cust. Ledger Entry" = r,
                   TableData Job = r,
                   TableData "VAT Registration Log" = rd,
@@ -194,6 +194,12 @@ table 70004 FBM_Customer
             Caption = 'Language Code';
             TableRelation = Language;
         }
+        field(25; "Registration Number"; Text[50])
+        {
+            Caption = 'Registration No.';
+
+
+        }
         field(26; "Statistics Group"; Integer)
         {
             Caption = 'Statistics Group';
@@ -285,14 +291,7 @@ table 70004 FBM_Customer
             AutoFormatType = 1;
             Caption = 'Amount';
         }
-        field(38; Comment; Boolean)
-        {
-            CalcFormula = Exist("Comment Line" WHERE("Table Name" = CONST(Customer),
-                                                      "No." = FIELD("No.")));
-            Caption = 'Comment';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(39; Blocked; Enum "Customer Blocked")
         {
             Caption = 'Blocked';
@@ -374,272 +373,8 @@ table 70004 FBM_Customer
             FieldClass = FlowFilter;
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
-        field(58; Balance; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Balance';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(59; "Balance (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Balance (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(60; "Net Change"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Net Change';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(61; "Net Change (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Net Change (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(62; "Sales (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Cust. Ledger Entry"."Sales (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                        "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                        "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                        "Posting Date" = FIELD("Date Filter"),
-                                                                        "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Sales (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(63; "Profit (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Cust. Ledger Entry"."Profit (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                         "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Profit (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(64; "Inv. Discounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Cust. Ledger Entry"."Inv. Discount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                                "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                                "Posting Date" = FIELD("Date Filter"),
-                                                                                "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Inv. Discounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(65; "Pmt. Discounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                  "Entry Type" = FILTER("Payment Discount" .. "Payment Discount (VAT Adjustment)"),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Pmt. Discounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(66; "Balance Due"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Customer No." = FIELD("No."),
-                                                                         "Initial Entry Due Date" = FIELD(UPPERLIMIT("Date Filter")),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Balance Due';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(67; "Balance Due (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Due Date" = FIELD(UPPERLIMIT("Date Filter")),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Balance Due (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(69; Payments; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST(Payment),
-                                                                          "Entry Type" = CONST("Initial Entry"),
-                                                                          "Customer No." = FIELD("No."),
-                                                                          "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                          "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                          "Posting Date" = FIELD("Date Filter"),
-                                                                          "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Payments';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(70; "Invoice Amounts"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST(Invoice),
-                                                                         "Entry Type" = CONST("Initial Entry"),
-                                                                         "Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Invoice Amounts';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(71; "Cr. Memo Amounts"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST("Credit Memo"),
-                                                                          "Entry Type" = CONST("Initial Entry"),
-                                                                          "Customer No." = FIELD("No."),
-                                                                          "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                          "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                          "Posting Date" = FIELD("Date Filter"),
-                                                                          "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Cr. Memo Amounts';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(72; "Finance Charge Memo Amounts"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST("Finance Charge Memo"),
-                                                                         "Entry Type" = CONST("Initial Entry"),
-                                                                         "Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Finance Charge Memo Amounts';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(74; "Payments (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST(Payment),
-                                                                                  "Entry Type" = CONST("Initial Entry"),
-                                                                                  "Customer No." = FIELD("No."),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Payments (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(75; "Inv. Amounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST(Invoice),
-                                                                                 "Entry Type" = CONST("Initial Entry"),
-                                                                                 "Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Inv. Amounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(76; "Cr. Memo Amounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST("Credit Memo"),
-                                                                                  "Entry Type" = CONST("Initial Entry"),
-                                                                                  "Customer No." = FIELD("No."),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Cr. Memo Amounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(77; "Fin. Charge Memo Amounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST("Finance Charge Memo"),
-                                                                                 "Entry Type" = CONST("Initial Entry"),
-                                                                                 "Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Fin. Charge Memo Amounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(78; "Outstanding Orders"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Outstanding Amount" WHERE("Document Type" = CONST(Order),
-                                                                       "Bill-to Customer No." = FIELD("No."),
-                                                                       "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                       "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                       "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(79; "Shipped Not Invoiced"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Shipped Not Invoiced" WHERE("Document Type" = CONST(Order),
-                                                                         "Bill-to Customer No." = FIELD("No."),
-                                                                         "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Shipped Not Invoiced';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
+
         field(80; "Application Method"; Enum "Application Method")
         {
             Caption = 'Application Method';
@@ -758,64 +493,7 @@ table 70004 FBM_Customer
         {
             Caption = 'Use GLN in Electronic Documents';
         }
-        field(97; "Debit Amount"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            BlankZero = true;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Debit Amount" WHERE("Customer No." = FIELD("No."),
-                                                                                 "Entry Type" = FILTER(<> Application),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Debit Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(98; "Credit Amount"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            BlankZero = true;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Credit Amount" WHERE("Customer No." = FIELD("No."),
-                                                                                  "Entry Type" = FILTER(<> Application),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Credit Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(99; "Debit Amount (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            BlankZero = true;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Debit Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                       "Entry Type" = FILTER(<> Application),
-                                                                                       "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                       "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                       "Posting Date" = FIELD("Date Filter"),
-                                                                                       "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Debit Amount (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(100; "Credit Amount (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            BlankZero = true;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Credit Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                        "Entry Type" = FILTER(<> Application),
-                                                                                        "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                        "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                        "Posting Date" = FIELD("Date Filter"),
-                                                                                        "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Credit Amount (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(102; "E-Mail"; Text[80])
         {
             Caption = 'Email';
@@ -836,35 +514,7 @@ table 70004 FBM_Customer
             Caption = 'Reminder Terms Code';
             TableRelation = "Reminder Terms";
         }
-        field(105; "Reminder Amounts"; Decimal)
-        {
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST(Reminder),
-                                                                         "Entry Type" = CONST("Initial Entry"),
-                                                                         "Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Reminder Amounts';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(106; "Reminder Amounts (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST(Reminder),
-                                                                                 "Entry Type" = CONST("Initial Entry"),
-                                                                                 "Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Reminder Amounts (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(107; "No. Series"; Code[20])
         {
             Caption = 'No. Series';
@@ -901,32 +551,7 @@ table 70004 FBM_Customer
             FieldClass = FlowFilter;
             TableRelation = Currency;
         }
-        field(113; "Outstanding Orders (LCY)"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Outstanding Amount (LCY)" WHERE("Document Type" = CONST(Order),
-                                                                             "Bill-to Customer No." = FIELD("No."),
-                                                                             "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                             "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                             "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Orders (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(114; "Shipped Not Invoiced (LCY)"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Shipped Not Invoiced (LCY)" WHERE("Document Type" = CONST(Order),
-                                                                               "Bill-to Customer No." = FIELD("No."),
-                                                                               "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                               "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                               "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Shipped Not Invoiced (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(115; Reserve; Enum "Reserve Method")
         {
             AccessByPermission = TableData "Sales Shipment Header" = R;
@@ -942,126 +567,10 @@ table 70004 FBM_Customer
                 UpdatePaymentTolerance((CurrFieldNo <> 0) and GuiAllowed);
             end;
         }
-        field(117; "Pmt. Disc. Tolerance (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                  "Entry Type" = FILTER("Payment Discount Tolerance" | "Payment Discount Tolerance (VAT Adjustment)" | "Payment Discount Tolerance (VAT Excl.)"),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Pmt. Disc. Tolerance (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(118; "Pmt. Tolerance (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Customer No." = FIELD("No."),
-                                                                                  "Entry Type" = FILTER("Payment Tolerance" | "Payment Tolerance (VAT Adjustment)" | "Payment Tolerance (VAT Excl.)"),
-                                                                                  "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                  "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                  "Posting Date" = FIELD("Date Filter"),
-                                                                                  "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Pmt. Tolerance (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(119; "IC Partner Code"; Code[20])
-        {
-            Caption = 'IC Partner Code';
-            TableRelation = "IC Partner";
 
-            trigger OnValidate()
-            var
-                CustLedgEntry: Record "Cust. Ledger Entry";
-                AccountingPeriod: Record "Accounting Period";
-                ICPartner: Record "IC Partner";
-                ConfirmManagement: Codeunit "Confirm Management";
-            begin
-                if xRec."IC Partner Code" <> "IC Partner Code" then begin
-                    if not CustLedgEntry.SetCurrentKey("Customer No.", Open) then
-                        CustLedgEntry.SetCurrentKey("Customer No.");
-                    CustLedgEntry.SetRange("Customer No.", "No.");
-                    CustLedgEntry.SetRange(Open, true);
-                    if CustLedgEntry.FindLast() then
-                        Error(Text012, FieldCaption("IC Partner Code"), TableCaption);
 
-                    CustLedgEntry.Reset();
-                    CustLedgEntry.SetCurrentKey("Customer No.", "Posting Date");
-                    CustLedgEntry.SetRange("Customer No.", "No.");
-                    AccountingPeriod.SetRange(Closed, false);
-                    if AccountingPeriod.FindFirst() then begin
-                        CustLedgEntry.SetFilter("Posting Date", '>=%1', AccountingPeriod."Starting Date");
-                        if CustLedgEntry.FindFirst() then
-                            if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(Text011, TableCaption), true) then
-                                "IC Partner Code" := xRec."IC Partner Code";
-                    end;
-                end;
 
-                if "IC Partner Code" <> '' then begin
-                    ICPartner.Get("IC Partner Code");
-                    if (ICPartner."Customer No." <> '') and (ICPartner."Customer No." <> "No.") then
-                        Error(Text010, FieldCaption("IC Partner Code"), "IC Partner Code", TableCaption, ICPartner."Customer No.");
-                    ICPartner."Customer No." := "No.";
-                    ICPartner.Modify();
-                end;
 
-                if (xRec."IC Partner Code" <> "IC Partner Code") and ICPartner.Get(xRec."IC Partner Code") then begin
-                    ICPartner."Customer No." := '';
-                    ICPartner.Modify();
-                end;
-            end;
-        }
-        field(120; Refunds; Decimal)
-        {
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST(Refund),
-                                                                         "Entry Type" = CONST("Initial Entry"),
-                                                                         "Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Refunds';
-            FieldClass = FlowField;
-        }
-        field(121; "Refunds (LCY)"; Decimal)
-        {
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST(Refund),
-                                                                                 "Entry Type" = CONST("Initial Entry"),
-                                                                                 "Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Refunds (LCY)';
-            FieldClass = FlowField;
-        }
-        field(122; "Other Amounts"; Decimal)
-        {
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry".Amount WHERE("Initial Document Type" = CONST(" "),
-                                                                         "Entry Type" = CONST("Initial Entry"),
-                                                                         "Customer No." = FIELD("No."),
-                                                                         "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                         "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                         "Posting Date" = FIELD("Date Filter"),
-                                                                         "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Other Amounts';
-            FieldClass = FlowField;
-        }
-        field(123; "Other Amounts (LCY)"; Decimal)
-        {
-            CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE("Initial Document Type" = CONST(" "),
-                                                                                 "Entry Type" = CONST("Initial Entry"),
-                                                                                 "Customer No." = FIELD("No."),
-                                                                                 "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Posting Date" = FIELD("Date Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Other Amounts (LCY)';
-            FieldClass = FlowField;
-        }
         field(124; "Prepayment %"; Decimal)
         {
             Caption = 'Prepayment %';
@@ -1069,47 +578,7 @@ table 70004 FBM_Customer
             MaxValue = 100;
             MinValue = 0;
         }
-        field(125; "Outstanding Invoices (LCY)"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Outstanding Amount (LCY)" WHERE("Document Type" = CONST(Invoice),
-                                                                             "Bill-to Customer No." = FIELD("No."),
-                                                                             "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                             "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                             "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Invoices (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(126; "Outstanding Invoices"; Decimal)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            AutoFormatExpression = "Currency Code";
-            AutoFormatType = 1;
-            CalcFormula = Sum("Sales Line"."Outstanding Amount" WHERE("Document Type" = CONST(Invoice),
-                                                                       "Bill-to Customer No." = FIELD("No."),
-                                                                       "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                       "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                       "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Invoices';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(130; "Bill-to No. Of Archived Doc."; Integer)
-        {
-            CalcFormula = Count("Sales Header Archive" WHERE("Document Type" = CONST(Order),
-                                                              "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-to No. Of Archived Doc.';
-            FieldClass = FlowField;
-        }
-        field(131; "Sell-to No. Of Archived Doc."; Integer)
-        {
-            CalcFormula = Count("Sales Header Archive" WHERE("Document Type" = CONST(Order),
-                                                              "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'Sell-to No. Of Archived Doc.';
-            FieldClass = FlowField;
-        }
+
         field(132; "Partner Type"; Enum "Partner Type")
         {
             Caption = 'Partner Type';
@@ -1242,58 +711,14 @@ table 70004 FBM_Customer
             Caption = 'Service Zone Code';
             TableRelation = "Service Zone";
         }
-        field(5902; "Contract Gain/Loss Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Contract Gain/Loss Entry".Amount WHERE("Customer No." = FIELD("No."),
-                                                                       "Ship-to Code" = FIELD("Ship-to Filter"),
-                                                                       "Change Date" = FIELD("Date Filter")));
-            Caption = 'Contract Gain/Loss Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(5903; "Ship-to Filter"; Code[10])
         {
             Caption = 'Ship-to Filter';
             FieldClass = FlowFilter;
             TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("No."));
         }
-        field(5910; "Outstanding Serv. Orders (LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Service Line"."Outstanding Amount (LCY)" WHERE("Document Type" = CONST(Order),
-                                                                               "Bill-to Customer No." = FIELD("No."),
-                                                                               "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                               "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                               "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Serv. Orders (LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(5911; "Serv Shipped Not Invoiced(LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Service Line"."Shipped Not Invoiced (LCY)" WHERE("Document Type" = CONST(Order),
-                                                                                 "Bill-to Customer No." = FIELD("No."),
-                                                                                 "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                                 "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                                 "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Serv Shipped Not Invoiced(LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(5912; "Outstanding Serv.Invoices(LCY)"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = Sum("Service Line"."Outstanding Amount (LCY)" WHERE("Document Type" = CONST(Invoice),
-                                                                               "Bill-to Customer No." = FIELD("No."),
-                                                                               "Shortcut Dimension 1 Code" = FIELD("Global Dimension 1 Filter"),
-                                                                               "Shortcut Dimension 2 Code" = FIELD("Global Dimension 2 Filter"),
-                                                                               "Currency Code" = FIELD("Currency Filter")));
-            Caption = 'Outstanding Serv.Invoices(LCY)';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(7000; "Price Calculation Method"; Enum "Price Calculation Method")
         {
             Caption = 'Price Calculation Method';
@@ -1312,171 +737,7 @@ table 70004 FBM_Customer
             Caption = 'Allow Line Disc.';
             InitValue = true;
         }
-        field(7171; "No. of Quotes"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Quote),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Quotes';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7172; "No. of Blanket Orders"; Integer)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Blanket Order"),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Blanket Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7173; "No. of Orders"; Integer)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Order),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7174; "No. of Invoices"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Invoice),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Invoices';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7175; "No. of Return Orders"; Integer)
-        {
-            AccessByPermission = TableData "Return Receipt Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Return Order"),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Return Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7176; "No. of Credit Memos"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Credit Memo"),
-                                                      "Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Credit Memos';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7177; "No. of Pstd. Shipments"; Integer)
-        {
-            CalcFormula = Count("Sales Shipment Header" WHERE("Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Pstd. Shipments';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7178; "No. of Pstd. Invoices"; Integer)
-        {
-            CalcFormula = Count("Sales Invoice Header" WHERE("Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Pstd. Invoices';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7179; "No. of Pstd. Return Receipts"; Integer)
-        {
-            CalcFormula = Count("Return Receipt Header" WHERE("Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Pstd. Return Receipts';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7180; "No. of Pstd. Credit Memos"; Integer)
-        {
-            CalcFormula = Count("Sales Cr.Memo Header" WHERE("Sell-to Customer No." = FIELD("No.")));
-            Caption = 'No. of Pstd. Credit Memos';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7181; "No. of Ship-to Addresses"; Integer)
-        {
-            CalcFormula = Count("Ship-to Address" WHERE("Customer No." = FIELD("No.")));
-            Caption = 'No. of Ship-to Addresses';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7182; "Bill-To No. of Quotes"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Quote),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Quotes';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7183; "Bill-To No. of Blanket Orders"; Integer)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Blanket Order"),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Blanket Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7184; "Bill-To No. of Orders"; Integer)
-        {
-            AccessByPermission = TableData "Sales Shipment Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Order),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7185; "Bill-To No. of Invoices"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST(Invoice),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Invoices';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7186; "Bill-To No. of Return Orders"; Integer)
-        {
-            AccessByPermission = TableData "Return Receipt Header" = R;
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Return Order"),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Return Orders';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7187; "Bill-To No. of Credit Memos"; Integer)
-        {
-            CalcFormula = Count("Sales Header" WHERE("Document Type" = CONST("Credit Memo"),
-                                                      "Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Credit Memos';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7188; "Bill-To No. of Pstd. Shipments"; Integer)
-        {
-            CalcFormula = Count("Sales Shipment Header" WHERE("Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Pstd. Shipments';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7189; "Bill-To No. of Pstd. Invoices"; Integer)
-        {
-            CalcFormula = Count("Sales Invoice Header" WHERE("Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Pstd. Invoices';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7190; "Bill-To No. of Pstd. Return R."; Integer)
-        {
-            CalcFormula = Count("Return Receipt Header" WHERE("Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Pstd. Return R.';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(7191; "Bill-To No. of Pstd. Cr. Memos"; Integer)
-        {
-            CalcFormula = Count("Sales Cr.Memo Header" WHERE("Bill-to Customer No." = FIELD("No.")));
-            Caption = 'Bill-To No. of Pstd. Cr. Memos';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+
         field(7600; "Base Calendar Code"; Code[10])
         {
             Caption = 'Base Calendar Code';
@@ -1547,15 +808,7 @@ table 70004 FBM_Customer
                 UpdateTaxAreaCode;
             end;
         }
-        field(9004; "Tax Area Display Name"; Text[100])
-        {
-            CalcFormula = Lookup("Tax Area".Description WHERE(Code = FIELD("Tax Area Code")));
-            Caption = 'Tax Area Display Name';
-            FieldClass = FlowField;
-            ObsoleteReason = 'This field is not needed and it should not be used.';
-            ObsoleteState = Removed;
-            ObsoleteTag = '15.0';
-        }
+
         field(9005; "Contact ID"; Guid)
         {
             Caption = 'Contact ID';
@@ -1621,13 +874,82 @@ table 70004 FBM_Customer
         }
         field(70034; "FBM_Payment Bank Code"; Code[20])//no
         {
+            caption = 'Payment bank code';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
         field(70035; "FBM_Payment Bank Code2"; Code[20])//no
         {
+            caption = 'Payment bank code 2';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
+        }
+        field(70036; "FBM_Company1"; TEXT[3])
+        {
+            Caption = 'Company 1';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    fbm_Company1 := buffer.Name;
+
+            end;
+        }
+        field(70037; "FBM_Company2"; TEXT[3])
+        {
+            Caption = 'Company 2';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    FBM_Company2 := buffer.Name;
+
+            end;
+        }
+
+        field(70038; "FBM_Company3"; TEXT[3])
+        {
+            Caption = 'Company 3';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    FBM_Company3 := buffer.Name;
+
+            end;
         }
 
     }
@@ -1692,9 +1014,7 @@ table 70004 FBM_Customer
         key(Key21; "Coupled to CRM")
         {
         }
-        key(Key22; "IC Partner Code")
-        {
-        }
+
     }
 
     fieldgroups
@@ -1702,9 +1022,7 @@ table 70004 FBM_Customer
         fieldgroup(DropDown; "No.", Name, City, "Post Code", "Phone No.", Contact)
         {
         }
-        fieldgroup(Brick; "No.", Name, "Balance (LCY)", Contact, "Balance Due (LCY)", Image)
-        {
-        }
+
     }
 
     trigger OnDelete()
@@ -2175,86 +1493,11 @@ table 70004 FBM_Customer
                 exit(CustomerPriceGroup."Price Calculation Method");
     end;
 
-    procedure GetTotalAmountLCY() TotalAmountLCY: Decimal
-    var
-        xSecurityFilter: SecurityFilter;
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeGetTotalAmountLCY(Rec, TotalAmountLCY, IsHandled);
-        if IsHandled then
-            exit(TotalAmountLCY);
 
-        xSecurityFilter := SecurityFiltering;
-        SecurityFiltering(SecurityFiltering::Ignored);
-        CalcFields("Balance (LCY)", "Outstanding Orders (LCY)", "Shipped Not Invoiced (LCY)", "Outstanding Invoices (LCY)",
-          "Outstanding Serv. Orders (LCY)", "Serv Shipped Not Invoiced(LCY)", "Outstanding Serv.Invoices(LCY)");
-        if SecurityFiltering <> xSecurityFilter then
-            SecurityFiltering(xSecurityFilter);
 
-        exit(GetTotalAmountLCYCommon);
-    end;
 
-    procedure GetTotalAmountLCYUI(): Decimal
-    begin
-        OnBeforeGetTotalAmountLCYUI(Rec);
 
-        SetAutoCalcFields("Balance (LCY)", "Outstanding Orders (LCY)", "Shipped Not Invoiced (LCY)", "Outstanding Invoices (LCY)",
-          "Outstanding Serv. Orders (LCY)", "Serv Shipped Not Invoiced(LCY)", "Outstanding Serv.Invoices(LCY)");
 
-        exit(GetTotalAmountLCYCommon);
-    end;
-
-    local procedure GetTotalAmountLCYCommon(): Decimal
-    var
-        [SecurityFiltering(SecurityFilter::Filtered)]
-        SalesLine: Record "Sales Line";
-        [SecurityFiltering(SecurityFilter::Filtered)]
-        ServiceLine: Record "Service Line";
-        SalesOutstandingAmountFromShipment: Decimal;
-        ServOutstandingAmountFromShipment: Decimal;
-        InvoicedPrepmtAmountLCY: Decimal;
-        RetRcdNotInvAmountLCY: Decimal;
-        AdditionalAmountLCY: Decimal;
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeGetTotalAmountLCYCommon(Rec, AdditionalAmountLCY, IsHandled);
-        if IsHandled then
-            exit(AdditionalAmountLCY);
-
-        SalesOutstandingAmountFromShipment := SalesLine.OutstandingInvoiceAmountFromShipment("No.");
-        ServOutstandingAmountFromShipment := ServiceLine.OutstandingInvoiceAmountFromShipment("No.");
-        InvoicedPrepmtAmountLCY := GetInvoicedPrepmtAmountLCY;
-        RetRcdNotInvAmountLCY := GetReturnRcdNotInvAmountLCY;
-
-        exit("Balance (LCY)" + "Outstanding Orders (LCY)" + "Shipped Not Invoiced (LCY)" + "Outstanding Invoices (LCY)" +
-          "Outstanding Serv. Orders (LCY)" + "Serv Shipped Not Invoiced(LCY)" + "Outstanding Serv.Invoices(LCY)" -
-          SalesOutstandingAmountFromShipment - ServOutstandingAmountFromShipment - InvoicedPrepmtAmountLCY - RetRcdNotInvAmountLCY +
-          AdditionalAmountLCY);
-    end;
-
-    procedure GetSalesLCY() SalesLCY: Decimal
-    var
-        CustomerSalesYTD: Record FBM_Customer;
-        AccountingPeriod: Record "Accounting Period";
-        StartDate: Date;
-        EndDate: Date;
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeGetSalesLCY(Rec, CustomerSalesYTD, SalesLCY, IsHandled);
-        if IsHandled then
-            exit(SalesLCY);
-
-        StartDate := AccountingPeriod.GetFiscalYearStartDate(WorkDate);
-        EndDate := AccountingPeriod.GetFiscalYearEndDate(WorkDate);
-        CustomerSalesYTD := Rec;
-        CustomerSalesYTD."SecurityFiltering"("SecurityFiltering");
-        CustomerSalesYTD.SetRange("Date Filter", StartDate, EndDate);
-        CustomerSalesYTD.CalcFields("Sales (LCY)");
-        exit(CustomerSalesYTD."Sales (LCY)");
-    end;
 
     procedure GetTopCustomerHeadlineQueryDocumentTypeFilter() DocumentTypeFilter: Text
     begin
@@ -2263,29 +1506,10 @@ table 70004 FBM_Customer
         OnAfterGetTopCustomerHeadlineQueryDocumentTypeFilter(DocumentTypeFilter);
     end;
 
-    procedure CalcAvailableCredit(): Decimal
-    begin
-        exit(CalcAvailableCreditCommon(false));
-    end;
 
-    procedure CalcAvailableCreditUI(): Decimal
-    begin
-        exit(CalcAvailableCreditCommon(true));
-    end;
 
-    local procedure CalcAvailableCreditCommon(CalledFromUI: Boolean): Decimal
-    var
-        CreditLimitLCY: Decimal;
-    begin
-        CreditLimitLCY := "Credit Limit (LCY)";
-        OnBeforeCalcAvailableCreditCommon(Rec, CalledFromUI, CreditLimitLCY);
 
-        if CreditLimitLCY = 0 then
-            exit(0);
-        if CalledFromUI then
-            exit(CreditLimitLCY - GetTotalAmountLCYUI());
-        exit(CreditLimitLCY - GetTotalAmountLCY());
-    end;
+
 
     procedure CalcOverdueBalance() OverDueBalance: Decimal
     var
@@ -2317,12 +1541,7 @@ table 70004 FBM_Customer
         exit(FieldCaption("Partner Type"));
     end;
 
-    procedure SetStyle(): Text
-    begin
-        if CalcAvailableCredit < 0 then
-            exit('Unfavorable');
-        exit('');
-    end;
+
 
     procedure HasValidDDMandate(Date: Date): Boolean
     var
@@ -2361,19 +1580,7 @@ table 70004 FBM_Customer
         exit(SalesLine."Prepmt. Amount Inv. (LCY)" + SalesLine."Prepmt. VAT Amount Inv. (LCY)");
     end;
 
-    procedure CalcCreditLimitLCYExpendedPct(): Decimal
-    begin
-        if "Credit Limit (LCY)" = 0 then
-            exit(0);
 
-        if "Balance (LCY)" / "Credit Limit (LCY)" < 0 then
-            exit(0);
-
-        if "Balance (LCY)" / "Credit Limit (LCY)" > 1 then
-            exit(10000);
-
-        exit(Round("Balance (LCY)" / "Credit Limit (LCY)" * 10000, 1));
-    end;
 
     procedure CreateAndShowNewInvoice()
     var

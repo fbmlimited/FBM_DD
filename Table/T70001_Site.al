@@ -40,6 +40,7 @@ table 70001 FBM_Site
             TableRelation = IF ("Country/Region Code" = CONST()) "Post Code".City
             ELSE
             IF ("Country/Region Code" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+            ValidateTableRelation = false;
         }
         field(8; "Post Code"; Code[20])
         {
@@ -47,6 +48,7 @@ table 70001 FBM_Site
             TableRelation = IF ("Country/Region Code" = CONST()) "Post Code"
             ELSE
             IF ("Country/Region Code" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+            ValidateTableRelation = FALSE;
         }
         field(9; "Country/Region Code"; Code[20])
         {
@@ -88,7 +90,7 @@ table 70001 FBM_Site
             Caption = 'Group Customer';
             Description = 'ONETECH';
             FieldClass = Normal;
-            TableRelation = FBM_CustGroup.Group where("Group" = field("Group"), IsGroup = const(true));
+            TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
 
         }
         field(17; Status; Text[50])
@@ -149,6 +151,73 @@ table 70001 FBM_Site
         //         if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
         //     end;
         // }
+        field(29; "Company1"; TEXT[3])
+        {
+            Caption = 'Company 1';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    Company1 := buffer.Name;
+
+            end;
+        }
+        field(30; "Company2"; TEXT[3])
+        {
+            Caption = 'Company 2';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    Company2 := buffer.Name;
+
+            end;
+        }
+
+        field(31; "Company3"; TEXT[3])
+        {
+            Caption = 'Company 3';
+            trigger
+            OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo.FBM_EnSiteWS then
+                        buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    Company3 := buffer.Name;
+
+            end;
+        }
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
@@ -183,51 +252,17 @@ table 70001 FBM_Site
         }
     }
     var
-        FADimMgt: Codeunit FBM_FADimMgt_DD;
+        //FADimMgt: Codeunit FBM_FADimMgt_DD;
         Text000: Label 'Site Code %1 already exists for Customer %2';
         Text001: Label 'Site code already exists for customer %1!';
-        Text002: Label 'You cannot delete this site - it has been used in posted transactions!';
-        Text003: Label 'You cannot delete this site - it is being used in %1!';
 
-    trigger OnInsert()
-    begin
-        //check for unique site code
-        CheckUniqueSite(Rec."Site Code");
-        FADimMgt.CreateSiteDim(Rec);
-        //UpdateCustOpSite(Rec);
-    end;
 
-    trigger OnModify()
-    begin
-        FADimMgt.UpdateSiteDim(Rec);
-    end;
 
-    trigger OnDelete()
-    var
-        DimensionSetEntry: Record "Dimension Set Entry";
-        DimensionValue: Record "Dimension Value";
-        FASetup: Record "FA Setup";
-        SalesHeader: Record "Sales Header";
-    begin
-        DimensionSetEntry.Reset();
-        DimensionValue.Reset();
-        SalesHeader.Reset();
-        SalesHeader.Reset();
-        SalesHeader.SetFilter(fbm_site, Rec."Site Code");
-        if SalesHeader.FindFirst() then Error(Text003, SalesHeader."No.");
-        DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Code", FASetup."FBM_Site Dimension");
-        DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Value Code", Rec."Site Code");
-        if DimensionSetEntry.FindFirst() then error(Text002);
-        if DimensionValue.Get(FASetup."FBM_Site Dimension", Rec."Site Code") then begin
-            DimensionValue.Validate(Blocked, true);
-            DimensionValue.Modify();
-        end;
-    end;
 
-    trigger OnRename()
-    begin
-        FADimMgt.RenameSiteDim(xRec, Rec);
-    end;
+
+
+
+
 
     procedure CheckUniqueSite(SiteCode: Code[20])
     var
@@ -237,24 +272,6 @@ table 70001 FBM_Site
         CustSite.SetFilter(CustSite."Site Code", "Site Code");
         if CustSite.FindFirst() then Error(Text001, CustSite."Customer No.");
     end;
-    // procedure UpdateCustOpSite(CustSite: Record FBM_Site)var COS: Record "Cust-Op-Site";
-    // CompanyInfo: record "Company Information";
-    // FASetup: Record "FA Setup";
-    // begin
-    //   FASetup.Get();
-    //   CompanyInfo.Get();
-    //   if FASetup."Enable FA Site Tracking" then begin
-    //     if CompanyInfo."Customer Is Operator" then begin
-    //       //check if record already exists
-    //       if not COS.get(CustSite."Customer No.", CustSite."Customer No.", CustSite."Site Code")then begin
-    //         COS.Init();
-    //         COS."Customer No.":=CustSite."Customer No.";
-    //         COS."Operator No.":=CustSite."Customer No.";
-    //         COS."Site Code":=CustSite."Site Code";
-    //         COS.Insert();
-    //       end;
-    //     end;
-    //   end;
-    // end;
+
 
 }

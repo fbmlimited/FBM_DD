@@ -5,10 +5,12 @@ tableextension 70001 FBM_CustLEExt_DD extends "Cust. Ledger Entry"
 
         field(70000; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
             DataClassification = ToBeClassified;
         }
         field(70001; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
             DataClassification = ToBeClassified;
         }
 

@@ -4,19 +4,23 @@ tableextension 70012 FBM_SCHeaderExt_DD extends "Sales Cr.Memo Header"
     {
         field(70000; FBM_Site; Code[20])
         {
+            caption = 'Site';
 
         }
 
         field(70001; "FBM_Contract Code"; Code[4])
         {
 
+            caption = 'Contract';
         }
 
         field(70002; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
         }
         field(70003; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
         }
         field(70004; FBM_Segment; Option)
         {
@@ -49,11 +53,13 @@ tableextension 70012 FBM_SCHeaderExt_DD extends "Sales Cr.Memo Header"
         }
         field(700012; "FBM_Cust Payment Bank Name"; Code[100])
         {
+            caption = 'Payment Bank Name';
 
 
         }
         field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
         {
+            caption = 'Payment Bank 2 Name';
 
 
         }

@@ -25,50 +25,58 @@ table 70006 FBM_CustomerSite_C
         field(4; "Site Name_FF"; Text[250])
         {
             FieldClass = FlowField;
-            CalcFormula = lookup(FBM_Site."Site Name" where("Site Code" = field("Site Code"), ActiveRec = const(true)));
+            CalcFormula = lookup(FBM_Site."Site Name" where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
             Caption = 'Site Name';
+            Editable = false;
         }
-        field(5; Address; Text[250])
+        field(5; Address_FF; Text[250])
         {
-            DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site.Address where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'Address';
+            Editable = false;
         }
-        field(6; "Address 2"; Text[250])
+        field(6; "Address 2_FF"; Text[250])
         {
-            DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site."Address 2" where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'Address 2';
+            Editable = false;
         }
-        field(7; City; Text[30])
+        field(7; City_FF; Text[30])
         {
-            DataClassification = ToBeClassified;
-            TableRelation = IF ("Country/Region Code" = CONST()) "Post Code".City
-            ELSE
-            IF ("Country/Region Code" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site.City where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'City';
+            Editable = false;
         }
-        field(8; "Post Code"; Code[20])
+        field(8; "Post Code_FF"; Code[20])
         {
-            DataClassification = ToBeClassified;
-            TableRelation = IF ("Country/Region Code" = CONST()) "Post Code"
-            ELSE
-            IF ("Country/Region Code" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code"));
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site."Post Code" where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'Post Code';
+            Editable = false;
         }
-        field(9; "Country/Region Code"; Code[20])
+        field(9; "Country/Region Code_FF"; Code[20])
         {
-            DataClassification = ToBeClassified;
-            TableRelation = "Country/Region";
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site."Country/Region Code" where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'Country';
+            Editable = false;
         }
-        field(10; County; Text[30])
+        field(10; County_FF; Text[50])
         {
-            CaptionClass = '5,1,' + "Country/Region Code";
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site.County where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
             Caption = 'County';
+            Editable = false;
         }
         field(11; "Contract Code"; Code[4])
         {
             Caption = 'Contract Code (Bingo)';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                if "Contract Code" <> '' then FADimMgt.ContractDimension(Rec);
-            end;
+
         }
         field(12; "Vat Number"; Code[20])
         {
@@ -84,10 +92,7 @@ table 70006 FBM_CustomerSite_C
             Caption = 'Contract Code (Spin)';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
-            end;
+
         }
 
     }
@@ -102,7 +107,7 @@ table 70006 FBM_CustomerSite_C
 
 
     var
-        FADimMgt: Codeunit FBM_FADimMgt_DD;
+
         Text000: Label 'Site Code %1 already exists for Customer %2';
         Text001: Label 'Site code already exists for customer %1!';
         Text002: Label 'You cannot delete this site - it has been used in posted transactions!';

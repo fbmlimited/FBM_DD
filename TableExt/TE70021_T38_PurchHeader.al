@@ -1,9 +1,10 @@
-tableextension 70021 FBM_PurcheHeaderExt_DD extends "Purchase Header"
+tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
 {
     fields
     {
         field(70000; FBM_Site; code[20])
         {
+            Caption = 'Site';
             TableRelation = FBM_Site;
             ValidateTableRelation = false;
         }

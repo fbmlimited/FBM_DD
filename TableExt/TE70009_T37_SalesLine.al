@@ -5,10 +5,12 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
         //DEVOPS #622 -- begin
         field(70000; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
             Editable = true;
         }
         field(70001; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
             Editable = true;
             trigger OnValidate()
             var
@@ -37,6 +39,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
 
         field(70002; FBM_IsPeriodEnabled; Boolean)
         {
+            caption = 'Period Enabled';
         }
         field(70003; FBM_Site; Code[20])
         {

@@ -19,9 +19,11 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         //DEVOPS #622 -- begin
         field(70002; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
         }
         field(70003; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
         }
         field(70004; FBM_Segment; Option)
         {
@@ -53,11 +55,13 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         }
         field(700012; "FBM_Cust Payment Bank Name"; Code[100])
         {
+            caption = 'Payment Bank Name';
 
 
         }
         field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
         {
+            caption = 'Payment Bank 2 Name';
 
 
         }

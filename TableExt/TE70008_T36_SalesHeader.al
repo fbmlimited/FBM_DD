@@ -22,6 +22,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         }
         field(70000; FBM_Site; Code[20])
         {
+            Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
 
 
@@ -53,11 +54,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
         field(70001; "FBM_Contract Code"; Code[4])
         {
+            caption = 'Contract';
 
         }
 
         field(70002; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
 
             trigger OnValidate()
             begin
@@ -66,6 +69,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         }
         field(70003; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
             trigger OnValidate()
             begin
                 UpdateDateLines(Rec);
@@ -104,11 +108,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         }
         field(700012; "FBM_Cust Payment Bank Name"; Code[100])
         {
+            caption = 'Payment Bank Name';
 
 
         }
         field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
         {
+            caption = 'payment Bank 2 Name';
 
 
         }

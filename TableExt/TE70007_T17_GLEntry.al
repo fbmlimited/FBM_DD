@@ -5,10 +5,12 @@ tableextension 70007 FBM_GLEntryExt_DD extends "G/L Entry"
 
         field(70000; "FBM_Period Start"; Date)
         {
+            caption = 'Period Start';
             DataClassification = ToBeClassified;
         }
         field(70001; "FBM_Period End"; Date)
         {
+            caption = 'Period End';
             DataClassification = ToBeClassified;
         }
         field(70003; FBM_Segment; Option)

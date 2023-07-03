@@ -21,6 +21,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
 
             FieldClass = Normal;
             TableRelation = FBM_CustGroup;
+            ValidateTableRelation = false;
 
         }
         field(70005; "FBM_SubGroup"; Text[100])
@@ -29,7 +30,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
 
             FieldClass = Normal;
             TableRelation = FBM_CustGroup.SubGroup where("Group" = field(FBM_Group));
-
+            ValidateTableRelation = false;
 
 
         }
@@ -61,11 +62,13 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         }
         field(70034; "FBM_Payment Bank Code"; Code[20])
         {
+            caption = 'Payment bank';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
         field(70035; "FBM_Payment Bank Code2"; Code[20])
         {
+            caption = 'Payment bank 2';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
