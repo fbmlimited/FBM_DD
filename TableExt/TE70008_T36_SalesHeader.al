@@ -24,6 +24,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         {
             Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
+            ValidateTableRelation = false;
 
 
             trigger OnValidate()

@@ -106,6 +106,8 @@ table 70006 FBM_CustomerSite_C
 
 
 
+
+
     var
 
         Text000: Label 'Site Code %1 already exists for Customer %2';
@@ -113,45 +115,13 @@ table 70006 FBM_CustomerSite_C
         Text002: Label 'You cannot delete this site - it has been used in posted transactions!';
         Text003: Label 'You cannot delete this site - it is being used in %1!';
 
-    trigger OnInsert()
-    begin
-        //check for unique site code
-        // CheckUniqueSite(Rec."Site Code");
-        // FADimMgt.CreateSiteDim(Rec);
-        // UpdateCustOpSite(Rec);
-    end;
 
-    trigger OnModify()
-    begin
-        // FADimMgt.UpdateSiteDim(Rec);
-    end;
 
-    trigger OnDelete()
-    var
-        DimensionSetEntry: Record "Dimension Set Entry";
-        DimensionValue: Record "Dimension Value";
-        FASetup: Record "FA Setup";
-        SalesHeader: Record "Sales Header";
-    begin
-        // DimensionSetEntry.Reset();
-        // DimensionValue.Reset();
-        // SalesHeader.Reset();
-        // SalesHeader.Reset();
-        // SalesHeader.SetFilter(Site, Rec."Site Code");
-        // if SalesHeader.FindFirst() then Error(Text003, SalesHeader."No.");
-        // DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Code", FASetup."Site Dimension");
-        // DimensionSetEntry.SetFilter(DimensionSetEntry."Dimension Value Code", Rec."Site Code");
-        // if DimensionSetEntry.FindFirst() then error(Text002);
-        // if DimensionValue.Get(FASetup."Site Dimension", Rec."Site Code") then begin
-        //     DimensionValue.Validate(Blocked, true);
-        //     DimensionValue.Modify();
-        // end;
-    end;
 
-    trigger OnRename()
-    begin
-        // FADimMgt.RenameSiteDim(xRec, Rec);
-    end;
+
+
+
+
 
     procedure CheckUniqueSite(SiteCode: Code[20])
     var

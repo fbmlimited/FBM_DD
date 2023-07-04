@@ -11,17 +11,13 @@ table 70001 FBM_Site
         field(2; "Site Code"; Code[20])
         {
             DataClassification = ToBeClassified;
-            Editable = false;
+            //Editable = false;
         }
         field(3; "Site Name"; Text[250])
         {
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            var
-            begin
-                // FADimMgt.ModifySiteDim(xRec, Rec);
-            end;
+
         }
         field(4; "Site Name 2"; Text[250])
         {
@@ -56,6 +52,21 @@ table 70001 FBM_Site
         {
             DataClassification = ToBeClassified;
             TableRelation = "Country/Region";
+            trigger
+            OnValidate()
+            begin
+                 case  rec."Country/Region Code" of
+                'PH':
+                begin
+                 rec.company1:='NPH';
+                 rec.company2:='DPH';   
+                end;
+                'ES':
+                rec.company1:='EPS';
+                else
+                rec.company1:='FBM';
+                end;
+            end;
         }
         field(10; Indent; Integer)
         {
@@ -220,6 +231,7 @@ table 70001 FBM_Site
 
             end;
         }
+        
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
@@ -280,12 +292,37 @@ table 70001 FBM_Site
 
     end;
 
+    trigger
+    OnDelete()
+    begin
+        cos.SetRange("Site Code", xrec."Site Code");
+        if cos.findfirst then
+            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", rec."Site Code");
+        comp.FindFirst();
+        repeat
+            cinfo.ChangeCompany(comp.Name);
+            cinfo.get;
+            if cinfo.FBM_EnSiteWS then begin
+                csite.SetRange(SiteGrCode, xrec."Site Code");
+                if csite.FindFirst() then begin
+                    csite.SiteGrCode := rec."Site Code";
+                    csite.Modify();
+                end;
+            end;
+        until comp.next = 0;
+
+
+    end;
+
     var
         //FADimMgt: Codeunit FBM_FADimMgt_DD;
         Text000: Label 'Site Code %1 already exists for Customer %2';
         Text001: Label 'Site code already exists for customer %1!';
 
-
+        cos: record FBM_CustOpSite;
+        csite: Record FBM_CustomerSite_C;
+        comp: record Company;
+        cinfo: record "Company Information";
 
 
 

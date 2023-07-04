@@ -45,7 +45,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
         {
             Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
-
+            ValidateTableRelation = false;
         }
         modify("No.")
         {
@@ -64,6 +64,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                                         Rec.Validate("FBM_Period Start", SalesHeader."FBM_Period Start");
                                     if SalesHeader."FBM_Period End" <> 0D then
                                         Rec.Validate("FBM_Period End", SalesHeader."FBM_Period End");
+                                    rec."Bill-to Customer No." := SalesHeader."Bill-to Customer No.";
                                     //rec.Modify(false);
                                 end;
                             end;

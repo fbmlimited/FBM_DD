@@ -52,6 +52,13 @@ page 60133 FBM_CustCardMaster_DD
                     ToolTip = 'Specifies an additional part of the name.';
                     Visible = false;
                 }
+                field("FBM_Name 3"; Rec."FBM_Name 3")
+                {
+                    ApplicationArea = All;
+                    Importance = Additional;
+                    ToolTip = 'Specifies a group name.';
+                    Visible = false;
+                }
                 field("Search Name"; rec."Search Name")
                 {
                     ApplicationArea = All;

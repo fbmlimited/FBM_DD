@@ -62,6 +62,18 @@ page 60135 FBM_SiteMasterList_DD
                 {
                     ApplicationArea = All;
                 }
+                field(Company1; Rec.Company1)
+                {
+                    ApplicationArea = All;
+                }
+                field(Company2; Rec.Company2)
+                {
+                    ApplicationArea = All;
+                }
+                field(Company3; Rec.Company3)
+                {
+                    ApplicationArea = All;
+                }
 
             }
         }

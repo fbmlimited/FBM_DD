@@ -840,6 +840,11 @@ table 70004 FBM_Customer
 
             end;
         }
+        field(70039; "FBM_Name 3"; text[100])
+        {
+            Caption = 'Group Name';
+
+        }
 
     }
 
@@ -913,7 +918,32 @@ table 70004 FBM_Customer
         }
 
     }
+    trigger
 
+    OnModify()
+    var
+        comp: record Company;
+        customer: record Customer;
+    begin
+        comp.FindFirst();
+        repeat
+            customer.ChangeCompany(comp.Name);
+            customer.SetRange(FBM_GrCode, rec."No.");
+            if customer.FindFirst() then begin
+                customer.name := rec.Name;
+                customer."Name 2" := rec."Name 2";
+                customer."FBM_Name 3" := rec."FBM_Name 3";
+                customer.Address := rec.Address;
+                customer."Address 2" := rec."Address 2";
+                customer."Post Code" := rec."Post Code";
+                customer.City := rec.City;
+                customer.County := rec.County;
+                customer."Country/Region Code" := rec."Country/Region Code";
+                customer."VAT Registration No." := rec."VAT Registration No.";
+                customer.Modify();
+            end;
+        until comp.next = 0;
+    end;
 
 
     var

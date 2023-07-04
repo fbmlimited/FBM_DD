@@ -13,6 +13,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         }
         field(70003; "FBM_GrCode"; Code[20])
         {
+            caption = 'Group Code';
             Editable = false;
         }
         field(70004; "FBM_Group"; Text[100])

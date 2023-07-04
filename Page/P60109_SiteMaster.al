@@ -93,11 +93,25 @@ page 60109 FBM_SiteMaster_DD
                     ApplicationArea = All;
 
                 }
+                field(ActiveRec; Rec.ActiveRec)
+                {
+                    ApplicationArea = All;
+
+                }
             }
         }
 
 
     }
+    trigger
+    OnNewRecord(BelowxRec: Boolean)
+    var
+        maxnum: integer;
+    begin
+        evaluate(maxnum, copystr(maxcode, 5));
+        rec."Site Code" := 'SITE' + PADSTR('', 4 - strlen(FORMAT(MAXNUM + 1)), '0') + FORMAT(MAXNUM + 1);
+        rec.ActiveRec := true;
+    end;
 
     trigger
                        OnOpenPage()
