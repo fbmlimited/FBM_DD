@@ -55,16 +55,21 @@ table 70001 FBM_Site
             trigger
             OnValidate()
             begin
-                 case  rec."Country/Region Code" of
-                'PH':
-                begin
-                 rec.company1:='NPH';
-                 rec.company2:='DPH';   
-                end;
-                'ES':
-                rec.company1:='EPS';
-                else
-                rec.company1:='FBM';
+                case rec."Country/Region Code" of
+                    'PH':
+                        begin
+                            rec.company1 := 'NPH';
+                            rec.company2 := 'DPH';
+                        end;
+                    'ES':
+                        rec.company1 := 'EPS';
+                    'MX':
+                        begin
+                            rec.Company2 := 'JYM';
+                            rec.Company1 := 'FBM';
+                        END;
+                    else
+                        rec.company1 := 'FBM';
                 end;
             end;
         }
@@ -231,7 +236,7 @@ table 70001 FBM_Site
 
             end;
         }
-        
+
         field(1000; "Valid From"; Date)
         {
             Caption = 'Valid from';
@@ -310,6 +315,14 @@ table 70001 FBM_Site
                 end;
             end;
         until comp.next = 0;
+
+
+    end;
+
+    trigger
+
+    OnModify()
+    begin
 
 
     end;

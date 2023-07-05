@@ -96,6 +96,7 @@ table 70006 FBM_CustomerSite_C
         }
 
     }
+
     keys
     {
         key(PK; "Customer No.", "Site Code")
@@ -105,7 +106,12 @@ table 70006 FBM_CustomerSite_C
     }
 
 
+    trigger
+    OnModify()
+    begin
+        UpdateCustOpSite(rec);
 
+    end;
 
 
     var
@@ -137,24 +143,67 @@ table 70006 FBM_CustomerSite_C
         COS: Record FBM_CustOpSite;
         CompanyInfo: record "Company Information";
         FASetup: Record "FA Setup";
+        customer: record Customer;
+        country: record "Country/Region";
     begin
-        // FASetup.Get();
-        // CompanyInfo.Get();
-        // if FASetup."Enable FA Site Tracking" then begin
-        //     if CompanyInfo."Customer Is Operator" then begin
-        //         //check if record already exists
-        //         if not COS.get(CustSite."Customer No.", CustSite."Customer No.", CustSite."Site Code") then begin
-        //             COS.Init();
-        //             COS."Customer No." := CustSite."Customer No.";
-        //             COS."Operator No." := CustSite."Customer No.";
-        //             COS."Site Code" := CustSite."Site Code";
-        //             COS.Insert();
-        //         end;
-        //     end;
-        // end;
+        FASetup.Get();
+        CompanyInfo.Get();
+        //if FASetup."Enable FA Site Tracking" then begin
+        if CompanyInfo.FBM_CustIsOp then begin
+            //check if record already exists
+            customer.get(CustSite."Customer No.");
+            if country.get(customer."Country/Region Code") then
+                COS.SetRange(Subsidiary, CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3);
+            cos.SetRange("Customer No.", customer.FBM_GrCode);
+            cos.SetRange("Operator No.", customer.FBM_GrCode);
+            cos.SetRange("Site Code", CustSite.SiteGrCode);
+            if not cos.FindFirst() then begin
+                COS.Init();
+                COS."Customer No." := customer.FBM_GrCode;
+                COS."Operator No." := customer.FBM_GrCode;
+                COS."Site Code" := CustSite.SiteGrCode;
+                cos."Cust Loc Code" := customer."No.";
+                cos.IsActive := true;
+                cos.ActiveRec := true;
+                cos."Op Loc Code" := customer."No.";
+                cos."Record Owner" := UserId;
+                cos."Site Loc Code" := CustSite."Site Code";
+                cos."Valid From" := Today;
+                cos."Valid To" := DMY2Date(31, 12, 2999);
+                CompanyInfo.testfield(FBM_FALessee);
+                if country.get(customer."Country/Region Code") then begin
 
+                    country.testfield(FBM_Country3);
+                    cos.Subsidiary := CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3;
+                end;
+                COS.Insert();
+
+            end
+            else begin
+                COS."Customer No." := customer.FBM_GrCode;
+                COS."Operator No." := customer.FBM_GrCode;
+                COS."Site Code" := CustSite.SiteGrCode;
+                cos."Cust Loc Code" := customer."No.";
+                cos.IsActive := true;
+                cos.ActiveRec := true;
+                cos."Op Loc Code" := customer."No.";
+                cos."Record Owner" := UserId;
+                cos."Site Loc Code" := CustSite."Site Code";
+                cos."Valid From" := Today;
+                cos."Valid To" := DMY2Date(31, 12, 2999);
+                CompanyInfo.testfield(FBM_FALessee);
+                if country.get(customer."Country/Region Code") then begin
+
+                    country.testfield(FBM_Country3);
+                    cos.Subsidiary := CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3;
+                end;
+                COS.Modify();
+            end;
+
+        end;
         //end;
-        //end;
+
+
     end;
     //end;
 }

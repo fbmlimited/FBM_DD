@@ -245,7 +245,26 @@ table 70004 FBM_Customer
         {
             Caption = 'Country/Region Code';
             TableRelation = "Country/Region";
-
+            trigger
+                       OnValidate()
+            begin
+                case rec."Country/Region Code" of
+                    'PH':
+                        begin
+                            rec.FBM_Company1 := 'NPH';
+                            rec.FBM_Company2 := 'DPH';
+                        end;
+                    'ES':
+                        rec.FBM_Company1 := 'EPS';
+                    'MX':
+                        begin
+                            rec.FBM_Company2 := 'JYM';
+                            rec.FBM_Company1 := 'FBM';
+                        END;
+                    else
+                        rec.FBM_Company1 := 'FBM';
+                end;
+            end;
 
         }
         field(36; "Collection Method"; Code[20])
