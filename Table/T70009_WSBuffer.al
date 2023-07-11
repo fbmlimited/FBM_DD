@@ -1,5 +1,6 @@
 table 70009 FBM_WSBuffer
 {
+    DataPerCompany = false;
     DataClassification = ToBeClassified;
 
     fields
@@ -123,10 +124,16 @@ table 70009 FBM_WSBuffer
         {
             Caption = 'Entry No.';
             DataClassification = ToBeClassified;
+            AutoIncrement = true;
         }
         field(1001; BatchNo; Integer)
         {
             Caption = 'Batch No.';
+            DataClassification = ToBeClassified;
+        }
+        field(1002; Imported; Boolean)
+        {
+            Caption = 'Imported';
             DataClassification = ToBeClassified;
         }
 

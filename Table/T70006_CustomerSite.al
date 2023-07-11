@@ -113,6 +113,20 @@ table 70006 FBM_CustomerSite_C
 
     end;
 
+    trigger
+
+    OnDelete()
+    var
+        cos: record FBM_CustOpSite;
+    begin
+        cos.SetRange("Cust Loc Code", rec."Customer No.");
+        cos.SetRange("Site Loc Code", rec."Site Code");
+        if cos.FindFirst() then
+            cos.Delete();
+
+
+    end;
+
 
     var
 

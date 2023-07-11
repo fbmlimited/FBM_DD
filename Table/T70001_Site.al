@@ -261,6 +261,11 @@ table 70001 FBM_Site
         {
             Caption = 'Active Record';
         }
+        field(70019; FBM_LastAdquiredDate; Date)
+        {
+            Caption = 'Last Adquired Date';
+
+        }
 
     }
     keys

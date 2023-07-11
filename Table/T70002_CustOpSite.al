@@ -75,6 +75,11 @@ table 70002 FBM_CustOpSite
             Caption = 'Is Active';
 
         }
+        field(70019; FBM_LastAdquiredDate; Date)
+        {
+            Caption = 'Last Adquired Date';
+
+        }
 
     }
     keys

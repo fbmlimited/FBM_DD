@@ -64,6 +64,11 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'Lessee';
 
         }
+        field(70019; FBM_LastAdquiredDate; Date)
+        {
+            Caption = 'Last Adquired Date';
+
+        }
 
 
     }

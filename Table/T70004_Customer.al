@@ -249,11 +249,11 @@ table 70004 FBM_Customer
                        OnValidate()
             begin
                 case rec."Country/Region Code" of
-                    'PH':
-                        begin
-                            rec.FBM_Company1 := 'NPH';
-                            rec.FBM_Company2 := 'DPH';
-                        end;
+                    // 'PH':
+                    //     begin
+                    //         rec.FBM_Company1 := 'NPH';
+                    //         rec.FBM_Company2 := 'DPH';
+                    //     end;
                     'ES':
                         rec.FBM_Company1 := 'EPS';
                     'MX':
@@ -862,6 +862,11 @@ table 70004 FBM_Customer
         field(70039; "FBM_Name 3"; text[100])
         {
             Caption = 'Group Name';
+
+        }
+        field(70040; FBM_LastAdquiredDate; Date)
+        {
+            Caption = 'Last Adquired Date';
 
         }
 

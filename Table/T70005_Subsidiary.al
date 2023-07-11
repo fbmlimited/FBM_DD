@@ -29,6 +29,11 @@ table 70005 FBM_Subsidiary
             OptionCaption = ' ,FBM,DINGO';
             OptionMembers = " ",FBM,DINGO;
         }
+        field(70019; FBM_LastAdquiredDate; Date)
+        {
+            Caption = 'Last Adquired Date';
+
+        }
 
 
     }
