@@ -25,7 +25,7 @@ tableextension 70012 FBM_SCHeaderExt_DD extends "Sales Cr.Memo Header"
         field(70004; FBM_Segment; Option)
         {
             caption = 'Segment';
-            OptionMembers = " ",Bingo,Spin;
+            OptionMembers = " ",Bingo,Spin,Online;
 
         }
         field(70005; "FBM_LocalCurrAmt"; Decimal)

@@ -137,6 +137,6 @@ page 60109 FBM_SiteMaster_DD
         site.SetCurrentKey("Site Code");
         if site.FindLast() then
             maxcode := site."Site Code";
-        CurrPage.Update();
+        //CurrPage.Update();
     end;
 }

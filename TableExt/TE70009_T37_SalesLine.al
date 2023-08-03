@@ -46,6 +46,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
             Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
             ValidateTableRelation = false;
+
         }
         modify("No.")
         {
@@ -65,7 +66,8 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                                     if SalesHeader."FBM_Period End" <> 0D then
                                         Rec.Validate("FBM_Period End", SalesHeader."FBM_Period End");
                                     rec."Bill-to Customer No." := SalesHeader."Bill-to Customer No.";
-                                    //rec.Modify(false);
+                                    rec.Validate(Rec.FBM_Site, SalesHeader.FBM_Site);
+
                                 end;
                             end;
                         end;
@@ -73,19 +75,8 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                 end;
 
 
-                // end;
-                //if SalesHeader.get("Document Type", "Document No.") then begin
-                //  Rec.Validate("Period Start", SalesHeader."Period Start");
-                //  Rec.Validate("Period End", SalesHeader."Period End");
-                //   rec.Modify(false);
-                // end;
-                // end;
-                //end;
-                //end;
-                begin
-                    if SalesHeaderRec.Get(Rec."Document Type", Rec."Document No.") then
-                        Validate(Rec.FBM_Site, SalesHeaderRec.FBM_Site);
-                end;
+
+
             end;
 
         }
@@ -111,40 +102,42 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
                     Rec.Validate("FBM_Period Start", SalesHeader."FBM_Period Start");
                 if SalesHeader."FBM_Period End" <> 0D then
                     Rec.Validate("FBM_Period End", SalesHeader."FBM_Period End");
+                rec."Bill-to Customer No." := SalesHeader."Bill-to Customer No.";
+                rec.Validate(Rec.FBM_Site, SalesHeader.FBM_Site);
                 rec.Modify(false);
             end;
         end;
 
         // insert line for billing statement
 
-        if (SalesHeader."FBM_Billing Statement" = true) then begin
-            if (Rec."No." = 'S0001') then begin
-                newline.Init();
-                newline."Document Type" := Rec."Document Type";
-                newline.Type := newline.Type::Item;
-                newline."Document No." := REc."Document No.";
-                newline."Line No." := rec."Line No." + 1;
-                newline."No." := 'S0009';
-                newline.Quantity := 1;
-                newline.validate(Amount, -Rec.Amount * 0.05);
+        /*   if (SalesHeader."FBM_Billing Statement" = true) then begin
+              if (Rec."No." = 'S0001') then begin
+                  newline.Init();
+                  newline."Document Type" := Rec."Document Type";
+                  newline.Type := newline.Type::Item;
+                  newline."Document No." := REc."Document No.";
+                  newline."Line No." := rec."Line No." + 1;
+                  newline."No." := 'S0009';
+                  newline.Quantity := 1;
+                  newline.validate(Amount, -Rec.Amount * 0.05);
 
-                newline.Insert();
-            end
-            else
-                if (Rec."No." = 'S0002') then begin
-                    newline.Init();
-                    newline."Document Type" := Rec."Document Type";
-                    newline.Type := newline.Type::Item;
-                    newline."Document No." := REc."Document No.";
-                    newline."Line No." := rec."Line No." + 1;
-                    newline."No." := 'S0008';
-                    newline.Quantity := 1;
-                    newline.validate(Amount, -Rec.Amount * 0.05);
+                  newline.Insert();
+              end
+              else
+                  if (Rec."No." = 'S0002') then begin
+                      newline.Init();
+                      newline."Document Type" := Rec."Document Type";
+                      newline.Type := newline.Type::Item;
+                      newline."Document No." := REc."Document No.";
+                      newline."Line No." := rec."Line No." + 1;
+                      newline."No." := 'S0008';
+                      newline.Quantity := 1;
+                      newline.validate(Amount, -Rec.Amount * 0.05);
 
-                    newline.Insert();
+                      newline.Insert();
 
-                end;
-        end;
+                  end;
+          end; */
     end;
 
     trigger OnAfterModify()

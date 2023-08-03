@@ -1,6 +1,7 @@
 table 70006 FBM_CustomerSite_C
 {
     DataClassification = ToBeClassified;
+    LookupPageId = FBM_CustSiteLookup_DD;
 
     fields
     {
@@ -71,6 +72,13 @@ table 70006 FBM_CustomerSite_C
             Caption = 'County';
             Editable = false;
         }
+        field(15; Status_FF; enum "FBM_Site Status_DD")
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_Site.Status where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+            Caption = 'Status';
+            Editable = false;
+        }
         field(11; "Contract Code"; Code[4])
         {
             Caption = 'Contract Code (Bingo)';
@@ -104,7 +112,13 @@ table 70006 FBM_CustomerSite_C
             Clustered = true;
         }
     }
+    fieldgroups
+    {
+        fieldgroup(dropdown; "Site Code", SiteGrCode, "Site Name_FF")
+        {
 
+        }
+    }
 
     trigger
     OnModify()
@@ -209,7 +223,7 @@ table 70006 FBM_CustomerSite_C
                 if country.get(customer."Country/Region Code") then begin
 
                     country.testfield(FBM_Country3);
-                    cos.Subsidiary := CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3;
+                    cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Customer No.", cos."Operator No.", cos."Site Code");
                 end;
                 COS.Modify();
             end;

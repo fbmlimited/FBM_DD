@@ -15,8 +15,8 @@ tableextension 70018 FBM_VendorExt_DD extends Vendor
             Caption = 'Print Name on Check';
         }
     }
-    trigger OnAfterModify()
-    begin
-        TestField("Currency Code");
-    end;
+    // trigger OnAfterModify()
+    // begin
+    //     TestField("Currency Code");
+    // end;
 }

@@ -14,7 +14,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         field(70003; "FBM_GrCode"; Code[20])
         {
             caption = 'Group Code';
-            Editable = false;
+            //Editable = false;
         }
         field(70004; "FBM_Group"; Text[100])
         {
@@ -84,9 +84,9 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         csite: record FBM_CustomerSite_C;
         cos: record FBM_CustOpSite;
     begin
-        csite.SetRange("Customer No.", rec."No.");
+        csite.SetRange("Customer No.", xrec."No.");
         csite.DeleteAll();
-        cos.setrange("Cust Loc Code", rec."No.");
+        cos.setrange("Cust Loc Code", xrec."No.");
         cos.DeleteAll();
 
     end;

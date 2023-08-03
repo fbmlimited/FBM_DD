@@ -249,11 +249,11 @@ table 70004 FBM_Customer
                        OnValidate()
             begin
                 case rec."Country/Region Code" of
-                    // 'PH':
-                    //     begin
-                    //         rec.FBM_Company1 := 'NPH';
-                    //         rec.FBM_Company2 := 'DPH';
-                    //     end;
+                    'PH':
+                        begin
+                            rec.FBM_Company1 := '';
+                            rec.FBM_Company2 := '';
+                        end;
                     'ES':
                         rec.FBM_Company1 := 'EPS';
                     'MX':

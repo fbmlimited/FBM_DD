@@ -17,7 +17,7 @@ tableextension 70001 FBM_CustLEExt_DD extends "Cust. Ledger Entry"
         field(70003; FBM_Segment; Option)
         {
             caption = 'Segment';
-            OptionMembers = " ",Bingo,Spin;
+            OptionMembers = " ",Bingo,Spin,Online;
 
         }
         field(70004; FBM_Site; Code[20])

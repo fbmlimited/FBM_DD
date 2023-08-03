@@ -58,8 +58,8 @@ table 70001 FBM_Site
                 case rec."Country/Region Code" of
                     'PH':
                         begin
-                            rec.company1 := 'NPH';
-                            rec.company2 := 'DPH';
+                            rec.company1 := '';
+                            rec.company2 := '';
                         end;
                     'ES':
                         rec.company1 := 'EPS';
@@ -111,7 +111,7 @@ table 70001 FBM_Site
             TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
 
         }
-        field(17; Status; Text[50])
+        field(17; Status; Enum "FBM_Site Status_DD")
         {
             FieldClass = Normal;
         }
@@ -344,7 +344,12 @@ table 70001 FBM_Site
 
 
 
+    trigger
+    OnInsert()
+    begin
+        rec.ActiveRec := true;
 
+    end;
 
 
 

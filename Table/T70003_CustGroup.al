@@ -1,6 +1,6 @@
 table 70003 FBM_CustGroup
 {
-    DataPerCompany=false;
+    DataPerCompany = true;
     DataClassification = ToBeClassified;
     //LookupPageId = 50013;
     fields

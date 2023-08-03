@@ -28,7 +28,7 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         field(70004; FBM_Segment; Option)
         {
             caption = 'Segment';
-            OptionMembers = " ",Bingo,Spin;
+            OptionMembers = " ",Bingo,Spin,Online;
 
         }
         field(70005; "FBM_LocalCurrAmt"; Decimal)

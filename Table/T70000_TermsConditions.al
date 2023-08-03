@@ -1,6 +1,6 @@
 table 70000 FBM_TermsConditions
 {
-    DataPerCompany = false;
+    DataPerCompany = true;
 
     DataClassification = ToBeClassified;
 

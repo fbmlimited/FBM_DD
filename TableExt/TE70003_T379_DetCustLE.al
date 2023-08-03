@@ -17,7 +17,7 @@ tableextension 70003 FBM_DetCustLEExt_DD extends "Detailed Cust. Ledg. Entry"
         field(70003; FBM_Segment; Option)
         {
             caption = 'Segment';
-            OptionMembers = " ",Bingo,Spin;
+            OptionMembers = " ",Bingo,Spin,Online;
 
         }
         field(70004; FBM_Site; Code[20])

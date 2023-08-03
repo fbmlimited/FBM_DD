@@ -124,7 +124,7 @@ table 70009 FBM_WSBuffer
         {
             Caption = 'Entry No.';
             DataClassification = ToBeClassified;
-            AutoIncrement = true;
+
         }
         field(1001; BatchNo; Integer)
         {
@@ -146,5 +146,6 @@ table 70009 FBM_WSBuffer
             Clustered = true;
         }
     }
+
 
 }

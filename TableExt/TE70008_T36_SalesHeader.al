@@ -35,7 +35,8 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                         if rec.FBM_Segment = rec.FBM_Segment::Bingo then
                             Rec.Validate("FBM_Contract Code", CustSite."Contract Code")
                         else
-                            Rec.Validate("FBM_Contract Code", CustSite."Contract Code2");
+                            if rec.FBM_Segment = rec.FBM_Segment::Spin then
+                                Rec.Validate("FBM_Contract Code", CustSite."Contract Code2");
                         Rec.Modify();
                     end;
                 end;
@@ -79,12 +80,12 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         field(70004; FBM_Segment; Option)
         {
             caption = 'Segment ';
-            OptionMembers = " ",Bingo,Spin;
+            OptionMembers = " ",Bingo,Spin,Online;
 
         }
         field(70005; "FBM_LocalCurrAmt"; Decimal)
         {
-            caption = 'Local Currency Amount';
+            caption = 'Currency 2 Amount';
 
         }
 
@@ -92,7 +93,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
         field(70008; "FBM_Currency2"; code[10])
         {
-            caption = 'Local Currency ';
+            caption = 'Currency 2 ';
             TableRelation = Currency;
 
         }

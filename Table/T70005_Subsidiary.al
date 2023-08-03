@@ -10,12 +10,22 @@ table 70005 FBM_Subsidiary
             Caption = 'Country';
             TableRelation = "Country/Region".FBM_Country3;
             ValidateTableRelation = false;
+            trigger
+            OnValidate()
+            begin
+                calcsub();
+            end;
         }
         field(2; Lessee; text[20])// from FA
         {
             Caption = 'Lessee';
             TableRelation = FBM_Subsidiary.Lessee;
             ValidateTableRelation = false;
+            trigger
+           OnValidate()
+            begin
+                calcsub();
+            end;
         }
         field(3; EGM_Property; text[3])// company information FA
         {
@@ -29,6 +39,12 @@ table 70005 FBM_Subsidiary
             OptionCaption = ' ,FBM,DINGO';
             OptionMembers = " ",FBM,DINGO;
         }
+        field(5; Subsidiary; Code[7])//from FA
+        {
+            Caption = 'Subsidiary';
+
+        }
+
         field(70019; FBM_LastAdquiredDate; Date)
         {
             Caption = 'Last Adquired Date';
@@ -45,5 +61,11 @@ table 70005 FBM_Subsidiary
             Clustered = true;
         }
     }
+    procedure calcsub()
+
+    begin
+
+        rec.Subsidiary := rec.Lessee + ' ' + rec.Country;
+    end;
 
 }

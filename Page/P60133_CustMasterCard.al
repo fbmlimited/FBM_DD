@@ -816,10 +816,12 @@ page 60133 FBM_CustCardMaster_DD
 
 
     begin
-        cust.SetCurrentKey("No.");
-        if cust.FindLast() then
-            maxcode := cust."No.";
-        CurrPage.Update();
+        if rec."No." <> '' then begin
+            cust.SetCurrentKey("No.");
+            if cust.FindLast() then
+                maxcode := cust."No.";
+            CurrPage.Update();
+        end
     end;
 
     [TryFunction]

@@ -64,9 +64,14 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'Lessee';
 
         }
-        field(70019; FBM_LastAdquiredDate; Date)
+        field(70019; FBM_Sma; DateTime)
         {
-            Caption = 'Last Adquired Date';
+            Caption = 'SystemModifiedAt Original';
+
+        }
+        field(70020; FBM_Dupecomp; text[3])
+        {
+            Caption = 'Dupe';
 
         }
 
