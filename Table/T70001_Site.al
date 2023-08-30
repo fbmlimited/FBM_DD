@@ -114,6 +114,9 @@ table 70001 FBM_Site
         field(17; Status; Enum "FBM_Site Status_DD")
         {
             FieldClass = Normal;
+
+
+
         }
         field(18; "Current Status"; Text[50])
         {

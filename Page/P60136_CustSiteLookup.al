@@ -27,6 +27,10 @@ page 60136 FBM_CustSiteLookup_DD
                 {
                     ApplicationArea = All;
                 }
+                field(Status_FF; Rec.Status_FF)
+                {
+                    ApplicationArea = All;
+                }
 
             }
         }

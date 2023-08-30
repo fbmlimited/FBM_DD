@@ -79,6 +79,30 @@ table 70010 FBM_FinAttributes
 
 
         }
+        field(1000; "Valid From"; Date)
+        {
+            Caption = 'Valid from';
+        }
+        field(1001; "Valid To"; Date)
+        {
+            Caption = 'Valid to';
+        }
+        field(1002; "Record Owner"; code[30])
+        {
+            Caption = 'Record Owner';
+        }
+        field(1003; "Change Note"; Text[1024])
+        {
+            Caption = 'Change Note';
+        }
+        field(1004; Version; Integer)
+        {
+            Caption = 'Version';
+        }
+        field(1005; ActiveRec; Boolean)
+        {
+            Caption = 'Active Record';
+        }
 
 
 

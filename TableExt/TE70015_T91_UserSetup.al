@@ -30,6 +30,12 @@ tableextension 70015 FBM_UserSetupExt_DD extends "User Setup"
 
 
         }
+        field(70024; "FBM_Approve AP"; boolean)
+        {
+            caption = 'Approve AP';
+            DataClassification = ToBeClassified;
+
+        }
     }
     var
 }
