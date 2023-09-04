@@ -90,6 +90,14 @@ page 60133 FBM_CustCardMaster_DD
                         VendLedgEntry.DrillDownOnEntries(DtldVendLedgEntry);
                     end;
                 }
+                field(FBM_Group; Rec.FBM_Group)
+                {
+                    ApplicationArea = all;
+                }
+                field(FBM_SubGroup; Rec.FBM_SubGroup)
+                {
+                    ApplicationArea = all;
+                }
                 field(Company1; Rec.FBM_Company1)
                 {
                     ApplicationArea = all;

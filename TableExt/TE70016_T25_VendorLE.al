@@ -1,5 +1,6 @@
 tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
 {
+
     fields
     {
         field(70000; FBM_approved; Boolean)
@@ -43,7 +44,10 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
             Caption = 'AP Approved';
             DataClassification = ToBeClassified;
             trigger OnValidate()
+            var
+                util: Codeunit FBM_Utility_DD;
             begin
+                util.updatedetvendle(rec);
                 if FBM_approved = true then begin
                     "FBM_approved date1" := System.CurrentDateTime();
                     "FBM_approved user1" := UserId;
@@ -107,6 +111,12 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
         field(70011; "FBM_Approver Comment2"; Text[50])
         {
             Caption = 'Inv. Approver Comment';
+            DataClassification = ToBeClassified;
+            Editable = true;
+        }
+        field(70012; "FBM_Paid"; Boolean)
+        {
+            Caption = 'Paid';
             DataClassification = ToBeClassified;
             Editable = true;
         }

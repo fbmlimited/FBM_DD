@@ -222,6 +222,16 @@ page 60134 FBM_CustListMaster_DD
                     ToolTip = 'Specifies that the customer is coupled to an account in Dataverse.';
                     Visible = CRMIntegrationEnabled or CDSIntegrationEnabled;
                 }
+                field(FBM_Group; Rec.FBM_Group)
+                {
+                    ApplicationArea = All;
+
+                }
+                field(FBM_SubGroup; Rec.FBM_SubGroup)
+                {
+                    ApplicationArea = All;
+
+                }
             }
         }
     }

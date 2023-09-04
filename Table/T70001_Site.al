@@ -118,10 +118,7 @@ table 70001 FBM_Site
 
 
         }
-        field(18; "Current Status"; Text[50])
-        {
-            FieldClass = Normal;
-        }
+
         field(19; "Category"; Text[50])
         {
             FieldClass = Normal;

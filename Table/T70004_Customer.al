@@ -964,6 +964,8 @@ table 70004 FBM_Customer
                 customer.County := rec.County;
                 customer."Country/Region Code" := rec."Country/Region Code";
                 customer."VAT Registration No." := rec."VAT Registration No.";
+                customer.FBM_Group := rec.FBM_Group;
+                customer.FBM_SubGroup := rec.FBM_SubGroup;
                 customer.Modify();
             end;
         until comp.next = 0;

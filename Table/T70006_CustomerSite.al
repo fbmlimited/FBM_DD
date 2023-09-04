@@ -72,12 +72,11 @@ table 70006 FBM_CustomerSite_C
             Caption = 'County';
             Editable = false;
         }
-        field(15; Status_FF; enum "FBM_Site Status_DD")
+        field(15; Status; enum "FBM_Site Status_DD")
         {
-            FieldClass = FlowField;
-            CalcFormula = lookup(FBM_Site.Status where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
+
             Caption = 'Status';
-            Editable = false;
+            Editable = true;
         }
         field(11; "Contract Code"; Code[4])
         {

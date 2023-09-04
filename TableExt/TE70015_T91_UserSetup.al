@@ -36,6 +36,12 @@ tableextension 70015 FBM_UserSetupExt_DD extends "User Setup"
             DataClassification = ToBeClassified;
 
         }
+        field(70025; "FBM_Paid_Enabled"; boolean)
+        {
+            caption = 'Enable Payment flag';
+            DataClassification = ToBeClassified;
+
+        }
     }
     var
 }
