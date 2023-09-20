@@ -26,6 +26,24 @@ tableextension 70001 FBM_CustLEExt_DD extends "Cust. Ledger Entry"
 
 
         }
+        field(61100; FBM_DocNo; code[20])
+        {
+            Caption = 'Doc. No.';
+
+
+        }
+        field(61101; FBM_DocDate; Date)
+        {
+            Caption = 'Doc. Date';
+
+
+        }
+        field(61102; FBM_DocType; Enum "Gen. Journal Document Type")
+        {
+            Caption = 'Doc. Type';
+
+
+        }
 
     }
     var

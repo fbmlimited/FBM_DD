@@ -971,9 +971,37 @@ table 70004 FBM_Customer
         until comp.next = 0;
     end;
 
+    trigger
+    OnDelete()
+    begin
+        comp.FindFirst();
+        repeat
+            cust.ChangeCompany(comp.Name);
+            CustLedgEntry.ChangeCompany(comp.Name);
+            cust.SetRange(FBM_GrCode, rec."No.");
+            if cust.FindFirst() then begin
+
+
+                CustLedgEntry.Reset();
+                if not CustLedgEntry.SetCurrentKey("Customer No.", Open) then
+                    CustLedgEntry.SetCurrentKey("Customer No.");
+                CustLedgEntry.SetRange("Customer No.", Cust."No.");
+                CustLedgEntry.SetRange(Open, true);
+                if not CustLedgEntry.IsEmpty() then
+                    Error(
+                      Text001,
+                      Cust.TableCaption(), Cust."No.");
+            end;
+        until comp.Next() = 0;
+    end;
+
 
     var
+        comp: record Company;
+        CustLedgEntry: record "Cust. Ledger Entry";
+        Cust: record Customer;
         Text000: Label 'You cannot delete %1 %2 because there is at least one outstanding Sales %3 for this customer.';
+        Text001: Label 'You cannot delete %1 %2 because there are one or more open ledger entries.';
         Text002: Label 'Do you wish to create a contact for %1 %2?';
         SalesSetup: Record "Sales & Receivables Setup";
         CommentLine: Record "Comment Line";

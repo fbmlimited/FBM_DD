@@ -20,7 +20,7 @@ table 70006 FBM_CustomerSite_C
         }
         field(3; "Site Code"; Code[20])
         {
-            Caption = 'Site Loc. Code';
+            Caption = 'Site  Loc. Code';
             DataClassification = ToBeClassified;
         }
         field(4; "Site Name_FF"; Text[250])

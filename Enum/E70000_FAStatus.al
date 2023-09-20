@@ -11,4 +11,5 @@ enum 70000 "FBM_FA Status_DD"
     value(6; "F. Non Installed") { Caption = 'F. Non-Installed Non-new Non-operative'; }
     value(7; "G. Kill") { Caption = 'G. For Kill'; }
     value(8; "H. Killed") { Caption = 'H. Killed'; }
+    value(9; "I. Sold") { Caption = 'I. Sold'; }
 }

@@ -120,7 +120,18 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
             Editable = true;
         }
-
+        field(70013; "FBM_Amount"; decimal)
+        {
+            Caption = 'Amount';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(70014; "FBM_RemAmount"; decimal)
+        {
+            Caption = 'Rem. Amount';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
 
     }
 }

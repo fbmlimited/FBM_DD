@@ -73,11 +73,11 @@ page 60109 FBM_SiteMaster_DD
                     ApplicationArea = All;
 
                 }
-                field(Status; Rec.Status)
-                {
-                    ApplicationArea = All;
+                // field(Status; Rec.Status)
+                // {
+                //     ApplicationArea = All;
 
-                }
+                // }
                 field(Company1; Rec.Company1)
                 {
                     ApplicationArea = All;
@@ -97,6 +97,17 @@ page 60109 FBM_SiteMaster_DD
                 {
                     ApplicationArea = All;
 
+                }
+
+
+            }
+            group("Linked Site")
+            {
+
+                part(LinkedSite; FBM_LinkedSite_DD)
+                {
+                    ApplicationArea = Basic, Suite;
+                    SubPageLink = Value = FIELD("Site Code");
                 }
             }
         }

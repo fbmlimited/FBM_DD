@@ -27,17 +27,25 @@ table 70002 FBM_CustOpSite
         }
         field(3; "Site Code"; Code[20])
         {
+            caption = 'Site Code';
             DataClassification = ToBeClassified;
             TableRelation = FBM_Site where(ActiveRec = const(true));
         }
         field(4; "Site Loc Code"; Code[20])
         {
+            caption = 'Site Loc Code';
             DataClassification = ToBeClassified;
 
         }
         field(5; IsActive; Boolean)
         {
             Caption = 'Active Record';
+        }
+        field(8; Status; enum "FBM_Site Status_DD")
+        {
+
+            Caption = 'Status';
+            Editable = true;
         }
 
 
@@ -80,11 +88,22 @@ table 70002 FBM_CustOpSite
             Caption = 'Last Adquired Date';
 
         }
+        field(70020; FBM_Sma; DateTime)
+        {
+            Caption = 'Loc. Site Modified';
+
+        }
+        field(70021; FBM_Sca; DateTime)
+        {
+            Caption = 'Loc. Site Created';
+
+        }
+
 
     }
     keys
     {
-        key(PK; Subsidiary, "Customer No.", "Operator No.", "Site Code")
+        key(PK; Subsidiary, "Cust Loc Code", "Op Loc Code", "Site Loc Code")
         {
             Clustered = true;
         }

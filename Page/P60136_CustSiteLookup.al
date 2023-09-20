@@ -19,11 +19,11 @@ page 60136 FBM_CustSiteLookup_DD
                 {
                     ApplicationArea = All;
                 }
-                field(SiteGrCode; Rec.SiteGrCode)
+                field("Site Gr. Code"; Rec.SiteGrCode)
                 {
                     ApplicationArea = All;
                 }
-                field("Site Name_FF"; Rec."Site Name_FF")
+                field("Site Name"; Rec."Site Name_FF")
                 {
                     ApplicationArea = All;
                 }

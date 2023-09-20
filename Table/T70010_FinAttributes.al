@@ -21,7 +21,7 @@ table 70010 FBM_FinAttributes
             Caption = 'Code';
             DataClassification = ToBeClassified;
             TableRelation = if (rectype = const(CustOp)) Customer else
-            if (rectype = const(site)) FBM_CustomerSite_C."Site Code" else
+            if (rectype = const(Site)) FBM_CustomerSite_C."Site Code" else
             if (Rectype = const(Subsidiary)) FBM_Subsidiary.Subsidiary;
             ValidateTableRelation = false;
         }

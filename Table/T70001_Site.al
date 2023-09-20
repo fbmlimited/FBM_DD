@@ -4,6 +4,7 @@ table 70001 FBM_Site
     DataPerCompany = false;
     DrillDownPageID = FBM_SiteMasterList_DD;
     LookupPageID = FBM_SiteMaster_DD;
+    caption = 'Site';
 
     fields
     {
@@ -12,16 +13,17 @@ table 70001 FBM_Site
         {
             DataClassification = ToBeClassified;
             //Editable = false;
+            caption = 'Site Code';
         }
         field(3; "Site Name"; Text[250])
         {
             DataClassification = ToBeClassified;
-
+            caption = 'Site Name';
 
         }
         field(4; "Site Name 2"; Text[250])
         {
-
+            caption = 'Site Name 2';
         }
 
         field(5; Address; Text[250])
@@ -92,32 +94,32 @@ table 70001 FBM_Site
         {
             DataClassification = ToBeClassified;
         }
-        field(15; "SubGroup"; Text[100])
-        {
-            Caption = 'SubGroup Customer';
-            Description = 'ONETECH';
-            FieldClass = Normal;
-            TableRelation = FBM_CustGroup.SubGroup where("Group" = field("Group"), IsGroup = const(false));
+        // field(15; "SubGroup"; Text[100])
+        // {
+        //     Caption = 'SubGroup Customer';
+        //     Description = 'ONETECH';
+        //     FieldClass = Normal;
+        //     TableRelation = FBM_CustGroup.SubGroup where("Group" = field("Group"), IsGroup = const(false));
 
 
 
-        }
+        // }
 
-        field(16; "Group"; Text[100])
-        {
-            Caption = 'Group Customer';
-            Description = 'ONETECH';
-            FieldClass = Normal;
-            TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
+        // field(16; "Group"; Text[100])
+        // {
+        //     Caption = 'Group Customer';
+        //     Description = 'ONETECH';
+        //     FieldClass = Normal;
+        //     TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
 
-        }
-        field(17; Status; Enum "FBM_Site Status_DD")
-        {
-            FieldClass = Normal;
+        // }
+        // field(17; Status; Enum "FBM_Site Status_DD")
+        // {
+        //     FieldClass = Normal;
 
 
 
-        }
+        // }
 
         field(19; "Category"; Text[50])
         {
@@ -159,16 +161,7 @@ table 70001 FBM_Site
         {
             FieldClass = Normal;
         }
-        // field(29; "Contract Code2"; Code[4])
-        // {
 
-        //     DataClassification = ToBeClassified;
-
-        //     trigger OnValidate()
-        //     begin
-        //         if "Contract Code2" <> '' then FADimMgt.ContractDimension(Rec);
-        //     end;
-        // }
         field(29; "Company1"; TEXT[3])
         {
             Caption = 'Company 1';
