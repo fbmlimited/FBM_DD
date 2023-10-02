@@ -874,7 +874,7 @@ table 70004 FBM_Customer
 
     keys
     {
-        key(Key1; "No.", Version)
+        key(Key1; "No.", Version, ActiveRec)
         {
             Clustered = true;
         }
@@ -931,6 +931,10 @@ table 70004 FBM_Customer
         }
         key(Key21; "Coupled to CRM")
         {
+        }
+        key(key22; Version)
+        {
+
         }
 
     }
@@ -995,6 +999,14 @@ table 70004 FBM_Customer
         until comp.Next() = 0;
     end;
 
+    trigger
+     OnInsert()
+    begin
+        rec.ActiveRec := true;
+
+    end;
+
+
 
     var
         comp: record Company;
@@ -1052,5 +1064,49 @@ table 70004 FBM_Customer
         PhoneNoCannotContainLettersErr: Label 'must not contain letters';
         ForceUpdateContact: Boolean;
 
+    procedure IncVersion()
+    var
+        cust: record FBM_Customer;
+        cust2: record FBM_Customer;
+        maxver: Integer;
+        stop: Boolean;
+    begin
+        commit;
+        cust.setrange("No.", rec."No.");
 
+        if cust.FindLast() then begin
+            maxver := cust.Version;
+            if cust."Valid From" = Today then
+                stop := true;
+        end;
+        if not stop then begin
+            cust."Valid To" := Today;
+
+
+
+            cust2.init;
+            cust2.TransferFields(cust, true);
+            cust.Rename(cust."No.", cust.Version, false);
+            cust.Modify();
+            cust2.Insert(false);
+            cust2.Rename(cust2."No.", maxver + 1, true);
+            cust2.Name := rec.Name;
+            cust2.Address := rec.Address;
+            cust2."Address 2" := rec."Address 2";
+            cust2.City := rec.City;
+            cust2."Country/Region Code" := rec."Country/Region Code";
+            cust2."Post Code" := rec."Post Code";
+            cust2."VAT Registration No." := rec."VAT Registration No.";
+            cust2."Valid From" := Today;
+            cust2."Valid To" := DMY2Date(31, 12, 2999);
+            cust2."Record Owner" := UserId;
+
+            cust2.Modify();
+            cust.setrange(Name, '');
+            cust.DeleteAll();
+        end
+
+
+
+    end;
 }

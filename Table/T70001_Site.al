@@ -5,6 +5,7 @@ table 70001 FBM_Site
     DrillDownPageID = FBM_SiteMasterList_DD;
     LookupPageID = FBM_SiteMaster_DD;
     caption = 'Site';
+    DataCaptionFields = "Site Code", "Site Name";
 
     fields
     {
@@ -19,6 +20,11 @@ table 70001 FBM_Site
         {
             DataClassification = ToBeClassified;
             caption = 'Site Name';
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
 
         }
         field(4; "Site Name 2"; Text[250])
@@ -29,10 +35,20 @@ table 70001 FBM_Site
         field(5; Address; Text[250])
         {
             DataClassification = ToBeClassified;
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(6; "Address 2"; Text[250])
         {
             DataClassification = ToBeClassified;
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(7; City; Text[30])
         {
@@ -41,6 +57,11 @@ table 70001 FBM_Site
             ELSE
             IF ("Country/Region Code" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code"));
             ValidateTableRelation = false;
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(8; "Post Code"; Code[20])
         {
@@ -49,6 +70,11 @@ table 70001 FBM_Site
             ELSE
             IF ("Country/Region Code" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code"));
             ValidateTableRelation = FALSE;
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(9; "Country/Region Code"; Code[20])
         {
@@ -57,6 +83,7 @@ table 70001 FBM_Site
             trigger
             OnValidate()
             begin
+                IncVersion();
                 case rec."Country/Region Code" of
                     'PH':
                         begin
@@ -84,6 +111,11 @@ table 70001 FBM_Site
         field(12; "Vat Number"; Code[20])
         {
             DataClassification = ToBeClassified;
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(13; "Bank Filter"; text[2048])
         {
@@ -263,9 +295,13 @@ table 70001 FBM_Site
     }
     keys
     {
-        key(PK; "Site Code")
+        key(PK; "Site Code", Version, ActiveRec)
         {
             Clustered = true;
+        }
+        key(k1; Version)
+        {
+
         }
     }
     trigger
@@ -317,13 +353,9 @@ table 70001 FBM_Site
 
     end;
 
-    trigger
-
-    OnModify()
-    begin
 
 
-    end;
+
 
     var
         //FADimMgt: Codeunit FBM_FADimMgt_DD;
@@ -353,6 +385,52 @@ table 70001 FBM_Site
         CustSite.Reset();
         CustSite.SetFilter(CustSite."Site Code", "Site Code");
         if CustSite.FindFirst() then Error(Text001, CustSite."Customer No.");
+    end;
+
+    procedure IncVersion()
+    var
+        site: record FBM_Site;
+        site2: record FBM_Site;
+        maxver: Integer;
+        stop: Boolean;
+    begin
+        commit;
+        site.setrange("Site Code", rec."Site Code");
+
+        if site.FindLast() then begin
+            maxver := site.Version;
+            if site."Valid From" = Today then
+                stop := true;
+        end;
+        if not stop then begin
+            site."Valid To" := Today;
+
+
+
+            site2.init;
+            site2.TransferFields(site, true);
+            site.Rename(site."Site Code", site.Version, false);
+            site.Modify();
+            site2.Insert(false);
+            site2.Rename(site2."Site Code", maxver + 1, true);
+            site2."Site Name" := rec."Site Name";
+            site2.Address := rec.Address;
+            site2."Address 2" := rec."Address 2";
+            site2.City := rec.City;
+            site2."Country/Region Code" := rec."Country/Region Code";
+            site2."Post Code" := rec."Post Code";
+            site2."Vat Number" := rec."Vat Number";
+            site2."Valid From" := Today;
+            site2."Valid To" := DMY2Date(31, 12, 2999);
+            site2."Record Owner" := UserId;
+
+            site2.Modify();
+            site.setrange("Site Name", '');
+            site.DeleteAll();
+        end;
+
+
+
     end;
 
 

@@ -158,6 +158,45 @@ page 60133 FBM_CustCardMaster_DD
                     Importance = Additional;
                     ToolTip = 'Specifies that you can change the customer name on open sales documents. The change applies only to the documents.';
                 }
+                field(Version; Rec.Version)
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Valid From"; Rec."Valid From")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Valid To"; Rec."Valid To")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Record Owner"; Rec."Record Owner")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Change Note"; Rec."Change Note")
+                {
+                    ApplicationArea = All;
+
+                }
+            }
+            group("Linked Customer")
+            {
+
+                part(LinkedCust; FBM_LinkedCust_DD)
+                {
+                    ApplicationArea = Basic, Suite;
+                    SubPageLink = Value = FIELD("No.");
+                }
+            }
+            part(History; FBM_CustHistory_DD)
+            {
+                ApplicationArea = Basic, Suite;
+                SubPageLink = "No." = FIELD("No.");
             }
             group("Address & Contact")
             {
@@ -812,7 +851,7 @@ page 60133 FBM_CustCardMaster_DD
 
 
     protected var
-        [InDataSet]
+
         ContactEditable: Boolean;
         IsOfficeAddin: Boolean;
         NoPostedInvoices: Integer;

@@ -656,6 +656,42 @@ table 70011 FBM_CustLE
 
 
         }
+        field(70004; "FBM_Group"; Text[100])
+        {
+            Caption = 'Group Customer';
+
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup;
+            ValidateTableRelation = false;
+
+        }
+        field(70005; "FBM_SubGroup"; Text[100])
+        {
+            Caption = 'SubGroup Customer';
+
+            FieldClass = Normal;
+            TableRelation = FBM_CustGroup.SubGroup where("Group" = field(FBM_Group));
+            ValidateTableRelation = false;
+
+
+        }
+        field(70006; "FBM_GroupDesc"; Text[100])
+        {
+            Caption = 'Group Customer Desc';
+
+            FieldClass = Normal;
+
+
+        }
+        field(70007; "FBM_SubGroupDesc"; Text[100])
+        {
+            Caption = 'SubGroup Customer Desc';
+
+            FieldClass = Normal;
+
+
+
+        }
     }
 
     keys

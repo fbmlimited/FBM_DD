@@ -48,7 +48,7 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
                 util: Codeunit FBM_Utility_DD;
             begin
                 util.updatedetvendle(rec);
-                if FBM_approved = true then begin
+                if FBM_approved1 = true then begin
                     "FBM_approved date1" := System.CurrentDateTime();
                     "FBM_approved user1" := UserId;
                 end
@@ -82,18 +82,7 @@ tableextension 70016 FBM_VendorLEExt_DD extends "Vendor Ledger Entry"
         {
             Caption = 'Inv. Approved';
             DataClassification = ToBeClassified;
-            trigger OnValidate()
-            begin
-                if FBM_approved = true then begin
-                    "FBM_approved date1" := System.CurrentDateTime();
-                    "FBM_approved user1" := UserId;
-                end
-                else begin
-                    Clear("FBM_approved date1");
-                    Clear("FBM_approved user1");
-                end;
 
-            end;
         }
         field(70009; "FBM_approved date2"; DateTime)
         {

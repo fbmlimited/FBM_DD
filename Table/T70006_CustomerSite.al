@@ -77,6 +77,7 @@ table 70006 FBM_CustomerSite_C
 
             Caption = 'Status';
             Editable = true;
+            InitValue = 0;
         }
         field(11; "Contract Code"; Code[4])
         {

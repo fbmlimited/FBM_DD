@@ -6,6 +6,7 @@ page 60135 FBM_SiteMasterList_DD
     ApplicationArea = All;
     SourceTable = FBM_Site;
     CardPageId = FBM_SiteMaster_DD;
+    SourceTableView = where(ActiveRec = const(true));
 
     layout
     {

@@ -248,7 +248,7 @@ page 60134 FBM_CustListMaster_DD
 
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-        [InDataSet]
+
         CanSendEmail: Boolean;
         ExtendedPriceEnabled: Boolean;
         CRMIntegrationEnabled: Boolean;

@@ -27,6 +27,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         field(70013; FBM_Status; Enum "FBM_FA Status_DD")
         {
             Caption = 'FA Status';
+            InitValue = 0;
 
         }
         field(70014; FBM_EGM_Property; text[3])
@@ -39,27 +40,27 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'Subsidiary';
 
         }
-        modify("Serial No.")
-        {
-            trigger OnAfterValidate()
-            var
-                comp: record Company;
-                count: Integer;
-            begin
-                comp.FindFirst();
-                count := 0;
-                repeat
-                    fa.ChangeCompany(comp.Name);
-                    FA.Reset();
-                    FA.SetFilter("Serial No.", Rec."Serial No.");
-                    fa.SetFilter(FBM_Status, '<>%1', fa.FBM_Status::"I. Sold");
-                    fa.SetRange(IsActive, true);
-                    count += fa.Count;
-                until comp.next = 0;
-                if count > 0 then error(Text000, FA."No.");
+        // modify("Serial No.")
+        // {
+        // trigger OnAfterValidate()
+        // var
+        //     comp: record Company;
+        //     count: Integer;
+        // begin
+        //     comp.FindFirst();
+        //     count := 0;
+        //     repeat
+        //         fa.ChangeCompany(comp.Name);
+        //         FA.Reset();
+        //         FA.SetFilter("Serial No.", Rec."Serial No.");
+        //         fa.SetFilter(FBM_Status, '<>%1', fa.FBM_Status::"I. Sold");
+        //         fa.SetRange(IsActive, true);
+        //         count += fa.Count;
+        //     until comp.next = 0;
+        //     if count > 0 then error(Text000, FA."No.");
 
-            end;
-        }
+        // end;
+        // }
 
         field(70016; "FBM_DatePrepared"; Date)
         {

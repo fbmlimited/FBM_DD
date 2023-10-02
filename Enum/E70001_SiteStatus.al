@@ -6,6 +6,6 @@ enum 70001 "FBM_Site Status_DD"
     value(1; "OPERATIONAL") { Caption = 'Operational'; }
     value(2; "HOLD OPERATION") { Caption = 'Hold Operation'; }
     value(3; "STOP OPERATION") { Caption = 'Stop Operation'; }
-    value(4; "NOT YET") { Caption = 'Not Yet'; }
+    value(4; "PRE-OPENING ") { Caption = 'Pre-Opening'; }
 
 }

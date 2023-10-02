@@ -2,6 +2,7 @@ page 60109 FBM_SiteMaster_DD
 {
     Caption = 'Site Master';
     PageType = Card;
+    DataCaptionFields = "Site Code", "Site Name";
 
     ApplicationArea = All;
     SourceTable = FBM_Site;
@@ -31,6 +32,7 @@ page 60109 FBM_SiteMaster_DD
                 field("Site Name"; Rec."Site Name")
                 {
                     ApplicationArea = All;
+
 
                 }
                 field("Site Name 2"; Rec."Site Name 2")
@@ -98,6 +100,31 @@ page 60109 FBM_SiteMaster_DD
                     ApplicationArea = All;
 
                 }
+                field(Version; Rec.Version)
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Valid From"; Rec."Valid From")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Valid To"; Rec."Valid To")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Record Owner"; Rec."Record Owner")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Change Note"; Rec."Change Note")
+                {
+                    ApplicationArea = All;
+
+                }
 
 
             }
@@ -109,6 +136,11 @@ page 60109 FBM_SiteMaster_DD
                     ApplicationArea = Basic, Suite;
                     SubPageLink = Value = FIELD("Site Code");
                 }
+            }
+            part(History; FBM_SiteHistory_DD)
+            {
+                ApplicationArea = Basic, Suite;
+                SubPageLink = "Site Code" = FIELD("Site Code");
             }
         }
 
