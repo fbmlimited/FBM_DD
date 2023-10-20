@@ -177,6 +177,7 @@ page 60109 FBM_SiteMaster_DD
 
 
     begin
+        site.SetFilter("Site Code", '<%1', 'SITE9000');
         site.SetCurrentKey("Site Code");
         if site.FindLast() then
             maxcode := site."Site Code";

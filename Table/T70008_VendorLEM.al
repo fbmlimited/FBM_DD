@@ -544,9 +544,9 @@ table 70008 FBM_VendorLEM
 
 
 
-        field(70000; FBM_approved; Boolean)
+        field(70100; FBM_approved; Boolean)
         {
-            Caption = 'Finance Approved';
+            Caption = 'xxFinance Approved';
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
@@ -561,26 +561,26 @@ table 70008 FBM_VendorLEM
 
             end;
         }
-        field(70001; "FBM_approved date"; DateTime)
+        field(70101; "FBM_approved date"; DateTime)
         {
             Caption = 'Finance Approved Date';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70002; "FBM_approved user"; Text[50])
+        field(70102; "FBM_approved user"; Text[50])
         {
             Caption = 'Finance Approved User';
             DataClassification = ToBeClassified;
             Editable = false;
         }
 
-        field(70003; "FBM_Approver Comment"; Text[50])
+        field(70103; "FBM_Approver Comment"; Text[50])
         {
             Caption = 'Finance Approver Comment';
             DataClassification = ToBeClassified;
             Editable = true;
         }
-        field(70004; FBM_approved1; Boolean)
+        field(70104; FBM_approved1; Boolean)
         {
             Caption = 'AP Approved';
             DataClassification = ToBeClassified;
@@ -600,70 +600,70 @@ table 70008 FBM_VendorLEM
 
             end;
         }
-        field(70005; "FBM_approved date1"; DateTime)
+        field(70105; "FBM_approved date1"; DateTime)
         {
             Caption = 'AP Approved Date';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70006; "FBM_approved user1"; Text[50])
+        field(70106; "FBM_approved user1"; Text[50])
         {
             Caption = 'AP Approved User';
             DataClassification = ToBeClassified;
             Editable = false;
         }
 
-        field(70007; "FBM_Approver Comment1"; Text[50])
+        field(70107; "FBM_Approver Comment1"; Text[50])
         {
             Caption = 'AP Approver Comment';
             DataClassification = ToBeClassified;
             Editable = true;
         }
-        field(70008; FBM_approved2; Boolean)
+        field(70108; FBM_approved2; Boolean)
         {
             Caption = 'Inv. Approved';
             DataClassification = ToBeClassified;
 
 
         }
-        field(70009; "FBM_approved date2"; DateTime)
+        field(70109; "FBM_approved date2"; DateTime)
         {
             Caption = 'Inv. Approved Date';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70010; "FBM_approved user2"; Text[50])
+        field(70110; "FBM_approved user2"; Text[50])
         {
             Caption = 'Inv. Approved User';
             DataClassification = ToBeClassified;
             Editable = false;
         }
 
-        field(70011; "FBM_Approver Comment2"; Text[50])
+        field(70111; "FBM_Approver Comment2"; Text[50])
         {
             Caption = 'Inv. Approver Comment';
             DataClassification = ToBeClassified;
             Editable = true;
         }
-        field(70012; "FBM_Paid"; Boolean)
+        field(70112; "FBM_Paid"; Boolean)
         {
             Caption = 'Paid';
             DataClassification = ToBeClassified;
             Editable = true;
         }
-        field(70013; "FBM_Amount"; decimal)
+        field(70113; "FBM_Amount"; decimal)
         {
             Caption = 'Amount';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70014; "FBM_RemAmount"; decimal)
+        field(70114; "FBM_RemAmount"; decimal)
         {
             Caption = 'Rem. Amount';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70100; "FBM_Default Bank Account"; Code[20])
+        field(70115; "FBM_Default Bank Account"; Code[20])
         {
             TableRelation = "Bank Account";
             Caption = 'Default Bank Account';

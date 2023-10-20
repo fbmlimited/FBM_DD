@@ -3,12 +3,12 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
     fields
     {
         //DEVOPS #622 -- begin
-        field(70000; "FBM_Period Start"; Date)
+        field(70100; "FBM_Period Start"; Date)
         {
             caption = 'Period Start';
             Editable = true;
         }
-        field(70001; "FBM_Period End"; Date)
+        field(70101; "FBM_Period End"; Date)
         {
             caption = 'Period End';
             Editable = true;
@@ -37,11 +37,11 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
             end;
         }
 
-        field(70002; FBM_IsPeriodEnabled; Boolean)
+        field(70102; FBM_IsPeriodEnabled; Boolean)
         {
             caption = 'Period Enabled';
         }
-        field(70003; FBM_Site; Code[20])
+        field(70103; FBM_Site; Code[20])
         {
             Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));

@@ -2,12 +2,12 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
 {
     fields
     {
-        field(70000; FBM_Site; Code[20])
+        field(70100; FBM_Site; Code[20])
         {
             Caption = 'Site';
         }
         //DevOps #619 -- begin
-        field(70001; "FBM_Contract Code"; Code[4])
+        field(70101; "FBM_Contract Code"; Code[4])
         {
 
 
@@ -17,49 +17,49 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         }
         //DevOps #619 -- end
         //DEVOPS #622 -- begin
-        field(70002; "FBM_Period Start"; Date)
+        field(70102; "FBM_Period Start"; Date)
         {
             caption = 'Period Start';
         }
-        field(70003; "FBM_Period End"; Date)
+        field(70103; "FBM_Period End"; Date)
         {
             caption = 'Period End';
         }
-        field(70004; FBM_Segment; Option)
+        field(70104; FBM_Segment; Option)
         {
             caption = 'Segment';
             OptionMembers = " ",Bingo,Spin,Online;
 
         }
-        field(70005; "FBM_LocalCurrAmt"; Decimal)
+        field(70105; "FBM_LocalCurrAmt"; Decimal)
         {
             caption = 'Local Currency Amount';
 
         }
 
-        field(70008; "FBM_Currency2"; code[10])
+        field(70108; "FBM_Currency2"; code[10])
         {
             caption = 'Local Currency ';
             TableRelation = Currency;
 
         }
-        field(70009; "FBM_BeneficiaryBank"; text[100])
+        field(70109; "FBM_BeneficiaryBank"; text[100])
         {
             caption = 'Payment Bank Beneficiary ';
 
         }
-        field(70010; "FBM_BeneficiaryBank2"; text[100])
+        field(70110; "FBM_BeneficiaryBank2"; text[100])
         {
             caption = 'Payment Bank Beneficiary 2 ';
 
         }
-        field(700012; "FBM_Cust Payment Bank Name"; Code[100])
+        field(70112; "FBM_Cust Payment Bank Name"; Code[100])
         {
             caption = 'Payment Bank Name';
 
 
         }
-        field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
+        field(70114; "FBM_Cust Payment Bank Name2"; Code[100])
         {
             caption = 'Payment Bank 2 Name';
 

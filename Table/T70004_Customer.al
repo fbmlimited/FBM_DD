@@ -749,18 +749,18 @@ table 70004 FBM_Customer
         {
             Caption = 'Active Record';
         }
-        field(70001; "FBM_Separate Halls Inv."; Boolean)
+        field(70101; "FBM_Separate Halls Inv."; Boolean)
         {
             Caption = 'Separate Halls Invoice';
         }
-        field(70002; "FBM_Customer Since"; Date)
+        field(70102; "FBM_Customer Since"; Date)
         {
             Caption = 'Customer Since';
         }
 
 
 
-        field(70030; "FBM_SubGroup"; Text[100])
+        field(70130; "FBM_SubGroup"; Text[100])
         {
             Caption = 'SubGroup Customer';
             Description = 'ONETECH';
@@ -771,7 +771,7 @@ table 70004 FBM_Customer
 
         }
 
-        field(70031; "FBM_Group"; Text[100])
+        field(70131; "FBM_Group"; Text[100])
         {
             Caption = 'Group Customer';
             Description = 'ONETECH';
@@ -780,19 +780,19 @@ table 70004 FBM_Customer
             ValidateTableRelation = false;
 
         }
-        field(70034; "FBM_Payment Bank Code"; Code[20])//no
+        field(70134; "FBM_Payment Bank Code"; Code[20])//no
         {
             caption = 'Payment bank code';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
-        field(70035; "FBM_Payment Bank Code2"; Code[20])//no
+        field(70135; "FBM_Payment Bank Code2"; Code[20])//no
         {
             caption = 'Payment bank code 2';
             DataClassification = ToBeClassified;
             TableRelation = "Bank Account"."No." where(FBM_IsPayment = const(true));
         }
-        field(70036; "FBM_Company1"; TEXT[3])
+        field(70136; "FBM_Company1"; TEXT[3])
         {
             Caption = 'Company 1';
             trigger
@@ -814,7 +814,7 @@ table 70004 FBM_Customer
 
             end;
         }
-        field(70037; "FBM_Company2"; TEXT[3])
+        field(70137; "FBM_Company2"; TEXT[3])
         {
             Caption = 'Company 2';
             trigger
@@ -837,7 +837,7 @@ table 70004 FBM_Customer
             end;
         }
 
-        field(70038; "FBM_Company3"; TEXT[3])
+        field(70138; "FBM_Company3"; TEXT[3])
         {
             Caption = 'Company 3';
             trigger
@@ -859,12 +859,12 @@ table 70004 FBM_Customer
 
             end;
         }
-        field(70039; "FBM_Name 3"; text[100])
+        field(70139; "FBM_Name 3"; text[100])
         {
             Caption = 'Group Name';
 
         }
-        field(70040; FBM_LastAdquiredDate; Date)
+        field(70140; FBM_LastAdquiredDate; Date)
         {
             Caption = 'Last Adquired Date';
 

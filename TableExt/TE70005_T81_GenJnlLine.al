@@ -2,26 +2,33 @@ tableextension 70005 FBM_GenJnlLineExt_DD extends "Gen. Journal Line"
 {
     fields
     {
-        field(70000; "FBM_Period Start"; Date)
+        field(70100; "FBM_Period Start"; Date)
         {
             caption = 'Period Start';
             DataClassification = ToBeClassified;
         }
-        field(70001; "FBM_Period End"; Date)
+        field(70101; "FBM_Period End"; Date)
         {
             caption = 'Period End';
             DataClassification = ToBeClassified;
         }
-        field(70003; FBM_Segment; Option)
+        field(70103; FBM_Segment; Option)
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
 
         }
-        field(70004; FBM_Site; Code[20])
+        field(70104; FBM_Site; Code[20])
         {
             Caption = 'Site';
 
+
+        }
+        field(70010; FBM_DueDate_FF; Date)
+        {
+            Caption = 'DueDate';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Purch. Inv. Header"."Due Date" where("No." = field("Applies-to Doc. No.")));
 
         }
     }

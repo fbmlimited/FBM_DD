@@ -20,7 +20,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 end;
             end;
         }
-        field(70000; FBM_Site; Code[20])
+        field(70100; FBM_Site; Code[20])
         {
             Caption = 'Site';
             TableRelation = FBM_CustomerSite_C."Site Code" where("Customer No." = field("Bill-to Customer No."));
@@ -54,13 +54,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
         }
 
-        field(70001; "FBM_Contract Code"; Code[4])
+        field(70101; "FBM_Contract Code"; Code[4])
         {
             caption = 'Contract';
 
         }
 
-        field(70002; "FBM_Period Start"; Date)
+        field(70102; "FBM_Period Start"; Date)
         {
             caption = 'Period Start';
 
@@ -69,7 +69,7 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 UpdateDateLines(Rec);
             end;
         }
-        field(70003; "FBM_Period End"; Date)
+        field(70103; "FBM_Period End"; Date)
         {
             caption = 'Period End';
             trigger OnValidate()
@@ -77,13 +77,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 UpdateDateLines(Rec);
             end;
         }
-        field(70004; FBM_Segment; Option)
+        field(70104; FBM_Segment; Option)
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
 
         }
-        field(70005; "FBM_LocalCurrAmt"; Decimal)
+        field(70105; "FBM_LocalCurrAmt"; Decimal)
         {
             caption = 'Currency 2 Amount';
 
@@ -91,30 +91,30 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
 
 
-        field(70008; "FBM_Currency2"; code[10])
+        field(70108; "FBM_Currency2"; code[10])
         {
             caption = 'Currency 2 ';
             TableRelation = Currency;
 
         }
 
-        field(70009; "FBM_BeneficiaryBank"; text[100])
+        field(70109; "FBM_BeneficiaryBank"; text[100])
         {
             caption = 'Payment Bank Beneficiary ';
 
         }
-        field(70010; "FBM_BeneficiaryBank2"; text[100])
+        field(70110; "FBM_BeneficiaryBank2"; text[100])
         {
             caption = 'Payment Bank Beneficiary 2 ';
 
         }
-        field(700012; "FBM_Cust Payment Bank Name"; Code[100])
+        field(70112; "FBM_Cust Payment Bank Name"; Code[100])
         {
             caption = 'Payment Bank Name';
 
 
         }
-        field(700014; "FBM_Cust Payment Bank Name2"; Code[100])
+        field(70114; "FBM_Cust Payment Bank Name2"; Code[100])
         {
             caption = 'payment Bank 2 Name';
 
@@ -128,13 +128,13 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
 
 
-        field(70013; "FBM_Billing Statement"; Boolean)
+        field(70113; "FBM_Billing Statement"; Boolean)
         {
             Caption = 'Billing Statement';
 
 
         }
-        field(70023; FBM_Signature_pic; MediaSet)
+        field(70123; FBM_Signature_pic; MediaSet)
         {
             caption = 'Signature';
 

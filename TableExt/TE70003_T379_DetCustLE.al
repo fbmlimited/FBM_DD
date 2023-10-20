@@ -3,7 +3,7 @@ tableextension 70003 FBM_DetCustLEExt_DD extends "Detailed Cust. Ledg. Entry"
     fields
     {
 
-        field(70000; "FBM_Period Start"; Date)
+        field(70100; "FBM_Period Start"; Date)
         {
             caption = 'Period Start';
             DataClassification = ToBeClassified;

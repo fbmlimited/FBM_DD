@@ -2,7 +2,7 @@ enum 70000 "FBM_FA Status_DD"
 {
     Extensible = true;
     AssignmentCompatibility = true;
-    value(0; " ") { Caption = ' '; }
+    value(0; "DBC SYSTEM ") { Caption = 'DBC System'; }
     value(1; "A. Manufacturing") { Caption = 'A. Manufacturing'; }
     value(2; "B. Transit") { Caption = 'B. In Transit'; }
     value(3; "C. stock") { Caption = 'C. In Stock (new machines)'; }

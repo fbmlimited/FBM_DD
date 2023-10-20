@@ -3,7 +3,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
     fields
     {
 
-        field(70001; IsActive; Boolean)
+        field(70101; IsActive; Boolean)
         {
             Caption = 'Is Active';
 
@@ -12,7 +12,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
 
 
 
-        field(70007; "FBM_Site"; code[20])
+        field(70107; "FBM_Site"; code[20])
         {
             Caption = 'Site';
             TableRelation = FBM_Site;
@@ -24,18 +24,18 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
 
 
 
-        field(70013; FBM_Status; Enum "FBM_FA Status_DD")
+        field(70113; FBM_Status; Enum "FBM_FA Status_DD")
         {
             Caption = 'FA Status';
             InitValue = 0;
 
         }
-        field(70014; FBM_EGM_Property; text[3])
+        field(70114; FBM_EGM_Property; text[3])
         {
             Caption = 'Property';
 
         }
-        field(70015; FBM_Subsidiary; text[20])
+        field(70115; FBM_Subsidiary; text[20])
         {
             Caption = 'Subsidiary';
 
@@ -62,39 +62,39 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         // end;
         // }
 
-        field(70016; "FBM_DatePrepared"; Date)
+        field(70116; "FBM_DatePrepared"; Date)
         {
             Caption = 'Date Prepared';
         }
-        field(70017; FBM_Brand; Option)
+        field(70117; FBM_Brand; Option)
         {
             Caption = 'Brand';
             OptionCaption = ' ,FBM,DINGO';
             OptionMembers = " ",FBM,DINGO;
         }
-        field(70018; FBM_Lessee; text[20])
+        field(70118; FBM_Lessee; text[20])
         {
             Caption = 'Lessee';
 
         }
-        field(70019; FBM_Sma; DateTime)
+        field(70119; FBM_Sma; DateTime)
         {
             Caption = 'SystemModifiedAt Original';
 
         }
-        field(70020; FBM_Dupecomp; text[3])
+        field(70120; FBM_Dupecomp; text[3])
         {
             Caption = 'Dupe';
 
         }
-        field(70021; FBM_IsEGM; Boolean)
+        field(70121; FBM_IsEGM; Boolean)
         {
             Caption = 'Is EGM';
             FieldClass = FlowField;
             CalcFormula = lookup("FA Subclass".FBM_EGM where(Code = field("FA Subclass Code")));
 
         }
-        field(70022; FBM_Sca; DateTime)
+        field(70122; FBM_Sca; DateTime)
         {
             Caption = 'FA Created';
 
