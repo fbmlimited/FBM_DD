@@ -12,7 +12,7 @@ page 60109 FBM_SiteMaster_DD
     {
         area(Content)
         {
-            group(header)
+            group(Header)
             {
                 field(maxcode; maxcode)
                 {
@@ -21,7 +21,7 @@ page 60109 FBM_SiteMaster_DD
                     Editable = false;
                 }
             }
-            group(general)
+            group(General)
             {
 
                 field("Site Code"; rec."Site Code")
@@ -177,7 +177,7 @@ page 60109 FBM_SiteMaster_DD
 
 
     begin
-        site.SetFilter("Site Code", '<%1', 'SITE9000');
+        site.SetFilter("Site Code", '<%1', 'SITE9990');
         site.SetCurrentKey("Site Code");
         if site.FindLast() then
             maxcode := site."Site Code";

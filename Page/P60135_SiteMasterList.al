@@ -116,6 +116,7 @@ page 60135 FBM_SiteMasterList_DD
 
 
     begin
+        site.SetFilter("Site Code", '<%1', 'SITE9990');
         site.SetCurrentKey("Site Code");
         if site.FindLast() then
             maxcode := site."Site Code";
