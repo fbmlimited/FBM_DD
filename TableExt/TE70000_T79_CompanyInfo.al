@@ -63,6 +63,21 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Bank Address';
         }
+        field(70021; FBM_Conso1; Enum FBM_Conso_DD)
+        {
+
+            caption = 'Conso 1';
+        }
+        field(70022; FBM_Conso2; Enum FBM_Conso_DD)
+        {
+
+            caption = 'Conso 2';
+        }
+        field(70023; FBM_Conso3; Enum FBM_Conso_DD)
+        {
+
+            caption = 'Conso 3';
+        }
     }
 
 }

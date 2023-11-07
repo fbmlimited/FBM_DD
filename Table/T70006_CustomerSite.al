@@ -78,6 +78,27 @@ table 70006 FBM_CustomerSite_C
             Caption = 'Status';
             Editable = true;
             InitValue = 0;
+            trigger
+            OnValidate()
+            var
+                csite: record FBM_CustomerSite_C;
+                cos: record FBM_CustOpSite;
+            begin
+                csite.SetRange(SiteGrCode, rec.SiteGrCode);
+                csite.setfilter(status, '%1|%2', rec.Status::"HOLD OPERATION", rec.Status::OPERATIONAL);
+                if csite.FindFirst() then
+                    error('Found an existing active record for this site with customer %1', csite."Customer No.");
+                cos.Reset();
+                cos.SetRange("Site Loc Code", rec."Site Code");
+                cos.SetRange("Cust Loc Code", rec."Customer No.");
+                if cos.FindFirst() then begin
+                    if (rec.Status <> rec.status::OPERATIONAL) and (rec.Status <> rec.status::"HOLD OPERATION") then
+                        cos.IsActive := false else
+                        cos.IsActive := true;
+                    cos.Modify()
+                end
+;
+            end;
         }
         field(11; "Contract Code"; Code[4])
         {

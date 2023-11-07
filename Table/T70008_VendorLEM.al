@@ -546,7 +546,7 @@ table 70008 FBM_VendorLEM
 
         field(70100; FBM_approved; Boolean)
         {
-            Caption = 'xxFinance Approved';
+            Caption = 'Finance Approved';
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
