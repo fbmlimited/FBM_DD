@@ -61,6 +61,7 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             Caption = 'Requisition Nr.';
 
         }
+
     }
 
 }

@@ -10,12 +10,14 @@ table 70006 FBM_CustomerSite_C
             DataClassification = ToBeClassified;
             TableRelation = Customer."No.";
             Caption = 'Customer Code';
+            ValidateTableRelation = false;
         }
         field(2; "SiteGrCode"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = FBM_Site;
             Caption = 'Site Group Code';
+            ValidateTableRelation = false;
 
         }
         field(3; "Site Code"; Code[20])
@@ -86,6 +88,7 @@ table 70006 FBM_CustomerSite_C
             begin
                 csite.SetRange(SiteGrCode, rec.SiteGrCode);
                 csite.setfilter(status, '%1|%2', rec.Status::"HOLD OPERATION", rec.Status::OPERATIONAL);
+                CSITE.SetFilter("Site Code", '<>%1', REC."Site Code");
                 if csite.FindFirst() then
                     error('Found an existing active record for this site with customer %1', csite."Customer No.");
                 cos.Reset();
@@ -178,6 +181,7 @@ table 70006 FBM_CustomerSite_C
 
 
 
+
     procedure CheckUniqueSite(SiteCode: Code[20])
     var
         CustSite: Record FBM_CustomerSite_C;
@@ -197,15 +201,19 @@ table 70006 FBM_CustomerSite_C
     begin
         FASetup.Get();
         CompanyInfo.Get();
-        //if FASetup."Enable FA Site Tracking" then begin
+
         if CompanyInfo.FBM_CustIsOp then begin
-            //check if record already exists
+
             customer.get(CustSite."Customer No.");
             if country.get(customer."Country/Region Code") then
                 COS.SetRange(Subsidiary, CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3);
             cos.SetRange("Customer No.", customer.FBM_GrCode);
             cos.SetRange("Operator No.", customer.FBM_GrCode);
             cos.SetRange("Site Code", CustSite.SiteGrCode);
+            if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
+                cos.SetRange(ActiveRec, true)
+            else
+                cos.SetRange(ActiveRec, false);
             if not cos.FindFirst() then begin
                 COS.Init();
                 COS."Customer No." := customer.FBM_GrCode;
@@ -217,14 +225,15 @@ table 70006 FBM_CustomerSite_C
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";
+                cos.Status := Status;
                 cos."Valid From" := Today;
                 cos."Valid To" := DMY2Date(31, 12, 2999);
                 CompanyInfo.testfield(FBM_FALessee);
-                if country.get(customer."Country/Region Code") then begin
+                // if country.get(customer."Country/Region Code") then begin
 
-                    country.testfield(FBM_Country3);
-                    cos.Subsidiary := CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3;
-                end;
+                //     country.testfield(FBM_Country3);
+                cos.Subsidiary := CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3;
+                // end;
                 COS.Insert();
 
             end
@@ -238,8 +247,9 @@ table 70006 FBM_CustomerSite_C
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";
-                cos."Valid From" := Today;
-                cos."Valid To" := DMY2Date(31, 12, 2999);
+                cos.Status := CustSite.Status;
+                //cos."Valid From" := Today;
+                //cos."Valid To" := DMY2Date(31, 12, 2999);
                 CompanyInfo.testfield(FBM_FALessee);
                 if country.get(customer."Country/Region Code") then begin
 
@@ -255,4 +265,20 @@ table 70006 FBM_CustomerSite_C
 
     end;
     //end;
+    procedure GetLocationsIncludingUnspecifiedLocation(IncludeOnlyUnspecifiedLocation: Boolean; ExcludeInTransitLocations: Boolean)
+    var
+        Location: Record FBM_CustomerSite_C;
+    begin
+
+
+
+
+        if Location.FindSet() then
+            repeat
+                Init();
+                Copy(Location);
+                Insert();
+            until Location.Next() = 0;
+    end;
+
 }

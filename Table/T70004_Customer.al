@@ -765,9 +765,9 @@ table 70004 FBM_Customer
             Caption = 'SubGroup Customer';
             Description = 'ONETECH';
             FieldClass = Normal;
-            TableRelation = FBM_CustGroup.SubGroup where("Group Name" = field("FBM_Group"), IsGroup = const(false));
+            // TableRelation = FBM_CustGroup.SubGroup where("Group Name" = field("FBM_Group"), IsGroup = const(false));
 
-            ValidateTableRelation = false;
+            // ValidateTableRelation = false;
 
         }
 
@@ -776,10 +776,12 @@ table 70004 FBM_Customer
             Caption = 'Group Customer';
             Description = 'ONETECH';
             FieldClass = Normal;
-            TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
-            ValidateTableRelation = false;
+            // TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
+            // ValidateTableRelation = false;
 
         }
+
+
         field(70134; "FBM_Payment Bank Code"; Code[20])//no
         {
             caption = 'Payment bank code';
@@ -861,7 +863,7 @@ table 70004 FBM_Customer
         }
         field(70139; "FBM_Name 3"; text[100])
         {
-            Caption = 'Group Name';
+            Caption = 'Orig. Group Name';
 
         }
         field(70140; FBM_LastAdquiredDate; Date)
