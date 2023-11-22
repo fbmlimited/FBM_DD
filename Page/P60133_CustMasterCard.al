@@ -40,10 +40,10 @@ page 60133 FBM_CustCardMaster_DD
                     ShowMandatory = true;
                     ToolTip = 'Specifies the customer''s name. This name will appear on all sales documents for the customer.';
 
-                    trigger OnValidate()
-                    begin
-                        CurrPage.Update(true);
-                    end;
+                    // trigger OnValidate()
+                    // begin
+                    //     CurrPage.Update(true);
+                    // end;
                 }
                 field("Name 2"; rec."Name 2")
                 {

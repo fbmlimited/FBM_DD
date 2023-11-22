@@ -210,10 +210,11 @@ table 70006 FBM_CustomerSite_C
             cos.SetRange("Customer No.", customer.FBM_GrCode);
             cos.SetRange("Operator No.", customer.FBM_GrCode);
             cos.SetRange("Site Code", CustSite.SiteGrCode);
-            if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
-                cos.SetRange(ActiveRec, true)
-            else
-                cos.SetRange(ActiveRec, false);
+            // if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
+            //     cos.SetRange(ActiveRec, true)
+            // else
+            //     cos.SetRange(ActiveRec, false);
+            cos.SetRange(Status, xrec.Status);
             if not cos.FindFirst() then begin
                 COS.Init();
                 COS."Customer No." := customer.FBM_GrCode;
@@ -221,7 +222,10 @@ table 70006 FBM_CustomerSite_C
                 COS."Site Code" := CustSite.SiteGrCode;
                 cos."Cust Loc Code" := customer."No.";
                 cos.IsActive := true;
-                cos.ActiveRec := true;
+                if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
+                    cos.ActiveRec := true
+                else
+                    cos.ActiveRec := false;
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";
@@ -243,7 +247,11 @@ table 70006 FBM_CustomerSite_C
                 COS."Site Code" := CustSite.SiteGrCode;
                 cos."Cust Loc Code" := customer."No.";
                 cos.IsActive := true;
-                cos.ActiveRec := true;
+                cos.IsActive := true;
+                if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
+                    cos.ActiveRec := true
+                else
+                    cos.ActiveRec := false;
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";

@@ -38,6 +38,9 @@ table 70004 FBM_Customer
             begin
                 if ("Search Name" = UpperCase(xRec.Name)) or ("Search Name" = '') then
                     "Search Name" := Name;
+
+                IncVersion();
+
             end;
         }
         field(3; "Search Name"; Code[100])
@@ -51,10 +54,16 @@ table 70004 FBM_Customer
         field(5; Address; Text[100])
         {
             Caption = 'Address';
+            trigger
+           OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(6; "Address 2"; Text[50])
         {
             Caption = 'Address 2';
+
         }
         field(7; City; Text[30])
         {
@@ -65,6 +74,7 @@ table 70004 FBM_Customer
             //This property is currently not supported
             //TestTableRelation = false;
             ValidateTableRelation = false;
+
 
             trigger OnLookup()
             begin
@@ -79,6 +89,8 @@ table 70004 FBM_Customer
 
 
                 PostCode.ValidateCity(City, "Post Code", County, "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
+
+                IncVersion();
 
 
             end;
@@ -264,6 +276,9 @@ table 70004 FBM_Customer
                     else
                         rec.FBM_Company1 := 'FBM';
                 end;
+
+                IncVersion();
+
             end;
 
         }
@@ -377,6 +392,11 @@ table 70004 FBM_Customer
         field(86; "VAT Registration No."; Text[20])
         {
             Caption = 'VAT Registration No.';
+            trigger
+           OnValidate()
+            begin
+                IncVersion();
+            end;
 
 
         }
@@ -428,6 +448,7 @@ table 70004 FBM_Customer
             //TestTableRelation = false;
             ValidateTableRelation = false;
 
+
             trigger OnLookup()
             begin
 
@@ -440,6 +461,8 @@ table 70004 FBM_Customer
             trigger OnValidate()
             begin
 
+                IncVersion();
+
 
                 PostCode.ValidatePostCode(City, "Post Code", County, "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
 
@@ -450,6 +473,11 @@ table 70004 FBM_Customer
         {
             CaptionClass = '5,1,' + "Country/Region Code";
             Caption = 'County';
+            trigger
+           OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(93; "EORI Number"; Text[40])
         {
@@ -1073,6 +1101,7 @@ table 70004 FBM_Customer
         maxver: Integer;
         stop: Boolean;
     begin
+
         commit;
         cust.setrange("No.", rec."No.");
 
@@ -1102,6 +1131,7 @@ table 70004 FBM_Customer
             cust2."Valid From" := Today;
             cust2."Valid To" := DMY2Date(31, 12, 2999);
             cust2."Record Owner" := UserId;
+
 
             cust2.Modify();
             cust.setrange(Name, '');
