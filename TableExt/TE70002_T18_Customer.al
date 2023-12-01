@@ -21,7 +21,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
             Caption = 'Group Customer';
 
             FieldClass = Normal;
-            TableRelation = FBM_CustGroup;
+            TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
             ValidateTableRelation = false;
 
         }
@@ -30,7 +30,7 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
             Caption = 'SubGroup Customer';
 
             FieldClass = Normal;
-            TableRelation = FBM_CustGroup.SubGroup where("Group" = field(FBM_Group));
+            TableRelation = FBM_CustGroup.SubGroup where("Group" = field(FBM_Group), IsGroup = const(false));
             ValidateTableRelation = false;
 
 
