@@ -61,7 +61,89 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             Caption = 'Requisition Nr.';
 
         }
+        field(70131; "FBM_Pedimento1"; Text[2])
+        {
+            Caption = 'Ped1';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70132; "FBM_Pedimento2"; Text[2])
+        {
+            Caption = 'Ped2';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70133; "FBM_Pedimento3"; Text[4])
+        {
+            Caption = 'Ped3';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70134; "FBM_Pedimento4"; Text[7])
+        {
+            Caption = 'Ped4';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70135; "FBM_Pedimento"; Text[18])
+        {
+            Caption = 'Pedimento';
+            Editable = false;
+
+        }
 
     }
+
+    local procedure updateped()
+    var
+        purchline: record "Purchase Line";
+    begin
+
+        rec.FBM_Pedimento := rec.FBM_Pedimento1 + ' ' + rec.FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + ' ' + rec.FBM_Pedimento4;
+        purchline.SetRange("Document Type", rec."Document Type");
+        purchline.SetRange("Document No.", rec."No.");
+        purchline.SetFilter(FBM_Pedimento, '<>%1', '');
+        if purchline.FindFirst() then begin
+            if purchline.FBM_Pedimento <> '' then begin
+                if confirm('This change will overwrite the Pedimento in all the lines. Do you want to continue?') then begin
+                    purchline.Reset();
+                    purchline.SetRange("Document Type", rec."Document Type");
+                    purchline.SetRange("Document No.", rec."No.");
+                    purchline.ModifyAll(FBM_Pedimento1, rec.FBM_Pedimento1);
+                    purchline.ModifyAll(FBM_Pedimento2, rec.FBM_Pedimento2);
+                    purchline.ModifyAll(FBM_Pedimento3, rec.FBM_Pedimento3);
+                    purchline.ModifyAll(FBM_Pedimento4, rec.FBM_Pedimento4);
+                    purchline.ModifyAll(FBM_Pedimento, rec.FBM_Pedimento);
+                end;
+            end;
+        end
+        else begin
+            purchline.Reset();
+            purchline.SetRange("Document Type", rec."Document Type");
+            purchline.SetRange("Document No.", rec."No.");
+            purchline.ModifyAll(FBM_Pedimento1, rec.FBM_Pedimento1);
+            purchline.ModifyAll(FBM_Pedimento2, rec.FBM_Pedimento2);
+            purchline.ModifyAll(FBM_Pedimento3, rec.FBM_Pedimento3);
+            purchline.ModifyAll(FBM_Pedimento4, rec.FBM_Pedimento4);
+            purchline.ModifyAll(FBM_Pedimento, rec.FBM_Pedimento);
+        end;
+
+    end;
 
 }

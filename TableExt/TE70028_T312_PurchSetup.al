@@ -8,6 +8,12 @@ tableextension 70028 FBM_PurchSetupExt_DD extends "Purchases & Payables Setup"
 
 
         }
+        field(70101; FBM_Use_Pedimento; boolean)
+        {
+            Caption = 'Use "Pedimento"';
+
+
+        }
 
     }
 

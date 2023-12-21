@@ -104,6 +104,7 @@ page 60135 FBM_SiteMasterList_DD
                        OnOpenPage()
     begin
         getmaxsite();
+        rec.SetRange(ActiveRec, true);
 
     end;
 

@@ -991,6 +991,7 @@ table 70004 FBM_Customer
                 customer.name := rec.Name;
                 customer."Name 2" := rec."Name 2";
                 customer."FBM_Name 3" := rec."FBM_Name 3";
+                customer."Search Name":=rec."Search Name";
                 customer.Address := rec.Address;
                 customer."Address 2" := rec."Address 2";
                 customer."Post Code" := rec."Post Code";

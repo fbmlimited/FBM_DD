@@ -1,19 +1,7 @@
-tableextension 70038 FBM_RevEntryExt_DD extends "Reservation Entry"
+tableextension 70040 FBM_PurchInvLineExt_DD extends "Purch. Inv. Line"
 {
     fields
     {
-        field(70100; FBM_Site; code[20])
-        {
-            Caption = 'Site';
-            TableRelation = FBM_CustomerSite_C."Site Code";
-            ValidateTableRelation = false;
-        }
-        field(70101; FBM_BinCode; Code[20])
-        {
-            Caption = 'Bin Code';
-
-
-        }
         field(70131; "FBM_Pedimento1"; Text[2])
         {
             Caption = 'Ped1';
@@ -43,6 +31,7 @@ tableextension 70038 FBM_RevEntryExt_DD extends "Reservation Entry"
             Editable = false;
 
         }
+
     }
 
 }

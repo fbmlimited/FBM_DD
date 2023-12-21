@@ -242,6 +242,7 @@ page 60134 FBM_CustListMaster_DD
     begin
 
         getmaxcust();
+        rec.SetRange(ActiveRec, true);
     end;
 
 
