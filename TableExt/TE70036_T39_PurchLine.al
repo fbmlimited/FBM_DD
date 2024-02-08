@@ -85,9 +85,14 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
     end;
 
     local procedure updateped()
+    var
+        purchheader: record "Purchase Header";
     begin
-
-        rec.FBM_Pedimento := rec.FBM_Pedimento1 + ' ' + rec.FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + ' ' + rec.FBM_Pedimento4;
+        if purchheader.get(rec."Document Type", rec."Document No.") then
+            if purchheader.FBM_Pedimento = '' then
+                rec.FBM_Pedimento := rec.FBM_Pedimento1 + ' ' + rec.FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + ' ' + rec.FBM_Pedimento4
+            else
+                error('Pedimento in the header must be blank!');
 
     end;
 }

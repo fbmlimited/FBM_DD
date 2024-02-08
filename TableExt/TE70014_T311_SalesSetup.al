@@ -11,6 +11,10 @@ tableextension 70014 FBM_SalesSetupExt_DD extends "Sales & Receivables Setup"
             caption = 'Period Mandatory';
 
         }
+        field(70103; "FBM_Custtmp"; code[20])
+        {
+
+        }
     }
     var
 }

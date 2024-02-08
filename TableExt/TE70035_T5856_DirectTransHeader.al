@@ -8,7 +8,7 @@ tableextension 70035 FBM_DirectTransHeaderExt_DD extends "Direct Trans. Header"
             TableRelation = FBM_CustomerSite_C."Site Code";
             ValidateTableRelation = false;
         }
-        field(700001; FBM_SiteTo; code[20])
+        field(70001; FBM_SiteTo; code[20])
         {
             Caption = 'Site To';
             TableRelation = FBM_CustomerSite_C."Site Code";

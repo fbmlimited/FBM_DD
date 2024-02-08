@@ -51,13 +51,13 @@ tableextension 70012 FBM_SCHeaderExt_DD extends "Sales Cr.Memo Header"
             caption = 'Payment Bank Beneficiary 2 ';
 
         }
-        field(700112; "FBM_Cust Payment Bank Name"; Code[100])
+        field(70112; "FBM_Cust Payment Bank Name"; Code[100])
         {
             caption = 'Payment Bank Name';
 
 
         }
-        field(700114; "FBM_Cust Payment Bank Name2"; Code[100])
+        field(70114; "FBM_Cust Payment Bank Name2"; Code[100])
         {
             caption = 'Payment Bank 2 Name';
 

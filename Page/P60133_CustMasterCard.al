@@ -50,9 +50,9 @@ page 60133 FBM_CustCardMaster_DD
                     ApplicationArea = All;
                     Importance = Additional;
                     ToolTip = 'Specifies an additional part of the name.';
-                    Visible = false;
+                    //Visible = false;
                 }
-                field("FBM_Name 3"; Rec."FBM_Name 3")
+                field("FBM_Name 3"; Rec."FBM_Name3")
                 {
                     ApplicationArea = All;
                     Importance = Additional;

@@ -7,6 +7,16 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             Caption = 'Site';
             TableRelation = FBM_Site;
             ValidateTableRelation = false;
+            trigger
+            OnValidate()
+            var
+                purchline: record "Purchase Line";
+            begin
+                purchline.SetRange("Document Type", rec."Document Type");
+                purchline.SetRange("Document No.", rec."No.");
+                purchline.ModifyAll(FBM_Site, rec.FBM_Site);
+
+            end;
         }
 
         field(70120; "FBM_Consignee"; code[20])

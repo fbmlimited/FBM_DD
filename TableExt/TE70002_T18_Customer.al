@@ -59,6 +59,13 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         field(70136; "FBM_Name 3"; text[100])
         {
             Caption = 'Group Name';
+            ObsoleteState = Removed;
+
+        }
+        field(70133; "FBM_Name3"; text[100])
+        {
+            Caption = 'Group Name';
+
 
         }
         field(70134; "FBM_Payment Bank Code"; Code[20])

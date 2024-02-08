@@ -808,7 +808,12 @@ table 70004 FBM_Customer
             // ValidateTableRelation = false;
 
         }
+        field(70133; "FBM_Name3"; text[100])
+        {
+            Caption = 'Group Name';
 
+
+        }
 
         field(70134; "FBM_Payment Bank Code"; Code[20])//no
         {
@@ -892,6 +897,7 @@ table 70004 FBM_Customer
         field(70139; "FBM_Name 3"; text[100])
         {
             Caption = 'Orig. Group Name';
+            ObsoleteState = Removed;
 
         }
         field(70140; FBM_LastAdquiredDate; Date)
@@ -990,8 +996,8 @@ table 70004 FBM_Customer
             if customer.FindFirst() then begin
                 customer.name := rec.Name;
                 customer."Name 2" := rec."Name 2";
-                customer."FBM_Name 3" := rec."FBM_Name 3";
-                customer."Search Name":=rec."Search Name";
+                customer."FBM_Name3" := rec."FBM_Name3";
+                customer."Search Name" := rec."Search Name";
                 customer.Address := rec.Address;
                 customer."Address 2" := rec."Address 2";
                 customer."Post Code" := rec."Post Code";

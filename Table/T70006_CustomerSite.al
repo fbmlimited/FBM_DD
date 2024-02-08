@@ -2,6 +2,7 @@ table 70006 FBM_CustomerSite_C
 {
     DataClassification = ToBeClassified;
     LookupPageId = FBM_CustSiteLookup_DD;
+    DrillDownPageId = FBM_SiteList_DD;
 
     fields
     {
@@ -31,6 +32,7 @@ table 70006 FBM_CustomerSite_C
             CalcFormula = lookup(FBM_Site."Site Name" where("Site Code" = field(SiteGrCode), ActiveRec = const(true)));
             Caption = 'Site Name';
             Editable = false;
+
         }
         field(5; Address_FF; Text[250])
         {
@@ -138,7 +140,11 @@ table 70006 FBM_CustomerSite_C
     }
     fieldgroups
     {
-        fieldgroup(dropdown; "Site Code", SiteGrCode, "Site Name_FF")
+        fieldgroup(DropDown; "Site Code", SiteGrCode, "Site Name_FF")
+        {
+
+        }
+        fieldgroup(brick; "Site Code", SiteGrCode, "Site Name_FF")
         {
 
         }

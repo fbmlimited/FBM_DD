@@ -14,6 +14,12 @@ tableextension 70028 FBM_PurchSetupExt_DD extends "Purchases & Payables Setup"
 
 
         }
+        field(70102; FBM_PurchPhone; Text[100])
+        {
+            Caption = 'Purchases Phone';
+
+
+        }
 
     }
 
