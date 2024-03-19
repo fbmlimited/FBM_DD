@@ -11,6 +11,7 @@ table 70014 FBM_ListValues
         {
             Caption = 'Type';
             TableRelation = FBM_ListValues where(type = CONST('TYPE'));
+            ValidateTableRelation = FALSE;
         }
         field(2; Ord; Integer)
         {

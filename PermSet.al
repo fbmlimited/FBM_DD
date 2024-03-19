@@ -17,5 +17,7 @@ permissionset 70000 Global
         tabledata FBM_VendorLEM = RIMD,
         tabledata FBM_WSBuffer = RIMD,
         tabledata FBM_BankAccountTMP = RIMD,
-        tabledata FBM_CustomerSite_C = RIMD;
+        tabledata FBM_CustomerSite_C = RIMD,
+        tabledata FBM_Notes = RIMD,
+        tabledata FBM_ListValues = RIMD;
 }

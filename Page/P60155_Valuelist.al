@@ -2,6 +2,9 @@ page 60155 FBM_ValueList_DD
 {
     Caption = 'Value List Type';
     PageType = List;
+    ApplicationArea = all;
+    UsageCategory = Lists;
+
 
     SourceTable = FBM_ListValues;
 
@@ -14,12 +17,12 @@ page 60155 FBM_ValueList_DD
                 field(Type; Rec.Type)
                 {
                     ApplicationArea = All;
-                    Visible = false;
+                    // Visible = false;
                 }
                 field(Ord; Rec.Ord)
                 {
                     ApplicationArea = All;
-                    Visible = false;
+                    // Visible = false;
                 }
                 field(Value; Rec.Value)
                 {

@@ -48,6 +48,10 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
             ValidateTableRelation = false;
 
         }
+        field(70104; FBM_PO_Customer; Code[20])
+        {
+            caption = 'Customer''s PO';
+        }
         modify("No.")
         {
             trigger OnAfterValidate()

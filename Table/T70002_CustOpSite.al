@@ -39,7 +39,7 @@ table 70002 FBM_CustOpSite
         }
         field(5; IsActive; Boolean)
         {
-            Caption = 'Active Record';
+            Caption = 'Is Active Record';
         }
         field(8; Status; enum "FBM_Site Status_DD")
         {

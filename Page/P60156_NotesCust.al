@@ -10,7 +10,7 @@ page 60156 FBM_NotesCust_DD
         area(Content)
         {
 
-            group(GroupName)
+            group(System)
             {
                 field(EntryNo; Rec.EntryNo)
                 {
@@ -32,6 +32,9 @@ page 60156 FBM_NotesCust_DD
                     ApplicationArea = All;
                     Editable = false;
                 }
+            }
+            group(Edit)
+            {
                 field(Level; Rec.Level)
                 {
                     ApplicationArea = All;

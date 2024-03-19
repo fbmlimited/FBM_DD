@@ -14,6 +14,28 @@ tableextension 70018 FBM_VendorExt_DD extends Vendor
         {
             Caption = 'Print Name on Check';
         }
+        field(70004; "FBM_Acronym"; Text[3])
+        {
+            Caption = 'Company''s symbol';
+            trigger
+           OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+            begin
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+
+                    buffer.AddNewEntry(compinfo."Custom System Indicator Text", '');
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    FBM_Acronym := buffer.Name;
+
+            end;
+        }
     }
     // trigger OnAfterModify()
     // begin

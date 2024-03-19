@@ -120,6 +120,51 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
 
 
         }
+        field(70115; FBM_PO_Customer; Code[20])
+        {
+            caption = 'Customer''s PO';
+            trigger
+         OnLookup()
+            var
+                company: record Company;
+                compinfo: record "Company Information";
+                buffer: record "Name/Value Buffer" temporary;
+                customer: record Customer;
+                vendor: record vendor;
+                purchheader: record "Purchase Header";
+                acronym: text[3];
+            begin
+                compinfo.get();
+                acronym := compinfo."Custom System Indicator Text";
+                customer.get("Sell-to Customer No.");
+
+                company.FindFirst();
+                repeat
+                    compinfo.ChangeCompany(company.Name);
+                    compinfo.get;
+                    if compinfo."Custom System Indicator Text" = customer.FBM_Acronym then begin
+                        purchheader.ChangeCompany(company.Name);
+                        vendor.ChangeCompany(company.Name);
+                        vendor.SetRange(FBM_Acronym, acronym);
+                        if vendor.FindFirst() then begin
+                            purchheader.SetRange("Buy-from Vendor No.", vendor."No.");
+                            purchheader.Setfilter(Status, '<>%1',purchheader.Status::Released);
+                            purchheader.SetRange("Document Type", purchheader."Document Type"::Order);
+                            if purchheader.FindFirst() then
+                                repeat
+                                    buffer.AddNewEntry(purchheader."No.", '');
+                                until purchheader.next = 0;
+                        end;
+                    end;
+
+
+                until company.Next() = 0;
+                if page.RunModal(page::"Name/Value Lookup", buffer) = action::LookupOK then
+                    FBM_PO_Customer := buffer.Name;
+
+            end;
+        }
+
 
 
 
