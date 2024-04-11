@@ -43,6 +43,15 @@ page 60156 FBM_NotesCust_DD
                 {
                     ApplicationArea = All;
                 }
+                field(desc; rec.desc)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(notetype; rec.notetype)
+                {
+                    ApplicationArea = All;
+                }
                 field(Note; Rec.Note)
                 {
                     ApplicationArea = All;
@@ -56,12 +65,21 @@ page 60156 FBM_NotesCust_DD
     var
 
         ssetup: Record "Sales & Receivables Setup";
+        gdesc: text[100];
 
     trigger
     OnModifyRecord(): Boolean
     begin
 
         rec.SavedAt := CurrentDateTime;
+        //  rec.CalcFields(desccust, descsubgroup);
+        // csite.SetRange("Site Code", rec.LevelValue);
+        // if csite.FindFirst() then begin
+        //     csite.CalcFields("Site Name_FF");
+        //     rec.descsite := csite."Site Name_FF";
+        // end;
+        // gdesc := rec.desccust + rec.descsite + rec.descsubgroup;
+
     end;
 
     trigger

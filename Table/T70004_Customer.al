@@ -1012,29 +1012,29 @@ table 70004 FBM_Customer
         until comp.next = 0;
     end;
 
-    trigger
-    OnDelete()
-    begin
-        comp.FindFirst();
-        repeat
-            cust.ChangeCompany(comp.Name);
-            CustLedgEntry.ChangeCompany(comp.Name);
-            cust.SetRange(FBM_GrCode, rec."No.");
-            if cust.FindFirst() then begin
+    // trigger
+    // OnDelete()
+    // begin
+    //     comp.FindFirst();
+    //     repeat
+    //         cust.ChangeCompany(comp.Name);
+    //         CustLedgEntry.ChangeCompany(comp.Name);
+    //         cust.SetRange(FBM_GrCode, rec."No.");
+    //         if cust.FindFirst() then begin
 
 
-                CustLedgEntry.Reset();
-                if not CustLedgEntry.SetCurrentKey("Customer No.", Open) then
-                    CustLedgEntry.SetCurrentKey("Customer No.");
-                CustLedgEntry.SetRange("Customer No.", Cust."No.");
-                CustLedgEntry.SetRange(Open, true);
-                if not CustLedgEntry.IsEmpty() then
-                    Error(
-                      Text001,
-                      Cust.TableCaption(), Cust."No.");
-            end;
-        until comp.Next() = 0;
-    end;
+    //             CustLedgEntry.Reset();
+    //             if not CustLedgEntry.SetCurrentKey("Customer No.", Open) then
+    //                 CustLedgEntry.SetCurrentKey("Customer No.");
+    //             CustLedgEntry.SetRange("Customer No.", Cust."No.");
+    //             CustLedgEntry.SetRange(Open, true);
+    //             if not CustLedgEntry.IsEmpty() then
+    //                 Error(
+    //                   Text001,
+    //                   Cust.TableCaption(), Cust."No.");
+    //         end;
+    //     until comp.Next() = 0;
+    // end;
 
     trigger
      OnInsert()

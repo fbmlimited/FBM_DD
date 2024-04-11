@@ -72,6 +72,7 @@ table 70002 FBM_CustOpSite
         field(1005; ActiveRec; Boolean)
         {
             Caption = 'Active Record';
+            ObsoleteState = Removed;
         }
         field(2000; Subsidiary; text[250])
         {
@@ -81,6 +82,7 @@ table 70002 FBM_CustOpSite
         field(2001; Active; Boolean)
         {
             Caption = 'Is Active';
+            ObsoleteState = Removed;
 
         }
         field(70019; FBM_LastAdquiredDate; Date)

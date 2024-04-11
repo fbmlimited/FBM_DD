@@ -10,7 +10,7 @@ table 70014 FBM_ListValues
         field(1; Type; Text[20])
         {
             Caption = 'Type';
-            TableRelation = FBM_ListValues where(type = CONST('TYPE'));
+            TableRelation = FBM_ListValues.Value where(type = CONST('TYPE'));
             ValidateTableRelation = FALSE;
         }
         field(2; Ord; Integer)

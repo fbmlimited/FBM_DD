@@ -15,6 +15,35 @@ tableextension 70002 FBM_CustomerExt_DD extends Customer
         {
             caption = 'Group Code';
             //Editable = false;
+            trigger
+            OnValidate()
+            var
+
+                customer: record Customer;
+                cust: record FBM_Customer;
+            begin
+
+
+
+                cust.SetRange("No.", rec.FBM_GrCode);
+                if cust.FindFirst() then begin
+                    rec.name := cust.Name;
+                    rec."Name 2" := cust."Name 2";
+                    rec."FBM_Name3" := cust."FBM_Name3";
+                    rec."Search Name" := cust."Search Name";
+                    rec.Address := cust.Address;
+                    rec."Address 2" := cust."Address 2";
+                    rec."Post Code" := cust."Post Code";
+                    rec.City := cust.City;
+                    rec.County := cust.County;
+                    rec."Country/Region Code" := cust."Country/Region Code";
+                    rec."VAT Registration No." := cust."VAT Registration No.";
+                    rec.FBM_Group := cust.FBM_Group;
+                    rec.FBM_SubGroup := cust.FBM_SubGroup;
+                    rec.Modify();
+                end;
+
+            end;
         }
         field(70104; "FBM_Group"; Text[100])
         {

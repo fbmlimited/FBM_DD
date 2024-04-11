@@ -229,9 +229,9 @@ table 70006 FBM_CustomerSite_C
                 cos."Cust Loc Code" := customer."No.";
                 cos.IsActive := true;
                 if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
-                    cos.ActiveRec := true
+                    cos.IsActive := true
                 else
-                    cos.ActiveRec := false;
+                    cos.IsActive := false;
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";
@@ -252,12 +252,12 @@ table 70006 FBM_CustomerSite_C
                 COS."Operator No." := customer.FBM_GrCode;
                 COS."Site Code" := CustSite.SiteGrCode;
                 cos."Cust Loc Code" := customer."No.";
-                cos.IsActive := true;
-                cos.IsActive := true;
+
+
                 if (CustSite.Status = CustSite.Status::OPERATIONAL) or (CustSite.Status = CustSite.Status::"HOLD OPERATION") then
-                    cos.ActiveRec := true
+                    cos.IsActive := true
                 else
-                    cos.ActiveRec := false;
+                    cos.IsActive := false;
                 cos."Op Loc Code" := customer."No.";
                 cos."Record Owner" := UserId;
                 cos."Site Loc Code" := CustSite."Site Code";
@@ -268,7 +268,7 @@ table 70006 FBM_CustomerSite_C
                 if country.get(customer."Country/Region Code") then begin
 
                     country.testfield(FBM_Country3);
-                    cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Customer No.", cos."Operator No.", cos."Site Loc Code");
+                    cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", cos."Site Loc Code");
                 end;
                 COS.Modify();
             end;

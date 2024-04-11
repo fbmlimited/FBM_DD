@@ -32,6 +32,7 @@ table 70015 FBM_Notes
             OnValidate()
             var
                 cust: record customer;
+                csite: record FBM_CustomerSite_C;
             begin
                 case level of
                     'CUSTOMER':
@@ -45,17 +46,52 @@ table 70015 FBM_Notes
                                 rec.LevelValue := cust.FBM_SubGroup;
                         end;
                 end;
+
+
+                rec.CalcFields(desccust, descsubgroup);
+                csite.SetRange("Site Code", rec.LevelValue);
+                if csite.FindFirst() then begin
+                    csite.CalcFields("Site Name_FF");
+                    rec.descsite := csite."Site Name_FF";
+                end;
+                rec.desc := rec.desccust + rec.descsite + rec.descsubgroup;
+                //rec.Modify();
+
+
+
             end;
         }
         field(5; LevelValue; text[20])
         {
             Caption = 'LevelValue';
             DataClassification = ToBeClassified;
-            TableRelation = if (level = const('SITE')) FBM_CustomerSite_C WHERE("Customer No." = field(Customer))
+            TableRelation = if (level = const('SITE')) FBM_CustomerSite_C."Site Code" WHERE("Customer No." = field(Customer))
             else
-            if (level = const('CUSTOMER')) customer where("No." = field(customer))
-            else
-            if (level = const('SUBGROUP')) FBM_CustGroup where(Group = field(Group), SubGroup = field(SubGroup));
+            if (level = const('CUSTOMER')) customer where("No." = field(customer));
+            ValidateTableRelation = false;
+            // else
+            // if (level = const('SUBGROUP')) FBM_CustGroup where(Group = field(Group), SubGroup = field(SubGroup));
+            trigger
+            OnValidate()
+            var
+
+                csite: record FBM_CustomerSite_C;
+            begin
+
+
+
+                rec.CalcFields(desccust, descsubgroup);
+                csite.SetRange("Site Code", rec.LevelValue);
+                if csite.FindFirst() then begin
+                    csite.CalcFields("Site Name_FF");
+                    rec.descsite := csite."Site Name_FF";
+                end;
+                rec.desc := rec.desccust + rec.descsite + rec.descsubgroup;
+                rec.Modify();
+
+
+
+            end;
         }
         field(6; Group; text[100])
         {
@@ -83,6 +119,40 @@ table 70015 FBM_Notes
 
 
         }
+        field(10; NoteType; Text[20])
+        {
+            Caption = 'Note Type';
+            TableRelation = FBM_ListValues.Value where(Type = const('COMMENTTYPE'));
+            ValidateTableRelation = false;
+
+
+        }
+        field(11; desccust; Text[100])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Customer.Name where("No." = field(LevelValue)));
+
+
+        }
+        field(12; descsite; Text[100])
+        {
+
+
+
+        }
+        field(13; descsubgroup; Text[100])
+        {
+
+            FieldClass = FlowField;
+            CalcFormula = lookup(FBM_CustGroup."SubGroup Name" where(SubGroup = field(LevelValue)));
+
+
+        }
+        field(14; desc; Text[100])
+        {
+            Caption = 'Description';
+
+        }
     }
 
 
@@ -93,5 +163,6 @@ table 70015 FBM_Notes
             Clustered = true;
         }
     }
+
 
 }

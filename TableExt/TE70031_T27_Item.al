@@ -46,6 +46,17 @@ tableextension 70031 FBM_Item_DD extends Item
             Editable = true;
 
         }
+        field(70023; "FBM_MultiCat"; Text[150])
+        {
+            Caption = 'Multiple Categories';
+            DataClassification = CustomerContent;
+
+            Editable = false;
+            /* trigger OnValidate()
+             begin
+                 rec.Multicat := '';
+             end;*/
+        }
 
     }
 }

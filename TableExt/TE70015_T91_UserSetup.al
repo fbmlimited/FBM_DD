@@ -42,6 +42,12 @@ tableextension 70015 FBM_UserSetupExt_DD extends "User Setup"
             DataClassification = ToBeClassified;
 
         }
+        field(70026; "FBM_CheckWS"; boolean)
+        {
+            caption = 'Check Cust/Site';
+            DataClassification = ToBeClassified;
+
+        }
     }
     var
 }
