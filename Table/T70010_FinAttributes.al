@@ -29,6 +29,7 @@ table 70010 FBM_FinAttributes
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(5; Share; Decimal)
@@ -55,9 +56,16 @@ table 70010 FBM_FinAttributes
 
 
         }
+
         field(9; WTHTax; Decimal)
         {
             caption = 'WithHolding Tax';
+
+
+        }
+        field(10; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
 
 
         }

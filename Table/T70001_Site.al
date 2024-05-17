@@ -313,9 +313,9 @@ table 70001 FBM_Site
         cinfo: record "Company Information";
 
     begin
-        cos.SetRange("Site Code", xrec."Site Code");
-        if cos.findfirst then
-            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", rec."Site Code");
+        // cos.SetRange("Site Code", xrec."Site Code");
+        // if cos.findfirst then
+        //     cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", rec."Site Code");
         comp.FindFirst();
         repeat
             cinfo.ChangeCompany(comp.Name);
@@ -336,7 +336,7 @@ table 70001 FBM_Site
     begin
         cos.SetRange("Site Code", xrec."Site Code");
         if cos.findfirst then
-            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", rec."Site Code");
+            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", cos."Site Loc Code");
         comp.FindFirst();
         repeat
             cinfo.ChangeCompany(comp.Name);

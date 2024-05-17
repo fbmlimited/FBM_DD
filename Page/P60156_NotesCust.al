@@ -10,6 +10,7 @@ page 60156 FBM_NotesCust_DD
         area(Content)
         {
 
+
             group(System)
             {
                 field(EntryNo; Rec.EntryNo)
@@ -35,6 +36,10 @@ page 60156 FBM_NotesCust_DD
             }
             group(Edit)
             {
+                field(IsActive; Rec.IsActive)
+                {
+                    ApplicationArea = All;
+                }
                 field(Level; Rec.Level)
                 {
                     ApplicationArea = All;
@@ -61,6 +66,18 @@ page 60156 FBM_NotesCust_DD
                 }
             }
         }
+        area(factboxes)
+        {
+            part("Attached Documents"; "Document Attachment Factbox")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = CONST(Database::FBM_Notes),
+                              "No." = FIELD("No."),
+                              "Document Type" = FIELD("Document Type");
+            }
+        }
+
     }
     var
 
@@ -101,7 +118,8 @@ page 60156 FBM_NotesCust_DD
             rec.EntryNo := note.EntryNo + 1
         else
             rec.EntryNo := 1;
-
+        rec."No." := copystr(rec.Customer, 1, 15) + format(rec.EntryNo);
+        rec."Document Type" := rec."Document Type"::Note;
     end;
 
     trigger

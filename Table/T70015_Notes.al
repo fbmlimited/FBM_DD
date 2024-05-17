@@ -153,9 +153,22 @@ table 70015 FBM_Notes
             Caption = 'Description';
 
         }
+        field(15; IsActive; Boolean)
+        {
+            Caption = 'Is Active';
+
+        }
+        field(16; "No."; code[20])
+        {
+            Caption = 'No.';
+
+        }
+        field(17; "Document Type"; Enum "Attachment Document Type")
+        {
+            Caption = 'Document Type';
+        }
+
     }
-
-
     keys
     {
         key(PK; Customer, EntryNo)
@@ -164,5 +177,9 @@ table 70015 FBM_Notes
         }
     }
 
-
 }
+
+
+
+
+

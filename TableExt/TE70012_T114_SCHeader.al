@@ -26,11 +26,18 @@ tableextension 70012 FBM_SCHeaderExt_DD extends "Sales Cr.Memo Header"
         {
             caption = 'Segment';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(70105; "FBM_LocalCurrAmt"; Decimal)
         {
             caption = 'Local Currency Amount';
+
+        }
+        field(70106; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
+
 
         }
 

@@ -29,6 +29,7 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         {
             caption = 'Segment';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(70105; "FBM_LocalCurrAmt"; Decimal)
@@ -36,7 +37,12 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
             caption = 'Local Currency Amount';
 
         }
+        field(70106; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
 
+
+        }
         field(70108; "FBM_Currency2"; code[10])
         {
             caption = 'Local Currency ';

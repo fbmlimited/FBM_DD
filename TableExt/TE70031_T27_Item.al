@@ -51,11 +51,17 @@ tableextension 70031 FBM_Item_DD extends Item
             Caption = 'Multiple Categories';
             DataClassification = CustomerContent;
 
-            Editable = false;
+            //Editable = false;
             /* trigger OnValidate()
              begin
                  rec.Multicat := '';
              end;*/
+        }
+        modify("Item Category Code")
+        {
+
+            TableRelation = "Item Category" where(FBM_Standard = const(true));
+
         }
 
     }

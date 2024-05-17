@@ -34,12 +34,19 @@ tableextension 70038 FBM_RevEntryExt_DD extends "Reservation Entry"
         field(70134; "FBM_Pedimento4"; Text[7])
         {
             Caption = 'Ped4';
+            ObsoleteState = Removed;
 
 
         }
         field(70135; "FBM_Pedimento"; Text[18])
         {
             Caption = 'Pedimento';
+            Editable = false;
+
+        }
+        field(70136; "FBM_Pedimentobis"; Text[18])
+        {
+            Caption = 'Pedimento 2';
             Editable = false;
 
         }

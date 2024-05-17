@@ -99,6 +99,19 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             Caption = 'FA Created';
 
         }
+        field(70123; FBM_Model; text[50])
+        {
+            Caption = 'Model';
+            TableRelation = FBM_ListValues.Value WHERE(TYPE = CONST('FAMODEL'));
+            ValidateTableRelation = false;
+
+        }
+        field(70124; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
+
+
+        }
 
 
     }

@@ -17,11 +17,18 @@ tableextension 70007 FBM_GLEntryExt_DD extends "G/L Entry"
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(70104; FBM_Site; Code[20])
         {
             Caption = 'Site';
+
+
+        }
+        field(70106; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
 
 
         }

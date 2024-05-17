@@ -18,11 +18,18 @@ tableextension 70003 FBM_DetCustLEExt_DD extends "Detailed Cust. Ledg. Entry"
         {
             caption = 'Segment';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(70004; FBM_Site; Code[20])
         {
             Caption = 'Site';
+
+
+        }
+        field(70006; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
 
 
         }

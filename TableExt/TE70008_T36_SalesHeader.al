@@ -32,10 +32,10 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                 CustSite.Reset();
                 if CustSite.Get("Sell-to Customer No.", FBM_Site) then begin
                     if CustSite."Contract Code" <> '' then begin
-                        if rec.FBM_Segment = rec.FBM_Segment::Bingo then
+                        if rec.FBM_Segment2 = rec.FBM_Segment2::Bingo then
                             Rec.Validate("FBM_Contract Code", CustSite."Contract Code")
                         else
-                            if rec.FBM_Segment = rec.FBM_Segment::Spin then
+                            if rec.FBM_Segment2 = rec.FBM_Segment2::Spin then
                                 Rec.Validate("FBM_Contract Code", CustSite."Contract Code2");
                         Rec.Modify();
                     end;
@@ -81,11 +81,18 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
+            //ObsoleteState = Removed;
 
         }
         field(70105; "FBM_LocalCurrAmt"; Decimal)
         {
             caption = 'Currency 2 Amount';
+
+        }
+        field(70106; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
+
 
         }
 
@@ -148,11 +155,11 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
                         vendor.SetRange(FBM_Acronym, acronym);
                         if vendor.FindFirst() then begin
                             purchheader.SetRange("Buy-from Vendor No.", vendor."No.");
-                            purchheader.Setfilter(Status, '<>%1',purchheader.Status::Released);
+                            purchheader.Setfilter(Status, '<>%1', purchheader.Status::Released);
                             purchheader.SetRange("Document Type", purchheader."Document Type"::Order);
                             if purchheader.FindFirst() then
                                 repeat
-                                    buffer.AddNewEntry(purchheader."No.", '');
+                                    buffer.AddNewEntry(purchheader."No.", purchheader."Posting Description");
                                 until purchheader.next = 0;
                         end;
                     end;

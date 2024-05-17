@@ -16,11 +16,17 @@ tableextension 70005 FBM_GenJnlLineExt_DD extends "Gen. Journal Line"
         {
             caption = 'Segment ';
             OptionMembers = " ",Bingo,Spin,Online;
-
+            // ObsoleteState = Removed;
         }
         field(70104; FBM_Site; Code[20])
         {
             Caption = 'Site';
+
+
+        }
+        field(70106; FBM_Segment2; enum FBM_Segment_DD)
+        {
+            caption = 'Segment ';
 
 
         }

@@ -37,7 +37,12 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
             Caption = 'Ped3';
 
         }
+        field(70134; "FBM_Pedimento4"; Text[7])
+        {
+            Caption = 'Ped4';
+            ObsoleteState = Removed;
 
+        }
         field(70135; "FBM_Pedimento"; Text[18])
         {
             Caption = 'Pedimento';

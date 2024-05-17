@@ -40,6 +40,7 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         field(70134; "FBM_Pedimento4"; Text[7])
         {
             Caption = 'Ped4';
+            ObsoleteState = Removed;
 
 
         }
@@ -59,10 +60,11 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
                 if resentry.FindFirst() then begin
                     resentry.FBM_Site := rec.FBM_Site;
                     resentry.FBM_Pedimento := rec.FBM_Pedimento;
+                    resentry.FBM_Pedimentobis := rec.FBM_Pedimentobis;
                     resentry.FBM_Pedimento1 := rec.FBM_Pedimento1;
                     resentry.FBM_Pedimento2 := rec.FBM_Pedimento2;
                     resentry.FBM_Pedimento3 := rec.FBM_Pedimento3;
-                    resentry.FBM_Pedimento4 := rec.FBM_Pedimento4;
+                    //resentry.FBM_Pedimento4 := rec.FBM_Pedimento4;
                     resentry.Modify();
                 end;
 
@@ -73,7 +75,12 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         {
             Caption = 'Pedimento 2';
             Editable = false;
-
+            trigger
+                        OnValidate()
+            begin
+                if (FBM_Pedimentobis <> 'N/A') and (FBM_Pedimentobis <> '0') and (FBM_Pedimentobis <> '') then
+                    FBM_Pedimento := FBM_Pedimentobis;
+            end;
         }
     }
 

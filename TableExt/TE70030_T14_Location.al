@@ -4,7 +4,21 @@ tableextension 70030 FBM_LocationExt_DD extends Location
     {
         field(70000; FBM_NewItem; Boolean)
         {
-            Caption = 'New Items';
+            Caption = 'Stock New Items';
+
+
+        }
+        field(70001; FBM_UedItem; Boolean)
+        {
+            Caption = 'Stock Used Items';
+            ObsoleteState = Removed;
+
+
+        }
+        field(70002; FBM_UsedItem; Boolean)
+        {
+            Caption = 'Stock Used Items';
+
 
 
         }
