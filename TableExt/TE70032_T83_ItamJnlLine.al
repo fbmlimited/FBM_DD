@@ -61,6 +61,12 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
             end;
 
         }
+        field(70002; FBM_FromOrion; Boolean)
+        {
+            Caption = 'From Orion';
+
+
+        }
     }
 
 }

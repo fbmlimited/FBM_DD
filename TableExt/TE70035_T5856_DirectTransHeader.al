@@ -14,6 +14,12 @@ tableextension 70035 FBM_DirectTransHeaderExt_DD extends "Direct Trans. Header"
             TableRelation = FBM_CustomerSite_C."Site Code";
             ValidateTableRelation = false;
         }
+        field(70002; FBM_FromOrion; Boolean)
+        {
+            Caption = 'From Orion';
+
+
+        }
 
     }
 

@@ -45,12 +45,31 @@ page 60133 FBM_CustCardMaster_DD
                     //     CurrPage.Update(true);
                     // end;
                 }
+                field(NameNew; rec.Name_New)
+                {
+                    ApplicationArea = All;
+                    Importance = Promoted;
+                    ShowMandatory = true;
+                    ToolTip = 'Specifies the customer''s name. This name will appear on all sales documents for the customer.';
+                    Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec.Name <> rec.Name_New;
+
+                }
                 field("Name 2"; rec."Name 2")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
                     ToolTip = 'Specifies an additional part of the name.';
                     //Visible = false;
+                }
+                field("Name 2New"; rec."Name 2_New")
+                {
+                    ApplicationArea = All;
+                    Importance = Additional;
+                    ToolTip = 'Specifies an additional part of the name.';
+                    //Visible = false;
+                    Enabled = hasreq;
                 }
                 field("FBM_Name 3"; Rec."FBM_Name3")
                 {
@@ -94,9 +113,19 @@ page 60133 FBM_CustCardMaster_DD
                 {
                     ApplicationArea = all;
                 }
+                field(FBM_GroupNew; Rec.FBM_Group_New)
+                {
+                    ApplicationArea = all;
+                    Enabled = hasreq;
+                }
                 field(FBM_SubGroup; Rec.FBM_SubGroup)
                 {
                     ApplicationArea = all;
+                }
+                field(FBM_SubGroupNew; Rec.FBM_SubGroup_New)
+                {
+                    ApplicationArea = all;
+                    Enabled = hasreq;
                 }
                 field(Company1; Rec.FBM_Company1)
                 {
@@ -214,10 +243,20 @@ page 60133 FBM_CustCardMaster_DD
                         ApplicationArea = Basic, Suite;
                         ToolTip = 'Specifies the customer''s address. This address will appear on all sales documents for the customer.';
                     }
+                    field(AddressNew; rec.Address_New)
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Enabled = hasreq;
+                    }
                     field("Address 2"; rec."Address 2")
                     {
                         ApplicationArea = Basic, Suite;
                         ToolTip = 'Specifies additional address information.';
+                    }
+                    field("Address 2New"; rec."Address 2_New")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Enabled = hasreq;
                     }
                     field("Country/Region Code"; rec."Country/Region Code")
                     {
@@ -229,10 +268,22 @@ page 60133 FBM_CustCardMaster_DD
                             IsCountyVisible := FormatAddress.UseCounty(rec."Country/Region Code");
                         end;
                     }
+                    field("Country/Region CodeNew"; rec."Country/Region Code_New")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Enabled = hasreq;
+
+
+                    }
                     field(City; rec.City)
                     {
                         ApplicationArea = Basic, Suite;
                         ToolTip = 'Specifies the customer''s city.';
+                    }
+                    field(CityNew; rec.City_New)
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Enabled = hasreq;
                     }
                     group(Control10)
                     {
@@ -243,12 +294,23 @@ page 60133 FBM_CustCardMaster_DD
                             ApplicationArea = Basic, Suite;
                             ToolTip = 'Specifies the state, province or county as a part of the address.';
                         }
+                        field(CountyNew; rec.County_New)
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Enabled = hasreq;
+                        }
                     }
                     field("Post Code"; rec."Post Code")
                     {
                         ApplicationArea = Basic, Suite;
                         Importance = Promoted;
                         ToolTip = 'Specifies the postal code.';
+                    }
+                    field("Post CodeNew"; rec."Post Code_New")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Importance = Promoted;
+                        Enabled = hasreq;
                     }
                     // field(ShowMap; ShowMapLbl)
                     // {
@@ -347,6 +409,12 @@ page 60133 FBM_CustCardMaster_DD
                     begin
                         //VATRegistrationLogMgt.AssistEditCustomerVATReg(Rec);
                     end;
+                }
+                field("VAT Registration No.New"; rec."VAT Registration No._New")
+                {
+                    ApplicationArea = VAT;
+                    Enabled = hasreq;
+
                 }
                 // field("EORI Number"; rec."EORI Number")
                 // {
@@ -653,6 +721,80 @@ page 60133 FBM_CustCardMaster_DD
 
     actions
     {
+        area(Processing)
+        {
+            action(Reject)
+            {
+                ApplicationArea = all;
+                image = Reject;
+                Promoted = true;
+                PromotedIsBig = true;
+                enabled = hasreq;
+                trigger
+                OnAction()
+                var
+                    req: record FBM_CustSiteReq;
+                begin
+                    req.SetRange(CustSiteCode, rec."No.");
+                    req.SetRange(Status, req.Status::Received);
+                    if req.FindFirst() then begin
+                        req.Status := req.Status::Rejected;
+                        req.Modify();
+                    end;
+                end;
+
+
+
+            }
+            action(Approve)
+            {
+                ApplicationArea = all;
+                image = Approve;
+                Promoted = true;
+                PromotedIsBig = true;
+                enabled = hasreq;
+                trigger
+                OnAction()
+                var
+                    req: record FBM_CustSiteReq;
+                begin
+                    req.SetRange(CustSiteCode, rec."No.");
+                    req.SetRange(Status, req.Status::Received);
+                    if req.FindFirst() then begin
+                        req.Status := req.Status::Approved;
+                        req.Modify();
+                        if rec.name <> rec.Name_New then
+                            rec.validate(Name, rec.Name_New);
+                        if rec."Name 2" <> rec."Name 2_New" then
+                            rec.validate("Name 2", rec."Name 2_New");
+                        if rec.address <> rec.Address_New then
+                            rec.validate(Address, rec.Address_New);
+                        if rec."Address 2" <> rec."Address 2_New" then
+                            rec.validate("Address 2", rec."Address 2_New");
+                        if rec.City <> rec.City_New then
+                            rec.validate(City, rec.City_New);
+                        if rec."Post Code" <> rec."Post Code_New" then
+                            rec.validate("Post Code", rec."Post Code_New");
+                        if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                            rec.validate("Country/Region Code", rec."Country/Region Code_New");
+                        if rec.County <> rec.County_New then
+                            rec.validate(County, rec.County_New);
+                        if rec."VAT Registration No." <> rec."VAT Registration No._New" then
+                            rec.validate("VAT Registration No.", rec."VAT Registration No._New");
+                        if rec.FBM_Group <> rec.FBM_Group_New then
+                            rec.validate(FBM_Group, rec.FBM_Group_New);
+                        if rec.FBM_SubGroup <> rec.FBM_SubGroup_New then
+                            rec.validate(FBM_SubGroup, rec.FBM_SubGroup_New);
+                    end;
+                end;
+
+
+
+            }
+
+
+
+        }
 
 
     }
@@ -687,6 +829,32 @@ page 60133 FBM_CustCardMaster_DD
         if GuiAllowed() then
             OnOpenPageFunc();
         OnAfterOnOpenPage(Rec, xRec);
+
+    end;
+
+    trigger
+    OnAfterGetRecord()
+    begin
+        req.setrange(rectype, 'CUST');
+        REQ.setfilter(Status, '%1|%2', req.Status::Sent, req.status::Received);
+
+        if REQ.FindFirst() THEN begin
+            hasreq := true;
+            rec.Name_New := req.Name;
+            rec."Name 2_New" := req."Name 2";
+            rec.Address_New := req.Address;
+            rec."Address 2_New" := req."Address 2";
+            rec.City_New := req.City;
+            rec."Post Code_New" := req."Post Code";
+            rec.County_New := req.County;
+            rec."Country/Region Code_New" := req."Country/Region Code";
+            rec."VAT Registration No._New" := req."VAT registration No.";
+            rec.FBM_Group_New := req.FBM_Group;
+            rec.FBM_SubGroup_New := req.FBM_Subgroup;
+            req.Status := req.Status::Received;
+            req.Modify();
+            REC.Modify();
+        end;
     end;
 
     local procedure OnOpenPageFunc()
@@ -852,6 +1020,8 @@ page 60133 FBM_CustCardMaster_DD
         maxcode: Text;
 
         cust: record FBM_Customer;
+        hasreq: Boolean;
+        req: record FBM_CustSiteReq;
 
 
 

@@ -78,6 +78,11 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Conso 3';
         }
+        field(70024; FBM_IsOnMainServer; Boolean)
+        {
+
+            caption = 'Is On Main Server';
+        }
     }
 
 }

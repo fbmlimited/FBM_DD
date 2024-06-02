@@ -17,6 +17,12 @@ tableextension 70037 FBM_TransLineExt_DD extends "Transfer Line"
             ValidateTableRelation = false;
 
         }
+        field(70002; FBM_FromOrion; Boolean)
+        {
+            Caption = 'From Orion';
+
+
+        }
 
     }
 

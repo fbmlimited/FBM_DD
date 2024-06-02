@@ -29,6 +29,11 @@ page 60134 FBM_CustListMaster_DD
             repeater(Control1)
             {
                 ShowCaption = false;
+                FIELD(pendingreq; pendingreq)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Pending req.';
+                }
                 field("No."; rec."No.")
                 {
                     ApplicationArea = All;
@@ -232,6 +237,28 @@ page 60134 FBM_CustListMaster_DD
                     ApplicationArea = All;
 
                 }
+
+            }
+
+        }
+
+    }
+    actions
+    {
+        area(Navigation)
+        {
+            action(RequestsList)
+
+            {
+                caption = 'Requests List';
+                image = List;
+                Promoted = true;
+                PromotedIsBig = true;
+                ApplicationArea = All;
+                PromotedCategory = Process;
+                RunObject = page FBM_ReqList_DD;
+
+
             }
         }
     }
@@ -245,7 +272,39 @@ page 60134 FBM_CustListMaster_DD
         rec.SetRange(ActiveRec, true);
     end;
 
+    trigger
+    OnAfterGetRecord()
+    begin
 
+        req.setrange(rectype, 'CUST');
+        REQ.SetRange(Status, req.Status::Sent);
+
+        if REQ.FindFirst() THEN begin
+
+            rec.Name_New := req.Name;
+            rec."Name 2_New" := req."Name 2";
+            rec.Address_New := req.Address;
+            rec."Address 2_New" := req."Address 2";
+            rec.City_New := req.City;
+            rec."Post Code_New" := req."Post Code";
+            rec.County_New := req.County;
+            rec."Country/Region Code_New" := req."Country/Region Code";
+            rec."VAT Registration No._New" := req."VAT registration No.";
+            rec.FBM_Group_New := req.FBM_Group;
+            rec.FBM_SubGroup_New := req.FBM_Subgroup;
+            REC.Modify();
+            repeat
+                req.Status := req.Status::Received;
+                req.Modify();
+            until req.Next() = 0;
+        end;
+
+        req.setrange(Rectype, 'CUST');
+        REQ.SetRange(CustSiteCode, REC."No.");
+        req.SetRange(Status, req.Status::Received);
+        pendingreq := REQ.Count;
+
+    end;
 
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
@@ -266,8 +325,10 @@ page 60134 FBM_CustListMaster_DD
         EventFilter: Text;
         CaptionTxt: Text;
         maxcode: Text;
+        pendingreq: Integer;
 
         cust: record FBM_Customer;
+        req: record FBM_CustSiteReq;
 
     procedure getmaxcust()
 

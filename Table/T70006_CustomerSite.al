@@ -158,6 +158,13 @@ table 70006 FBM_CustomerSite_C
     end;
 
     trigger
+    OnInsert()
+    begin
+        UpdateCustOpSite(rec);
+
+    end;
+
+    trigger
 
     OnDelete()
     var

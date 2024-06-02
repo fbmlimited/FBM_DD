@@ -1,6 +1,6 @@
-page 60139 FBM_LinkedSite_DD
+page 61501 FBM_LinkedCust_DD
 {
-    Caption = 'Local Site';
+    Caption = 'Local Customer';
     PageType = ListPart;
     UsageCategory = Lists;
     ApplicationArea = All;
@@ -15,12 +15,12 @@ page 60139 FBM_LinkedSite_DD
             {
                 field(Code; Rec.name)
                 {
-                    Caption = 'Subsidiary|Customer|Site|Status';
+                    Caption = 'Subsidiary|Customer';
                     ApplicationArea = All;
                 }
                 field(Description; Rec.Value)
                 {
-                    caption = 'Site Gr. Code';
+                    caption = 'Customer Gr. Code';
                     ApplicationArea = All;
                 }
 
@@ -38,17 +38,17 @@ page 60139 FBM_LinkedSite_DD
                 cinfo.ChangeCompany(comp.Name);
                 cinfo.get;
                 if cinfo.FBM_CustIsOp then begin
-                    csite.ChangeCompany(comp.Name);
+                    cust.ChangeCompany(comp.Name);
                     //csite.setrange(Status, csite.Status::OPERATIONAL);
-                    csite.SetFilter("Customer No.", '<>%1', '');
-                    if csite.FindFirst() then
+
+                    if cust.FindFirst() then
                         repeat
                             id += 1;
                             rec.id := id;
-                            rec.name := copystr(cinfo."Custom System Indicator Text" + '|' + csite."customer No." + '|' + csite."Site Code" + '|' + format(csite.Status), 1, 250);
-                            rec.value := csite.SiteGrCode;
+                            rec.name := copystr(cinfo."Custom System Indicator Text" + '|' + cust."No.", 1, 250);
+                            rec.value := cust.FBM_GrCode;
                             rec.Insert();
-                        until csite.Next() = 0;
+                        until cust.Next() = 0;
                 end;
             until comp.Next() = 0;
     end;
@@ -56,6 +56,6 @@ page 60139 FBM_LinkedSite_DD
     var
         comp: record Company;
         cinfo: record "Company Information";
-        csite: record FBM_CustomerSite_C;
+        cust: record Customer;
         id: Integer;
 }

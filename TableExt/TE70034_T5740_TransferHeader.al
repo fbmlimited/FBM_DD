@@ -16,6 +16,12 @@ tableextension 70034 FBM_TransferHeaderExt_DD extends "Transfer Header"
             ValidateTableRelation = false;
 
         }
+        field(70002; FBM_FromOrion; Boolean)
+        {
+            Caption = 'From Orion';
+
+
+        }
         modify("Transfer-from Code")
         {
             trigger

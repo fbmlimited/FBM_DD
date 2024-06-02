@@ -54,7 +54,8 @@
     "enableLongRunningSqlStatements": true,
     "longRunningSqlStatementsThreshold": 500,
     "numberOfSqlStatements": 10,
-    "schemaUpdateMode": "ForceSync"
+    "schemaUpdateMode": "ForceSync",
+    "startupCompany": "FBM SYSTEMS AND ELECTRONICS"
 },
 {
   "name": "Debug",
@@ -100,7 +101,7 @@
     "server": "https://businesscentral.dynamics.com",
     "tenant": "9e0bb323-0ae5-4ab5-baed-25b8c94cf882",
     "authentication": "AAD",
-    "environmentName": "CopyProd_200412",
+    "environmentName": "DEV_FBM_240529",
     "startupObjectId": 22,
     "startupObjectType": "Page",
     "breakOnError": "All",

@@ -43,6 +43,12 @@ table 70004 FBM_Customer
 
             end;
         }
+        field(70502; Name_New; Text[100])
+        {
+            Caption = 'Name NEW';
+
+
+        }
         field(3; "Search Name"; Code[100])
         {
             Caption = 'Search Name';
@@ -50,6 +56,10 @@ table 70004 FBM_Customer
         field(4; "Name 2"; Text[50])
         {
             Caption = 'Name 2';
+        }
+        field(70504; "Name 2_New"; Text[50])
+        {
+            Caption = 'Name 2 NEW';
         }
         field(5; Address; Text[100])
         {
@@ -60,9 +70,19 @@ table 70004 FBM_Customer
                 IncVersion();
             end;
         }
+        field(70505; Address_New; Text[100])
+        {
+            Caption = 'Address NEW';
+
+        }
         field(6; "Address 2"; Text[50])
         {
             Caption = 'Address 2';
+
+        }
+        field(70506; "Address 2_New"; Text[50])
+        {
+            Caption = 'Address 2 NEW';
 
         }
         field(7; City; Text[30])
@@ -94,6 +114,14 @@ table 70004 FBM_Customer
 
 
             end;
+        }
+        field(70507; City_New; Text[30])
+        {
+            Caption = 'City NEW';
+
+
+
+
         }
         field(8; Contact; Text[100])
         {
@@ -282,6 +310,13 @@ table 70004 FBM_Customer
             end;
 
         }
+        field(70535; "Country/Region Code_New"; Code[10])
+        {
+            Caption = 'Country/Region Code NEW';
+            TableRelation = "Country/Region";
+
+
+        }
         field(36; "Collection Method"; Code[20])
         {
             Caption = 'Collection Method';
@@ -400,6 +435,13 @@ table 70004 FBM_Customer
 
 
         }
+        field(70586; "VAT Registration No._New"; Text[20])
+        {
+            Caption = 'VAT Registration No. NEW';
+
+
+
+        }
         field(87; "Combine Shipments"; Boolean)
         {
             AccessByPermission = TableData "Sales Shipment Header" = R;
@@ -469,6 +511,11 @@ table 70004 FBM_Customer
 
             end;
         }
+        field(70591; "Post Code_New"; Code[20])
+        {
+            Caption = 'Post Code NEW';
+
+        }
         field(92; County; Text[30])
         {
             CaptionClass = '5,1,' + "Country/Region Code";
@@ -478,6 +525,13 @@ table 70004 FBM_Customer
             begin
                 IncVersion();
             end;
+        }
+        field(70592; County_New; Text[30])
+        {
+            CaptionClass = '5,1,' + "Country/Region Code";
+            Caption = 'County NEW';
+
+
         }
         field(93; "EORI Number"; Text[40])
         {
@@ -798,11 +852,30 @@ table 70004 FBM_Customer
             // ValidateTableRelation = false;
 
         }
+        field(70630; "FBM_SubGroup_New"; Text[100])
+        {
+            Caption = 'SubGroup Customer NEW';
+
+            FieldClass = Normal;
+            // TableRelation = FBM_CustGroup.SubGroup where("Group Name" = field("FBM_Group"), IsGroup = const(false));
+
+            // ValidateTableRelation = false;
+
+        }
 
         field(70131; "FBM_Group"; Text[100])
         {
             Caption = 'Group Customer';
             Description = 'ONETECH';
+            FieldClass = Normal;
+            // TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
+            // ValidateTableRelation = false;
+
+        }
+        field(70631; "FBM_Group_New"; Text[100])
+        {
+            Caption = 'Group Customer NEW';
+
             FieldClass = Normal;
             // TableRelation = FBM_CustGroup.Group where(IsGroup = const(true));
             // ValidateTableRelation = false;
@@ -905,6 +978,19 @@ table 70004 FBM_Customer
             Caption = 'Last Adquired Date';
 
         }
+        field(70150; Sender; code[50])
+        {
+            caption = 'Sender';
+        }
+        field(70151; Sent; DateTime)
+        {
+            caption = 'Sent';
+        }
+        field(70159; companyReq; code[3])
+        {
+            caption = 'Source';
+        }
+
 
     }
 
