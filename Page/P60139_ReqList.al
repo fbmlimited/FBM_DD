@@ -24,6 +24,15 @@ page 60139 FBM_ReqList_DD
                 field(EntryNo; Rec.EntryNo)
                 {
                     ApplicationArea = All;
+                    trigger
+                    OnDrillDown()
+                    var
+                        req: record FBM_CustSiteReq;
+                    begin
+                        req.SetRange(EntryNo, rec.EntryNo);
+                        page.run(page::FBM_CustomerReq_DD, req);
+
+                    end;
                 }
                 field(CustSiteCode; Rec.CustSiteCode)
                 {

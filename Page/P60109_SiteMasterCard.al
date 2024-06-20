@@ -35,46 +35,30 @@ page 60109 FBM_SiteMaster_DD
 
 
                 }
+                field("Site Name_New"; Rec."Site Name_New")
+                {
+                    ApplicationArea = All;
+                    Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec."Site Name" <> rec."Site Name_New";
+
+
+                }
                 field("Site Name 2"; Rec."Site Name 2")
                 {
                     ApplicationArea = All;
 
                 }
-                field(Address; Rec.Address)
+                field("Site Name 2_New"; Rec."Site Name 2_New")
                 {
                     ApplicationArea = All;
-
+                    Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec."Site Name 2" <> rec."Site Name 2_New";
                 }
-                field("Address 2"; Rec."Address 2")
-                {
-                    ApplicationArea = All;
 
-                }
-                field("Post Code"; Rec."Post Code")
-                {
-                    ApplicationArea = All;
 
-                }
-                field(City; Rec.City)
-                {
-                    ApplicationArea = All;
 
-                }
-                field(County; Rec.County)
-                {
-                    ApplicationArea = All;
-
-                }
-                field("Country/Region Code"; Rec."Country/Region Code")
-                {
-                    ApplicationArea = All;
-
-                }
-                field("Vat Number"; Rec."Vat Number")
-                {
-                    ApplicationArea = All;
-
-                }
                 // field(Status; Rec.Status)
                 // {
                 //     ApplicationArea = All;
@@ -142,6 +126,190 @@ page 60109 FBM_SiteMaster_DD
                 ApplicationArea = Basic, Suite;
                 SubPageLink = "Site Code" = FIELD("Site Code");
             }
+            group("Address & Contact")
+            {
+                Caption = 'Address';
+                group(AddressDetails)
+                {
+                    Caption = 'Address';
+                    field(Address; Rec.Address)
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field(Address_New; Rec.Address_New)
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.Address <> rec.Address_New;
+
+                    }
+                    field("Address 2"; Rec."Address 2")
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field("Address 2_New"; Rec."Address 2_New")
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Address 2" <> rec."Address 2_New";
+
+
+                    }
+                    field("Post Code"; Rec."Post Code")
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field("Post Code_New"; Rec."Post Code_New")
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Post Code" <> rec."Post Code_New";
+
+                    }
+
+                    field(City; Rec.City)
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field(City_New; Rec.City_New)
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.City <> rec.City_New;
+
+                    }
+                    field(County; Rec.County)
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field(County_New; Rec.County_New)
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.County <> rec.County_New;
+
+
+                    }
+                    field("Country/Region Code"; Rec."Country/Region Code")
+                    {
+                        ApplicationArea = All;
+
+                    }
+                    field("Country/Region Code_New"; Rec."Country/Region Code_New")
+                    {
+                        ApplicationArea = All;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Country/Region Code" <> rec."Country/Region Code_New";
+
+                    }
+                }
+            }
+            group(Invoicing)
+            {
+                Caption = 'Invoicing';
+                AboutTitle = 'Manage the site''s invoicing';
+                field("Vat Number"; Rec."Vat Number")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Vat Number_New"; Rec."Vat Number_New")
+                {
+                    ApplicationArea = All;
+                    Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec."Vat Number" <> rec."Vat Number_New";
+
+
+                }
+            }
+        }
+
+
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action(Reject)
+            {
+                ApplicationArea = all;
+                image = Reject;
+                Promoted = true;
+                PromotedIsBig = true;
+                enabled = hasreq;
+                trigger
+                OnAction()
+                var
+                    req: record FBM_CustSiteReq;
+                begin
+                    req.SetRange(CustSiteCode, rec."Site Code");
+                    req.SetRange(Status, req.Status::Received);
+                    if req.FindFirst() then begin
+                        req.Status := req.Status::Rejected;
+                        req.Modify();
+                    end;
+                end;
+
+
+
+            }
+            action(Approve)
+            {
+                ApplicationArea = all;
+                image = Approve;
+                Promoted = true;
+                PromotedIsBig = true;
+                enabled = hasreq;
+                trigger
+                OnAction()
+                var
+                    req: record FBM_CustSiteReq;
+                begin
+                    req.SetRange(CustSiteCode, rec."Site Code");
+                    req.SetRange(Status, req.Status::Received);
+                    if req.FindFirst() then begin
+                        req.Status := req.Status::Approved;
+                        req.Modify();
+                        if rec."Site Name" <> rec."Site Name_New" then
+                            rec.validate("Site Name", rec."Site Name_New");
+                        if rec."Site Name 2" <> rec."Site Name 2_New" then
+                            rec.validate("Site Name 2", rec."Site Name 2_New");
+                        if rec.address <> rec.Address_New then
+                            rec.validate(Address, rec.Address_New);
+                        if rec."Address 2" <> rec."Address 2_New" then
+                            rec.validate("Address 2", rec."Address 2_New");
+                        if rec.City <> rec.City_New then
+                            rec.validate(City, rec.City_New);
+                        if rec."Post Code" <> rec."Post Code_New" then
+                            rec.validate("Post Code", rec."Post Code_New");
+                        if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                            rec.validate("Country/Region Code", rec."Country/Region Code_New");
+                        if rec.County <> rec.County_New then
+                            rec.validate(County, rec.County_New);
+                        if rec."Vat Number" <> rec."Vat Number_New" then
+                            rec.validate("Vat Number", rec."Vat Number_New");
+
+                    end;
+                end;
+
+
+
+            }
+
+
+
         }
 
 
@@ -163,6 +331,31 @@ page 60109 FBM_SiteMaster_DD
 
     end;
 
+    trigger
+    OnAfterGetRecord()
+
+    begin
+        req.setrange(rectype, 'SITE');
+        REQ.setfilter(Status, '%1|%2', req.Status::Sent, req.status::Received);
+
+        if (rec."Site Code" = req.CustSiteCode) and REQ.FindFirst() THEN begin
+            hasreq := true;
+            rec."Site Name_New" := req.Name;
+            rec."Site Name 2_New" := req."Name 2";
+            rec.Address_New := req.Address;
+            rec."Address 2_New" := req."Address 2";
+            rec.City_New := req.City;
+            rec."Post Code_New" := req."Post Code";
+
+            rec."Country/Region Code_New" := req."Country/Region Code";
+            rec."Vat Number_New" := req."VAT registration No.";
+
+            req.Status := req.Status::Received;
+            req.Modify();
+            REC.Modify();
+        end;
+    end;
+
     var
         sitename: Text;
         siteaddress: Text;
@@ -171,6 +364,10 @@ page 60109 FBM_SiteMaster_DD
         site: record FBM_Site;
         companies: record Company;
         compinfo: record "Company Information";
+
+        hasreq: Boolean;
+        req: record FBM_CustSiteReq;
+
 
 
     procedure getmaxsite()

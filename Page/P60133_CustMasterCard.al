@@ -143,12 +143,14 @@ page 60133 FBM_CustCardMaster_DD
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies which transactions with the customer that cannot be processed, for example, because the customer is insolvent.';
+                    Visible = false;
                 }
                 field("Privacy Blocked"; rec."Privacy Blocked")
                 {
                     ApplicationArea = Basic, Suite;
                     Importance = Additional;
                     ToolTip = 'Specifies whether to limit access to data for the data subject during daily operations. This is useful, for example, when protecting data from changes while it is under privacy review.';
+                    Visible = false;
                 }
                 // field("Salesperson Code"; rec."Salesperson Code")
                 // {
@@ -234,7 +236,7 @@ page 60133 FBM_CustCardMaster_DD
             }
             group("Address & Contact")
             {
-                Caption = 'Address & Contact';
+                Caption = 'Address';
                 group(AddressDetails)
                 {
                     Caption = 'Address';
@@ -450,6 +452,7 @@ page 60133 FBM_CustCardMaster_DD
                 group(PostingDetails)
                 {
                     Caption = 'Posting Details';
+                    Visible = false;
                     field("Gen. Bus. Posting Group"; rec."Gen. Bus. Posting Group")
                     {
                         ApplicationArea = Basic, Suite;
@@ -838,7 +841,7 @@ page 60133 FBM_CustCardMaster_DD
         req.setrange(rectype, 'CUST');
         REQ.setfilter(Status, '%1|%2', req.Status::Sent, req.status::Received);
 
-        if REQ.FindFirst() THEN begin
+        if (rec."No." = req.CustSiteCode) and REQ.FindFirst() THEN begin
             hasreq := true;
             rec.Name_New := req.Name;
             rec."Name 2_New" := req."Name 2";

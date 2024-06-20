@@ -68,13 +68,15 @@ page 60156 FBM_NotesCust_DD
         }
         area(factboxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part("Attached Documents"; FBM_CRMDocAttach_DD)
             {
                 ApplicationArea = All;
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = CONST(Database::FBM_Notes),
+
                               "No." = FIELD("No."),
-                              "Document Type" = FIELD("Document Type");
+                              "Document Type" = field("Document Type");
+
             }
         }
 

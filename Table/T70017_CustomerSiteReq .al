@@ -10,12 +10,12 @@ table 70017 FBM_CustSiteReq
         field(1; EntryNo; biginteger)
         {
             AutoIncrement = true;
-            caption = 'Registro';
+            caption = 'Entry No.';
         }
         field(2; ReqType; Option)
         {
-            OptionMembers = "",Edit,New;
-            OptionCaption = ',Cambio,Nuevo';
+            OptionMembers = " ",Edit,New;
+            OptionCaption = ' ,Edit,New';
             caption = 'Request Type';
         }
         field(3; CustCode; code[20])
@@ -51,7 +51,7 @@ table 70017 FBM_CustSiteReq
         }
         field(10; County; Text[30])
         {
-            caption = 'County/Ptovince';
+            caption = 'County/Province';
         }
         field(11; "Country/Region Code"; code[10])
         {
@@ -65,11 +65,13 @@ table 70017 FBM_CustSiteReq
         {
             caption = 'Group';
             TableRelation = FBM_CustGroup where(IsGroup = const(true));
+            ValidateTableRelation = false;
         }
         field(14; FBM_Subgroup; Text[100])
         {
             caption = 'SubGroup';
             TableRelation = FBM_CustGroup where(Group = field(FBM_Group), IsGroup = const(false));
+            ValidateTableRelation = false;
         }
         field(15; Sender; code[50])
         {

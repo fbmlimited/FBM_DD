@@ -27,22 +27,40 @@ table 70001 FBM_Site
             end;
 
         }
+        field(103; "Site Name_New"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            caption = 'Site Name NEW';
+
+        }
         field(4; "Site Name 2"; Text[250])
         {
             caption = 'Site Name 2';
         }
+        field(104; "Site Name 2_New"; Text[250])
+        {
+            caption = 'Site Name 2 NEW';
+        }
 
         field(5; Address; Text[250])
         {
+            caption = 'Address';
             DataClassification = ToBeClassified;
             trigger
             OnValidate()
             begin
                 IncVersion();
             end;
+        }
+        field(105; Address_New; Text[250])
+        {
+            caption = 'Address NEW';
+            DataClassification = ToBeClassified;
+
         }
         field(6; "Address 2"; Text[250])
         {
+            caption = 'Address 2';
             DataClassification = ToBeClassified;
             trigger
             OnValidate()
@@ -50,8 +68,15 @@ table 70001 FBM_Site
                 IncVersion();
             end;
         }
+        field(106; "Address 2_New"; Text[250])
+        {
+            caption = 'Address 2 NEW';
+            DataClassification = ToBeClassified;
+
+        }
         field(7; City; Text[30])
         {
+            caption = 'City';
             DataClassification = ToBeClassified;
             TableRelation = IF ("Country/Region Code" = CONST()) "Post Code".City
             ELSE
@@ -63,8 +88,19 @@ table 70001 FBM_Site
                 IncVersion();
             end;
         }
+        field(107; City_New; Text[30])
+        {
+            caption = 'City NEW';
+            DataClassification = ToBeClassified;
+            TableRelation = IF ("Country/Region Code_New" = CONST()) "Post Code".City
+            ELSE
+            IF ("Country/Region Code_New" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code_New"));
+            ValidateTableRelation = false;
+
+        }
         field(8; "Post Code"; Code[20])
         {
+            Caption = 'Post Code';
             DataClassification = ToBeClassified;
             TableRelation = IF ("Country/Region Code" = CONST()) "Post Code"
             ELSE
@@ -76,8 +112,19 @@ table 70001 FBM_Site
                 IncVersion();
             end;
         }
+        field(108; "Post Code_New"; Code[20])
+        {
+            Caption = 'Post Code NEW';
+            DataClassification = ToBeClassified;
+            TableRelation = IF ("Country/Region Code_New" = CONST()) "Post Code"
+            ELSE
+            IF ("Country/Region Code_New" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code_New"));
+            ValidateTableRelation = FALSE;
+
+        }
         field(9; "Country/Region Code"; Code[20])
         {
+            Caption = 'Country';
             DataClassification = ToBeClassified;
             TableRelation = "Country/Region";
             trigger
@@ -102,6 +149,13 @@ table 70001 FBM_Site
                 end;
             end;
         }
+        field(109; "Country/Region Code_New"; Code[20])
+        {
+            caption = 'Country NEW';
+            DataClassification = ToBeClassified;
+            TableRelation = "Country/Region";
+
+        }
         field(10; Indent; Integer)
         {
             //this field was created to be used for indentation of pages making use if this table, if required
@@ -110,12 +164,19 @@ table 70001 FBM_Site
 
         field(12; "Vat Number"; Code[20])
         {
+            caption = 'VAT Reg. No.';
             DataClassification = ToBeClassified;
             trigger
             OnValidate()
             begin
                 IncVersion();
             end;
+        }
+        field(112; "Vat Number_New"; Code[20])
+        {
+            caption = 'VAT Reg. No. NEW';
+            DataClassification = ToBeClassified;
+
         }
         field(13; "Bank Filter"; text[2048])
         {
@@ -190,6 +251,10 @@ table 70001 FBM_Site
             FieldClass = Normal;
         }
         field(28; "County"; Text[50])
+        {
+            FieldClass = Normal;
+        }
+        field(128; "County_New"; Text[50])
         {
             FieldClass = Normal;
         }

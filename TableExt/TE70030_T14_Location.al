@@ -5,7 +5,12 @@ tableextension 70030 FBM_LocationExt_DD extends Location
         field(70000; FBM_NewItem; Boolean)
         {
             Caption = 'Stock New Items';
-
+            trigger
+            OnValidate()
+            begin
+                if rec.FBM_NewItem then
+                    rec.FBM_UsedItem := false;
+            end;
 
         }
         field(70001; FBM_UedItem; Boolean)
@@ -19,7 +24,12 @@ tableextension 70030 FBM_LocationExt_DD extends Location
         {
             Caption = 'Stock Used Items';
 
-
+            trigger
+            OnValidate()
+            begin
+                if rec.FBM_UsedItem then
+                    rec.FBM_NewItem := false;
+            end;
 
         }
         field(70100; FBM_Site; Code[20])

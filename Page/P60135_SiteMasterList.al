@@ -23,6 +23,11 @@ page 60135 FBM_SiteMasterList_DD
             }
             repeater(Group)
             {
+                FIELD(pendingreq; pendingreq)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Pending req.';
+                }
                 field("Site Code"; Rec."Site Code")
                 {
                     ApplicationArea = All;
@@ -84,22 +89,38 @@ page 60135 FBM_SiteMasterList_DD
         }
     }
 
+
+
     actions
     {
-        area(Processing)
+        area(Navigation)
         {
-            action(ActionName)
+            action(RequestsList)
+
             {
+                caption = 'Requests List';
+                image = List;
+                Promoted = true;
+                PromotedIsBig = true;
                 ApplicationArea = All;
+                PromotedCategory = Process;
 
-                trigger OnAction();
+                trigger
+                OnAction()
+                var
+                    req: record FBM_CustSiteReq;
+                    PREQ: page FBM_ReqList_DD;
                 begin
-
+                    req.SetRange(Rectype, 'SITE');
+                    preq.SetTableView(req);
+                    preq.Run();
+                    clear(PREQ);
                 end;
+
+
             }
         }
     }
-
     trigger
                        OnOpenPage()
     begin
@@ -108,9 +129,46 @@ page 60135 FBM_SiteMasterList_DD
 
     end;
 
+    trigger
+        OnAfterGetRecord()
+    begin
+
+        req.setrange(rectype, 'SITE');
+        REQ.SetRange(Status, req.Status::Sent);
+
+        if (rec."Site Code" = req.CustSiteCode) and REQ.FindFirst() THEN begin
+
+            rec."Site Name_New" := req.Name;
+            rec."Site Name 2_New" := req."Name 2";
+            rec.Address_New := req.Address;
+            rec."Address 2_New" := req."Address 2";
+            rec.City_New := req.City;
+            rec."Post Code_New" := req."Post Code";
+            rec.County_New := req.County;
+            rec."Country/Region Code_New" := req."Country/Region Code";
+            rec."Vat Number_New" := req."VAT registration No.";
+
+            REC.Modify();
+            repeat
+                req.Status := req.Status::Received;
+                req.Modify();
+            until req.Next() = 0;
+        end;
+
+        req.setrange(Rectype, 'SITE');
+        REQ.SetRange(CustSiteCode, REC."Site Code");
+        req.SetRange(Status, req.Status::Received);
+        pendingreq := REQ.Count;
+
+    end;
+
     var
         maxcode: Text;
         site: record FBM_Site;
+
+        req: record FBM_CustSiteReq;
+        pendingreq: Integer;
+
 
 
     procedure getmaxsite()

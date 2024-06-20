@@ -1,5 +1,6 @@
 tableextension 70002 FBM_CustomerExt_DD extends Customer
 {
+
     fields
     {
 

@@ -14,6 +14,13 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
 
 
         }
+        field(70002; FBM_UsedItem; Boolean)
+        {
+            Caption = 'Used Items';
+
+
+        }
+
         field(70100; FBM_Site; Code[20])
         {
             Caption = 'Site';
@@ -81,6 +88,12 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
                 if (FBM_Pedimentobis <> 'N/A') and (FBM_Pedimentobis <> '0') and (FBM_Pedimentobis <> '') then
                     FBM_Pedimento := FBM_Pedimentobis;
             end;
+        }
+        field(70137; FBM_FromOrion; Boolean)
+        {
+            Caption = 'From Orion';
+
+
         }
     }
 

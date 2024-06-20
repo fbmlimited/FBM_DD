@@ -10,6 +10,12 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
         {
 
             caption = 'Enable Site WebServices';
+            trigger
+
+            OnValidate()
+            begin
+                rec.FBM_CustIsOp := rec.FBM_EnSiteWS;
+            end;
         }
         field(70012; "FBM_TINNumber"; Text[100])
         {
@@ -32,6 +38,16 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
             Caption = 'Property';
             TableRelation = FBM_Subsidiary.EGM_Property;
             ValidateTableRelation = false;
+            trigger
+            OnValidate()
+            var
+                fasetup: record "FA Setup";
+            begin
+                fasetup.Get();
+                fasetup."FBM_FA Company" := rec.FBM_FAProperty;
+                fasetup.Modify();
+
+            end;
         }
         field(70016; FBM_FABrand; Option)
         {
