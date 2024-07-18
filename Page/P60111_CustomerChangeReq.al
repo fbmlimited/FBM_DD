@@ -1,6 +1,6 @@
-page 60111 FBM_CustomerReq_DD
+page 60111 FBM_CustomerChangeReq_DD
 {
-    Caption = 'Customer Request';
+    Caption = 'Customer Change Request';
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = Administration;
@@ -146,16 +146,24 @@ page 60111 FBM_CustomerReq_DD
 
         rec.CustSiteCode := ccode;
         rec.Rectype := 'CUST';
-
+        rec.Sender := UserId;
         fillfields(ccode);
     end;
 
     trigger
-    OnClosePage()
+    OnQueryClosePage(CloseAction: Action): Boolean
     begin
-        req.setrange(Status, req.Status::Draft);
+        REQ.Reset();
+        req.setfilter(Status, '%1|%2', req.Status::Draft, req.Status::" ");
         req.SetRange(Sender, UserId);
+
         req.DeleteAll();
+        REQ.Reset();
+        req.setfilter(Status, '%1|%2', req.Status::Draft, req.Status::" ");
+        req.SetRange(Sender, '');
+        ;
+        req.DeleteAll();
+
     end;
 
     trigger
@@ -166,6 +174,8 @@ page 60111 FBM_CustomerReq_DD
     end;
 
     var
+        scode: code[20];
+
         ccode: code[20];
         viscode: Boolean;
         custm: record FBM_Customer;
@@ -173,10 +183,13 @@ page 60111 FBM_CustomerReq_DD
         pedit: Boolean;
         req: record FBM_CustSiteReq;
 
-    procedure passpar(custcode: code[20]; edit: boolean)
+    procedure passpar(custsitecode: code[20]; edit: boolean)
     begin
         pedit := edit;
-        ccode := custcode;
+
+        ccode := custsitecode;
+
+
         rec.Init();
         rec.ReqType := rec.ReqType::Edit;
         //rec.Insert();
@@ -250,12 +263,15 @@ page 60111 FBM_CustomerReq_DD
                 rec.Ori_EntryNo := rec.EntryNo;
                 rec.Rectype := 'CUST';
                 REC.Status := REC.Status::Draft;
+                rec.Sender := UserId;
                 rec.Modify();
             end;
         end;
     end;
 
     local procedure fillfields(cust: code[20])
+    var
+        cmaster: record FBM_Customer;
     begin
         if rec.reqtype = rec.ReqType::Edit then begin
             viscode := true;
@@ -279,6 +295,7 @@ page 60111 FBM_CustomerReq_DD
                 rec.Ori_EntryNo := rec.EntryNo;
                 rec.Rectype := 'CUST';
                 REC.Status := REC.Status::Draft;
+                rec.Sender := UserId;
                 rec.Insert();
             end;
         end
@@ -288,6 +305,16 @@ page 60111 FBM_CustomerReq_DD
             rec.Status := rec.Status::Draft;
             rec.Ori_EntryNo := rec.EntryNo;
             rec.Rectype := 'CUST';
+            rec.Sender := UserId;
+            rec.CustSiteCode := 'AAX001';
+            cmaster.SetRange("No.", 'AAX001');
+            IF NOT cmaster.FindFirst() THEN begin
+                Cmaster.init;
+                cmaster.ActiveRec := true;
+                cmaster.Version := 0;
+                cmaster."No." := 'AAX001';
+                cmaster.Insert()
+            end;
             viscode := false;
         end;
     end;

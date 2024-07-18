@@ -70,6 +70,8 @@ page 60133 FBM_CustCardMaster_DD
                     ToolTip = 'Specifies an additional part of the name.';
                     //Visible = false;
                     Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec."Name 2" <> rec."Name 2_New";
                 }
                 field("FBM_Name 3"; Rec."FBM_Name3")
                 {
@@ -112,11 +114,14 @@ page 60133 FBM_CustCardMaster_DD
                 field(FBM_Group; Rec.FBM_Group)
                 {
                     ApplicationArea = all;
+
                 }
                 field(FBM_GroupNew; Rec.FBM_Group_New)
                 {
                     ApplicationArea = all;
                     Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec.FBM_Group <> rec.FBM_Group_New;
                 }
                 field(FBM_SubGroup; Rec.FBM_SubGroup)
                 {
@@ -126,6 +131,8 @@ page 60133 FBM_CustCardMaster_DD
                 {
                     ApplicationArea = all;
                     Enabled = hasreq;
+                    Style = Attention;
+                    StyleExpr = rec.FBM_SubGroup <> rec.FBM_SubGroup_New;
                 }
                 field(Company1; Rec.FBM_Company1)
                 {
@@ -220,20 +227,6 @@ page 60133 FBM_CustCardMaster_DD
 
                 }
             }
-            group("Linked Customer")
-            {
-
-                part(LinkedCust; FBM_LinkedCust_DD)
-                {
-                    ApplicationArea = Basic, Suite;
-                    SubPageLink = Value = FIELD("No.");
-                }
-            }
-            part(History; FBM_CustHistory_DD)
-            {
-                ApplicationArea = Basic, Suite;
-                SubPageLink = "No." = FIELD("No.");
-            }
             group("Address & Contact")
             {
                 Caption = 'Address';
@@ -249,6 +242,8 @@ page 60133 FBM_CustCardMaster_DD
                     {
                         ApplicationArea = Basic, Suite;
                         Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.Address <> rec.Address_New;
                     }
                     field("Address 2"; rec."Address 2")
                     {
@@ -259,11 +254,14 @@ page 60133 FBM_CustCardMaster_DD
                     {
                         ApplicationArea = Basic, Suite;
                         Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Address 2" <> rec."Address 2_New";
                     }
                     field("Country/Region Code"; rec."Country/Region Code")
                     {
                         ApplicationArea = Basic, Suite;
                         ToolTip = 'Specifies the country/region of the address.';
+
 
                         trigger OnValidate()
                         begin
@@ -274,6 +272,8 @@ page 60133 FBM_CustCardMaster_DD
                     {
                         ApplicationArea = Basic, Suite;
                         Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Country/Region Code" <> rec."Country/Region Code_New";
 
 
                     }
@@ -286,22 +286,24 @@ page 60133 FBM_CustCardMaster_DD
                     {
                         ApplicationArea = Basic, Suite;
                         Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.City <> rec.City_New;
                     }
-                    group(Control10)
+
+                    field(County; rec.County)
                     {
-                        ShowCaption = false;
-                        Visible = IsCountyVisible;
-                        field(County; rec.County)
-                        {
-                            ApplicationArea = Basic, Suite;
-                            ToolTip = 'Specifies the state, province or county as a part of the address.';
-                        }
-                        field(CountyNew; rec.County_New)
-                        {
-                            ApplicationArea = Basic, Suite;
-                            Enabled = hasreq;
-                        }
+                        ApplicationArea = Basic, Suite;
+                        ToolTip = 'Specifies the state, province or county as a part of the address.';
                     }
+                    field(CountyNew; rec.County_New)
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec.County <> rec.County_New;
+
+                    }
+
                     field("Post Code"; rec."Post Code")
                     {
                         ApplicationArea = Basic, Suite;
@@ -313,6 +315,8 @@ page 60133 FBM_CustCardMaster_DD
                         ApplicationArea = Basic, Suite;
                         Importance = Promoted;
                         Enabled = hasreq;
+                        Style = Attention;
+                        StyleExpr = rec."Post Code" <> rec."Post Code_New";
                     }
                     // field(ShowMap; ShowMapLbl)
                     // {
@@ -416,7 +420,8 @@ page 60133 FBM_CustCardMaster_DD
                 {
                     ApplicationArea = VAT;
                     Enabled = hasreq;
-
+                    Style = Attention;
+                    StyleExpr = rec."VAT Registration No." <> rec."VAT Registration No._New";
                 }
                 // field("EORI Number"; rec."EORI Number")
                 // {
@@ -691,35 +696,50 @@ page 60133 FBM_CustCardMaster_DD
             //         end;
             //     }
             // }
+
+
+            group("Linked Customer")
+            {
+
+                part(LinkedCust; FBM_LinkedCust_DD)
+                {
+                    ApplicationArea = Basic, Suite;
+                    SubPageLink = Value = FIELD("No.");
+                }
+            }
+            part(History; FBM_CustHistory_DD)
+            {
+                ApplicationArea = Basic, Suite;
+                SubPageLink = "No." = FIELD("No.");
+            }
+
+            // area(factboxes)
+            // {
+            //     part(Control149; "Customer Picture")
+            //     {
+            //         ApplicationArea = Basic, Suite;
+            //         SubPageLink = "No." = FIELD("No.");
+            //         Visible = NOT IsOfficeAddin;
+            //     }
+
+            //     part(Details; "Office Customer Details")
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Details';
+            //         SubPageLink = "No." = FIELD("No.");
+            //         Visible = IsOfficeAddin;
+            //     }
+
+
+
+
+
+
+
+
+
+
         }
-
-        // area(factboxes)
-        // {
-        //     part(Control149; "Customer Picture")
-        //     {
-        //         ApplicationArea = Basic, Suite;
-        //         SubPageLink = "No." = FIELD("No.");
-        //         Visible = NOT IsOfficeAddin;
-        //     }
-
-        //     part(Details; "Office Customer Details")
-        //     {
-        //         ApplicationArea = All;
-        //         Caption = 'Details';
-        //         SubPageLink = "No." = FIELD("No.");
-        //         Visible = IsOfficeAddin;
-        //     }
-
-
-
-
-
-
-
-
-
-
-        // }
     }
 
     actions
@@ -764,30 +784,63 @@ page 60133 FBM_CustCardMaster_DD
                     req.SetRange(CustSiteCode, rec."No.");
                     req.SetRange(Status, req.Status::Received);
                     if req.FindFirst() then begin
-                        req.Status := req.Status::Approved;
-                        req.Modify();
-                        if rec.name <> rec.Name_New then
-                            rec.validate(Name, rec.Name_New);
-                        if rec."Name 2" <> rec."Name 2_New" then
-                            rec.validate("Name 2", rec."Name 2_New");
-                        if rec.address <> rec.Address_New then
-                            rec.validate(Address, rec.Address_New);
-                        if rec."Address 2" <> rec."Address 2_New" then
-                            rec.validate("Address 2", rec."Address 2_New");
-                        if rec.City <> rec.City_New then
-                            rec.validate(City, rec.City_New);
-                        if rec."Post Code" <> rec."Post Code_New" then
-                            rec.validate("Post Code", rec."Post Code_New");
-                        if rec."Country/Region Code" <> rec."Country/Region Code_New" then
-                            rec.validate("Country/Region Code", rec."Country/Region Code_New");
-                        if rec.County <> rec.County_New then
-                            rec.validate(County, rec.County_New);
-                        if rec."VAT Registration No." <> rec."VAT Registration No._New" then
-                            rec.validate("VAT Registration No.", rec."VAT Registration No._New");
-                        if rec.FBM_Group <> rec.FBM_Group_New then
-                            rec.validate(FBM_Group, rec.FBM_Group_New);
-                        if rec.FBM_SubGroup <> rec.FBM_SubGroup_New then
-                            rec.validate(FBM_SubGroup, rec.FBM_SubGroup_New);
+                        if req.ReqType = req.ReqType::Edit then begin
+                            req.Status := req.Status::Approved;
+                            req.Modify();
+                            if rec.name <> rec.Name_New then
+                                rec.validate(Name, rec.Name_New);
+                            if rec."Name 2" <> rec."Name 2_New" then
+                                rec.validate("Name 2", rec."Name 2_New");
+                            if rec.address <> rec.Address_New then
+                                rec.validate(Address, rec.Address_New);
+                            if rec."Address 2" <> rec."Address 2_New" then
+                                rec.validate("Address 2", rec."Address 2_New");
+                            if rec.City <> rec.City_New then
+                                rec.validate(City, rec.City_New);
+                            if rec."Post Code" <> rec."Post Code_New" then
+                                rec.validate("Post Code", rec."Post Code_New");
+                            if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                                rec.validate("Country/Region Code", rec."Country/Region Code_New");
+                            if rec.County <> rec.County_New then
+                                rec.County := rec.County_New;
+                            if rec."VAT Registration No." <> rec."VAT Registration No._New" then
+                                rec.validate("VAT Registration No.", rec."VAT Registration No._New");
+                            if rec.FBM_Group <> rec.FBM_Group_New then
+                                rec.validate(FBM_Group, rec.FBM_Group_New);
+                            if rec.FBM_SubGroup <> rec.FBM_SubGroup_New then
+                                rec.validate(FBM_SubGroup, rec.FBM_SubGroup_New);
+
+                            CurrPage.Update();
+                            rec.Modify(true);
+                        end
+                        else begin
+                            req.Status := req.Status::Approved;
+                            req.Modify();
+                            if rec.name <> rec.Name_New then
+                                rec.Name := rec.Name_New;
+                            if rec."Name 2" <> rec."Name 2_New" then
+                                rec."Name 2" := rec."Name 2_New";
+                            if rec.address <> rec.Address_New then
+                                rec.Address := rec.Address_New;
+                            if rec."Address 2" <> rec."Address 2_New" then
+                                rec."Address 2" := rec."Address 2_New";
+                            if rec.City <> rec.City_New then
+                                rec.City := rec.City_New;
+                            if rec."Post Code" <> rec."Post Code_New" then
+                                rec."Post Code" := rec."Post Code_New";
+                            if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                                rec."Country/Region Code" := rec."Country/Region Code_New";
+                            if rec.County <> rec.County_New then
+                                rec.County := rec.County_New;
+                            if rec."VAT Registration No." <> rec."VAT Registration No._New" then
+                                rec."VAT Registration No." := rec."VAT Registration No._New";
+                            if rec.FBM_Group <> rec.FBM_Group_New then
+                                rec.FBM_Group := rec.FBM_Group_New;
+                            if rec.FBM_SubGroup <> rec.FBM_SubGroup_New then
+                                rec.FBM_SubGroup := rec.FBM_SubGroup_New;
+                            CurrPage.Update();
+                        end;
+
                     end;
                 end;
 
@@ -840,24 +893,39 @@ page 60133 FBM_CustCardMaster_DD
     begin
         req.setrange(rectype, 'CUST');
         REQ.setfilter(Status, '%1|%2', req.Status::Sent, req.status::Received);
+        if REQ.FindFirst() THEN
+            if (rec."No." = req.CustSiteCode) then begin
+                hasreq := true;
+                if REC.NAME <> REQ.NAME THEN
+                    rec.Name_New := req.Name;
+                IF REC."Name 2" <> REQ."Name 2" THEN
+                    rec."Name 2_New" := req."Name 2";
+                IF REC.AddreSS <> REQ.Address THEN
+                    rec.Address_New := req.Address;
+                IF REC."Address 2" <> REQ."Address 2" THEN
+                    rec."Address 2_New" := req."Address 2";
+                IF REC.City <> REQ.City THEN
+                    rec.City_New := req.City;
+                IF REC."Post Code" <> REQ."Post Code" THEN
+                    rec."Post Code_New" := req."Post Code";
+                IF REC.County <> REQ.County THEN
+                    rec.County_New := req.County;
+                IF REC."Country/Region Code" <> REQ."Country/Region Code" THEN
+                    rec."Country/Region Code_New" := req."Country/Region Code";
+                IF REC."VAT Registration No." <> REQ."VAT registration No." THEN
+                    rec."VAT Registration No._New" := req."VAT registration No.";
+                if rec.FBM_Group <> req.FBM_Group then begin
 
-        if (rec."No." = req.CustSiteCode) and REQ.FindFirst() THEN begin
-            hasreq := true;
-            rec.Name_New := req.Name;
-            rec."Name 2_New" := req."Name 2";
-            rec.Address_New := req.Address;
-            rec."Address 2_New" := req."Address 2";
-            rec.City_New := req.City;
-            rec."Post Code_New" := req."Post Code";
-            rec.County_New := req.County;
-            rec."Country/Region Code_New" := req."Country/Region Code";
-            rec."VAT Registration No._New" := req."VAT registration No.";
-            rec.FBM_Group_New := req.FBM_Group;
-            rec.FBM_SubGroup_New := req.FBM_Subgroup;
-            req.Status := req.Status::Received;
-            req.Modify();
-            REC.Modify();
-        end;
+                    rec.FBM_SubGroup_New := '';
+                    rec.FBM_Group_New := req.FBM_Group;
+                end;
+
+                if rec.FBM_SubGroup <> req.FBM_Subgroup then
+                    rec.FBM_SubGroup_New := req.FBM_Subgroup;
+                req.Status := req.Status::Received;
+                req.Modify();
+                REC.Modify();
+            end;
     end;
 
     local procedure OnOpenPageFunc()

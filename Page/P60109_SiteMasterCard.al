@@ -111,20 +111,7 @@ page 60109 FBM_SiteMaster_DD
                 }
 
 
-            }
-            group("Linked Site")
-            {
 
-                part(LinkedSite; FBM_LinkedSite_DD)
-                {
-                    ApplicationArea = Basic, Suite;
-                    SubPageLink = Value = FIELD("Site Code");
-                }
-            }
-            part(History; FBM_SiteHistory_DD)
-            {
-                ApplicationArea = Basic, Suite;
-                SubPageLink = "Site Code" = FIELD("Site Code");
             }
             group("Address & Contact")
             {
@@ -234,8 +221,23 @@ page 60109 FBM_SiteMaster_DD
 
                 }
             }
-        }
 
+            group("Linked Site")
+            {
+
+                part(LinkedSite; FBM_LinkedSite_DD)
+                {
+                    ApplicationArea = Basic, Suite;
+                    SubPageLink = Value = FIELD("Site Code");
+                }
+            }
+            part(History; FBM_SiteHistory_DD)
+            {
+                ApplicationArea = Basic, Suite;
+                SubPageLink = "Site Code" = FIELD("Site Code");
+            }
+
+        }
 
     }
     actions
@@ -301,6 +303,7 @@ page 60109 FBM_SiteMaster_DD
                         if rec."Vat Number" <> rec."Vat Number_New" then
                             rec.validate("Vat Number", rec."Vat Number_New");
 
+
                     end;
                 end;
 
@@ -337,23 +340,30 @@ page 60109 FBM_SiteMaster_DD
     begin
         req.setrange(rectype, 'SITE');
         REQ.setfilter(Status, '%1|%2', req.Status::Sent, req.status::Received);
+        if REQ.FindFirst() THEN
+            if (rec."Site Code" = req.CustSiteCode) then begin
+                hasreq := true;
+                IF REC."Site Name" <> REQ.Name THEN
+                    rec."Site Name_New" := req.Name;
+                IF REC."Site Name 2" <> REQ."Name 2" THEN
+                    rec."Site Name 2_New" := req."Name 2";
+                IF REC.Address <> REQ.Address THEN
+                    rec.Address_New := req.Address;
+                IF REC."Address 2" <> REQ."Address 2" THEN
+                    rec."Address 2_New" := req."Address 2";
+                IF REC.City <> REQ.City THEN
+                    rec.City_New := req.City;
+                IF REC."Post Code" <> REQ."Post Code" THEN
+                    rec."Post Code_New" := req."Post Code";
+                IF REC."Country/Region Code" <> REQ."Country/Region Code" THEN
+                    rec."Country/Region Code_New" := req."Country/Region Code";
+                IF REC."Vat Number" <> REQ."VAT registration No." THEN
+                    rec."Vat Number_New" := req."VAT registration No.";
 
-        if (rec."Site Code" = req.CustSiteCode) and REQ.FindFirst() THEN begin
-            hasreq := true;
-            rec."Site Name_New" := req.Name;
-            rec."Site Name 2_New" := req."Name 2";
-            rec.Address_New := req.Address;
-            rec."Address 2_New" := req."Address 2";
-            rec.City_New := req.City;
-            rec."Post Code_New" := req."Post Code";
-
-            rec."Country/Region Code_New" := req."Country/Region Code";
-            rec."Vat Number_New" := req."VAT registration No.";
-
-            req.Status := req.Status::Received;
-            req.Modify();
-            REC.Modify();
-        end;
+                req.Status := req.Status::Received;
+                req.Modify();
+                REC.Modify();
+            end;
     end;
 
     var

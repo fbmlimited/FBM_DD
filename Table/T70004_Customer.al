@@ -53,14 +53,16 @@ table 70004 FBM_Customer
         {
             Caption = 'Search Name';
         }
-        field(4; "Name 2"; Text[50])
+        field(4; "Name 2"; Text[100])
         {
             Caption = 'Name 2';
         }
         field(70504; "Name 2_New"; Text[50])
         {
             Caption = 'Name 2 NEW';
+
         }
+
         field(5; Address; Text[100])
         {
             Caption = 'Address';
@@ -75,7 +77,8 @@ table 70004 FBM_Customer
             Caption = 'Address NEW';
 
         }
-        field(6; "Address 2"; Text[50])
+
+        field(6; "Address 2"; Text[100])
         {
             Caption = 'Address 2';
 
@@ -85,6 +88,7 @@ table 70004 FBM_Customer
             Caption = 'Address 2 NEW';
 
         }
+
         field(7; City; Text[30])
         {
             Caption = 'City';
@@ -518,7 +522,7 @@ table 70004 FBM_Customer
         }
         field(92; County; Text[30])
         {
-            CaptionClass = '5,1,' + "Country/Region Code";
+            //CaptionClass = '5,1,' + "Country/Region Code";
             Caption = 'County';
             trigger
            OnValidate()
@@ -528,7 +532,7 @@ table 70004 FBM_Customer
         }
         field(70592; County_New; Text[30])
         {
-            CaptionClass = '5,1,' + "Country/Region Code";
+            //CaptionClass = '5,1,' + "Country/Region Code";
             Caption = 'County NEW';
 
 
@@ -1079,22 +1083,23 @@ table 70004 FBM_Customer
         repeat
             customer.ChangeCompany(comp.Name);
             customer.SetRange(FBM_GrCode, rec."No.");
-            if customer.FindFirst() then begin
-                customer.name := rec.Name;
-                customer."Name 2" := rec."Name 2";
-                customer."FBM_Name3" := rec."FBM_Name3";
-                customer."Search Name" := rec."Search Name";
-                customer.Address := rec.Address;
-                customer."Address 2" := rec."Address 2";
-                customer."Post Code" := rec."Post Code";
-                customer.City := rec.City;
-                customer.County := rec.County;
-                customer."Country/Region Code" := rec."Country/Region Code";
-                customer."VAT Registration No." := rec."VAT Registration No.";
-                customer.FBM_Group := rec.FBM_Group;
-                customer.FBM_SubGroup := rec.FBM_SubGroup;
-                customer.Modify();
-            end;
+            if customer.FindFirst() then
+                repeat
+                    customer.name := rec.Name;
+                    customer."Name 2" := rec."Name 2";
+                    customer."FBM_Name3" := rec."FBM_Name3";
+                    customer."Search Name" := rec."Search Name";
+                    customer.Address := rec.Address;
+                    customer."Address 2" := rec."Address 2";
+                    customer."Post Code" := rec."Post Code";
+                    customer.City := rec.City;
+                    customer.County := rec.County;
+                    customer."Country/Region Code" := rec."Country/Region Code";
+                    customer."VAT Registration No." := rec."VAT Registration No.";
+                    customer.FBM_Group := rec.FBM_Group;
+                    customer.FBM_SubGroup := rec.FBM_SubGroup;
+                    customer.Modify();
+                until customer.Next() = 0;
         until comp.next = 0;
     end;
 
@@ -1218,6 +1223,7 @@ table 70004 FBM_Customer
             cust2.Address := rec.Address;
             cust2."Address 2" := rec."Address 2";
             cust2.City := rec.City;
+            cust2.County := rec.County;
             cust2."Country/Region Code" := rec."Country/Region Code";
             cust2."Post Code" := rec."Post Code";
             cust2."VAT Registration No." := rec."VAT Registration No.";

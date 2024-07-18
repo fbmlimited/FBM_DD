@@ -2,7 +2,7 @@ table 70017 FBM_CustSiteReq
 {
     DataClassification = ToBeClassified;
     DataPerCompany = false;
-    DrillDownPageId = FBM_CustomerReq_DD;
+    DrillDownPageId = FBM_CustomerChangeReq_DD;
 
 
     fields
@@ -29,7 +29,7 @@ table 70017 FBM_CustSiteReq
         {
             caption = 'Name';
         }
-        field(5; "Name 2"; Text[100])
+        field(5; "Name 2"; Text[50])
         {
             caption = 'Name 2';
         }
@@ -37,7 +37,7 @@ table 70017 FBM_CustSiteReq
         {
             caption = 'Address';
         }
-        field(7; "Address 2"; Text[100])
+        field(7; "Address 2"; Text[50])
         {
             caption = 'Address 2';
         }
@@ -56,6 +56,7 @@ table 70017 FBM_CustSiteReq
         field(11; "Country/Region Code"; code[10])
         {
             caption = 'Country';
+            TableRelation = "Country/Region";
         }
         field(12; "VAT registration No."; Text[20])
         {
@@ -70,7 +71,7 @@ table 70017 FBM_CustSiteReq
         field(14; FBM_Subgroup; Text[100])
         {
             caption = 'SubGroup';
-            TableRelation = FBM_CustGroup where(Group = field(FBM_Group), IsGroup = const(false));
+            TableRelation = FBM_CustGroup.SubGroup where(Group = field(FBM_Group), IsGroup = const(false));
             ValidateTableRelation = false;
         }
         field(15; Sender; code[50])

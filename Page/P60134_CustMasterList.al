@@ -287,9 +287,9 @@ page 60134 FBM_CustListMaster_DD
     trigger
     OnAfterGetRecord()
     begin
-
+        pendingreq := 0;
         req.setrange(rectype, 'CUST');
-        REQ.SetRange(Status, req.Status::Sent);
+        REQ.SetFILTER(Status, '%1|%2', req.Status::Sent, req.status::Received);
 
         if (rec."No." = req.CustSiteCode) and REQ.FindFirst() THEN begin
             if req.ReqType = req.ReqType::edit then begin

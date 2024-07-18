@@ -88,11 +88,13 @@ table 70006 FBM_CustomerSite_C
                 csite: record FBM_CustomerSite_C;
                 cos: record FBM_CustOpSite;
             begin
-                csite.SetRange(SiteGrCode, rec.SiteGrCode);
-                csite.setfilter(status, '%1|%2', rec.Status::"HOLD OPERATION", rec.Status::OPERATIONAL);
-                CSITE.SetFilter("Site Code", '<>%1', REC."Site Code");
-                if csite.FindFirst() then
-                    error('Found an existing active record for this site with customer %1', csite."Customer No.");
+                IF (REC.status = rec.status::"HOLD OPERATION") or (rec.status = rec.status::OPERATIONAL) then begin
+                    csite.SetRange(SiteGrCode, rec.SiteGrCode);
+                    csite.setfilter(status, '%1|%2', rec.Status::"HOLD OPERATION", rec.Status::OPERATIONAL);
+                    CSITE.SetFilter("Site Code", '<>%1', REC."Site Code");
+                    if csite.FindFirst() then
+                        error('Found an existing active record for this site with customer %1', csite."Customer No.");
+                end;
                 cos.Reset();
                 cos.SetRange("Site Loc Code", rec."Site Code");
                 cos.SetRange("Cust Loc Code", rec."Customer No.");
@@ -216,6 +218,13 @@ table 70006 FBM_CustomerSite_C
         CompanyInfo.Get();
 
         if CompanyInfo.FBM_CustIsOp then begin
+            customer.get(CustSite."Customer No.");
+            if country.get(customer."Country/Region Code") then
+                COS.SetRange(Subsidiary, CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3);
+            cos.SetRange("Customer No.", customer.FBM_GrCode);
+            cos.SetRange("Site Code", '');
+            if cos.findfirst then cos.DeleteAll();
+            cos.Reset();
 
             customer.get(CustSite."Customer No.");
             if country.get(customer."Country/Region Code") then

@@ -8,7 +8,7 @@ page 60139 FBM_ReqList_DD
     DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = false;
-    CardPageId = FBM_CustomerReq_DD;
+    CardPageId = FBM_CustomerChangeReq_DD;
 
 
     layout
@@ -30,7 +30,7 @@ page 60139 FBM_ReqList_DD
                         req: record FBM_CustSiteReq;
                     begin
                         req.SetRange(EntryNo, rec.EntryNo);
-                        page.run(page::FBM_CustomerReq_DD, req);
+                        page.run(page::FBM_CustomerChangeReq_DD, req);
 
                     end;
                 }
