@@ -250,6 +250,7 @@ page 60109 FBM_SiteMaster_DD
                 image = Reject;
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 enabled = hasreq;
                 trigger
                 OnAction()
@@ -262,6 +263,8 @@ page 60109 FBM_SiteMaster_DD
                         req.Status := req.Status::Rejected;
                         req.Modify();
                     end;
+                    if req.ReqType = req.ReqType::New then
+                        rec.Delete();
                 end;
 
 
@@ -273,6 +276,7 @@ page 60109 FBM_SiteMaster_DD
                 image = Approve;
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 enabled = hasreq;
                 trigger
                 OnAction()
@@ -282,30 +286,63 @@ page 60109 FBM_SiteMaster_DD
                     req.SetRange(CustSiteCode, rec."Site Code");
                     req.SetRange(Status, req.Status::Received);
                     if req.FindFirst() then begin
-                        req.Status := req.Status::Approved;
-                        req.Modify();
-                        if rec."Site Name" <> rec."Site Name_New" then
-                            rec.validate("Site Name", rec."Site Name_New");
-                        if rec."Site Name 2" <> rec."Site Name 2_New" then
-                            rec.validate("Site Name 2", rec."Site Name 2_New");
-                        if rec.address <> rec.Address_New then
-                            rec.validate(Address, rec.Address_New);
-                        if rec."Address 2" <> rec."Address 2_New" then
-                            rec.validate("Address 2", rec."Address 2_New");
-                        if rec.City <> rec.City_New then
-                            rec.validate(City, rec.City_New);
-                        if rec."Post Code" <> rec."Post Code_New" then
-                            rec.validate("Post Code", rec."Post Code_New");
-                        if rec."Country/Region Code" <> rec."Country/Region Code_New" then
-                            rec.validate("Country/Region Code", rec."Country/Region Code_New");
-                        if rec.County <> rec.County_New then
-                            rec.validate(County, rec.County_New);
-                        if rec."Vat Number" <> rec."Vat Number_New" then
-                            rec.validate("Vat Number", rec."Vat Number_New");
+                        if req.ReqType = req.ReqType::Edit then begin
+                            req.Status := req.Status::Approved;
+                            req.Modify();
+                            if rec."Site Name" <> rec."Site Name_New" then
+                                rec."Site Name" := rec."Site Name_New";
+                            if rec."Site Name 2" <> rec."Site Name 2_New" then
+                                rec."Site Name 2" := rec."Site Name 2_New";
+                            if rec.address <> rec.Address_New then
+                                rec.Address := rec.Address_New;
+                            if rec."Address 2" <> rec."Address 2_New" then
+                                rec."Address 2" := rec."Address 2_New";
+                            if rec.City <> rec.City_New then
+                                rec.City := rec.City_New;
+                            if rec."Post Code" <> rec."Post Code_New" then
+                                rec."Post Code" := rec."Post Code_New";
+                            if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                                rec."Country/Region Code" := rec."Country/Region Code_New";
+                            if rec.County <> rec.County_New then
+                                rec.County := rec.County_New;
+                            if rec."Vat Number" <> rec."Vat Number_New" then
+                                rec."Vat Number" := rec."Vat Number_New";
+                            rec.Modify(true);
+                            CurrPage.Update();
+
+
+                        end
+                        else begin
+                            req.Status := req.Status::Approved;
+                            req.Modify();
+                            if rec."Site Name" <> rec."Site Name_New" then
+                                rec."Site Name" := rec."Site Name_New";
+                            if rec."Site Name 2" <> rec."Site Name 2_New" then
+                                rec."Site Name 2" := rec."Site Name 2_New";
+                            if rec.address <> rec.Address_New then
+                                rec.Address := rec.Address_New;
+                            if rec."Address 2" <> rec."Address 2_New" then
+                                rec."Address 2" := rec."Address 2_New";
+                            if rec.City <> rec.City_New then
+                                rec.City := rec.City_New;
+                            if rec."Post Code" <> rec."Post Code_New" then
+                                rec."Post Code" := rec."Post Code_New";
+                            if rec."Country/Region Code" <> rec."Country/Region Code_New" then
+                                rec."Country/Region Code" := rec."Country/Region Code_New";
+                            if rec.County <> rec.County_New then
+                                rec.County := rec.County_New;
+                            if rec."Vat Number" <> rec."Vat Number_New" then
+                                rec."Vat Number" := rec."Vat Number_New";
+                            rec.Modify();
+                            CurrPage.Update();
+
+                        end;
 
 
                     end;
                 end;
+
+
 
 
 
@@ -345,12 +382,12 @@ page 60109 FBM_SiteMaster_DD
                 hasreq := true;
                 IF REC."Site Name" <> REQ.Name THEN
                     rec."Site Name_New" := req.Name;
-                IF REC."Site Name 2" <> REQ."Name 2" THEN
-                    rec."Site Name 2_New" := req."Name 2";
+                IF REC."Site Name 2" <> REQ."Name 2b" THEN
+                    rec."Site Name 2_New" := req."Name 2b";
                 IF REC.Address <> REQ.Address THEN
                     rec.Address_New := req.Address;
-                IF REC."Address 2" <> REQ."Address 2" THEN
-                    rec."Address 2_New" := req."Address 2";
+                IF REC."Address 2" <> REQ."Address 2b" THEN
+                    rec."Address 2_New" := req."Address 2b";
                 IF REC.City <> REQ.City THEN
                     rec.City_New := req.City;
                 IF REC."Post Code" <> REQ."Post Code" THEN

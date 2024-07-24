@@ -29,17 +29,29 @@ table 70017 FBM_CustSiteReq
         {
             caption = 'Name';
         }
-        field(5; "Name 2"; Text[50])
+        field(5; "Name 2"; Text[100])
         {
             caption = 'Name 2';
+            ObsoleteState = Removed;
+        }
+        field(505; "Name 2b"; Text[50])
+        {
+            caption = 'Name 2';
+
         }
         field(6; Address; Text[100])
         {
             caption = 'Address';
         }
-        field(7; "Address 2"; Text[50])
+        field(7; "Address 2"; Text[100])
         {
             caption = 'Address 2';
+            ObsoleteState = Removed;
+        }
+        field(5077; "Address 2b"; Text[50])
+        {
+            caption = 'Address 2';
+
         }
         field(8; City; Text[30])
         {

@@ -39,7 +39,7 @@ page 60162 FBM_SiteChangeReq_DD
                     ApplicationArea = All;
 
                 }
-                field("Name 2"; Rec."Name 2")
+                field("Name 2"; Rec."Name 2b")
                 {
                     ApplicationArea = All;
 
@@ -49,7 +49,7 @@ page 60162 FBM_SiteChangeReq_DD
                     ApplicationArea = All;
 
                 }
-                field("Address 2"; Rec."Address 2")
+                field("Address 2"; Rec."Address 2b")
                 {
                     ApplicationArea = All;
 
@@ -171,6 +171,7 @@ page 60162 FBM_SiteChangeReq_DD
         cinfo: record "Company Information";
         pedit: Boolean;
         req: record FBM_CustSiteReq;
+        nprogr: Integer;
 
     procedure passpar(sitecode: code[20]; edit: boolean)
     begin
@@ -225,36 +226,11 @@ page 60162 FBM_SiteChangeReq_DD
 
     end;
 
-    local procedure fillfieldsE(site: code[20])
-    begin
-        if rec.reqtype = rec.ReqType::Edit then begin
-            viscode := true;
-            sitem.SetRange(ActiveRec, true);
-            sitem.SetRange("Site Code", site);
-            if sitem.FindFirst() then begin
 
-                REC.ReqType := REC.ReqType::Edit;
-                rec.CustSiteCode := sitem."Site Code";
-                rec.Name := sitem."Site Name";
-                rec."Name 2" := sitem."Site Name 2";
-                rec.Address := sitem.Address;
-                rec."Address 2" := sitem."Address 2";
-                rec."Post Code" := sitem."Post Code";
-                rec.City := sitem.City;
-                rec.County := sitem.County;
-                rec."Country/Region Code" := sitem."Country/Region Code";
-                rec."VAT registration No." := sitem."Vat Number";
-
-                rec.Ori_EntryNo := rec.EntryNo;
-                rec.Rectype := 'SITE';
-                REC.Status := REC.Status::Draft;
-                rec.Sender := UserId;
-                rec.Modify();
-            end;
-        end;
-    end;
 
     local procedure fillfields(site: code[20])
+    var
+        smaster: record FBM_Site;
     begin
         if rec.reqtype = rec.ReqType::Edit then begin
             viscode := true;
@@ -265,9 +241,9 @@ page 60162 FBM_SiteChangeReq_DD
                 REC.ReqType := REC.ReqType::Edit;
                 rec.CustSiteCode := sitem."Site Code";
                 rec.Name := sitem."Site Name";
-                rec."Name 2" := sitem."Site Name 2";
+                rec."Name 2b" := sitem."Site Name 2";
                 rec.Address := sitem.Address;
-                rec."Address 2" := sitem."Address 2";
+                rec."Address 2b" := sitem."Address 2";
                 rec."Post Code" := sitem."Post Code";
                 rec.City := sitem.City;
                 rec.County := sitem.County;
@@ -282,12 +258,28 @@ page 60162 FBM_SiteChangeReq_DD
             end;
         end
         else begin
+            smaster.SetRange(ActiveRec, true);
+            smaster.FindFirst();
+            while (Evaluate(nprogr, smaster."Site Code")) and (smaster.Next() <> 0) do begin
+
+            end;
+            nprogr += 1;
+            rec.Init();
             rec.Init();
             REC.ReqType := REC.ReqType::New;
             rec.Status := rec.Status::Draft;
             rec.Ori_EntryNo := rec.EntryNo;
             rec.Rectype := 'SITE';
             rec.Sender := UserId;
+            rec.CustSiteCode := PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr);
+            smaster.SetRange("Site Code", PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr));
+            IF NOT smaster.FindFirst() THEN begin
+                smaster.init;
+                smaster.ActiveRec := true;
+                smaster.Version := 0;
+                smaster."Site Code" := PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr);
+                smaster.Insert()
+            end;
             viscode := false;
         end;
     end;
@@ -343,9 +335,9 @@ page 60162 FBM_SiteChangeReq_DD
         jsonobject.Add('ReqType', format(preq.ReqType));
         jsonobject.Add('CustSiteCode', preq.CustSiteCode);
         jsonobject.Add('Name', preq.Name);
-        jsonobject.Add('Name_2', preq."Name 2");
+        jsonobject.Add('Name_2', preq."Name 2b");
         jsonobject.Add('Address', preq.Address);
-        jsonobject.Add('Address_2', preq."Address 2");
+        jsonobject.Add('Address_2', preq."Address 2b");
         jsonobject.Add('City', preq.City);
         jsonobject.Add('PostCode', preq."Post Code");
         jsonobject.Add('County', preq.County);

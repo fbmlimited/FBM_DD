@@ -101,7 +101,7 @@
     "server": "https://businesscentral.dynamics.com",
     "tenant": "9e0bb323-0ae5-4ab5-baed-25b8c94cf882",
     "authentication": "AAD",
-    "environmentName": "DEV_FBM_240612",
+    "environmentName": "DEV_FBM_240721",
     "startupObjectId": 22,
     "startupObjectType": "Page",
     "breakOnError": "All",

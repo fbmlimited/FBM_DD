@@ -398,7 +398,14 @@ table 70001 FBM_Site
 
     trigger
     OnDelete()
+    var
+        req: record FBM_CustSiteReq;
+
+
     begin
+        req.setrange(CustSiteCode, xrec."Site Code");
+        if req.FindFirst() then
+            req.DeleteAll();
         cos.SetRange("Site Code", xrec."Site Code");
         if cos.findfirst then
             cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", cos."Site Loc Code");

@@ -752,6 +752,7 @@ page 60133 FBM_CustCardMaster_DD
                 image = Reject;
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 enabled = hasreq;
                 trigger
                 OnAction()
@@ -764,6 +765,9 @@ page 60133 FBM_CustCardMaster_DD
                         req.Status := req.Status::Rejected;
                         req.Modify();
                     end;
+                    if req.ReqType = req.ReqType::New then
+                        rec.Delete();
+
                 end;
 
 
@@ -775,6 +779,7 @@ page 60133 FBM_CustCardMaster_DD
                 image = Approve;
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 enabled = hasreq;
                 trigger
                 OnAction()
@@ -788,27 +793,27 @@ page 60133 FBM_CustCardMaster_DD
                             req.Status := req.Status::Approved;
                             req.Modify();
                             if rec.name <> rec.Name_New then
-                                rec.validate(Name, rec.Name_New);
+                                rec.Name := rec.Name_New;
                             if rec."Name 2" <> rec."Name 2_New" then
-                                rec.validate("Name 2", rec."Name 2_New");
+                                rec."Name 2" := rec."Name 2_New";
                             if rec.address <> rec.Address_New then
-                                rec.validate(Address, rec.Address_New);
+                                rec.Address := rec.Address_New;
                             if rec."Address 2" <> rec."Address 2_New" then
-                                rec.validate("Address 2", rec."Address 2_New");
+                                rec."Address 2" := rec."Address 2_New";
                             if rec.City <> rec.City_New then
-                                rec.validate(City, rec.City_New);
+                                rec.City := rec.City_New;
                             if rec."Post Code" <> rec."Post Code_New" then
-                                rec.validate("Post Code", rec."Post Code_New");
+                                rec."Post Code" := rec."Post Code_New";
                             if rec."Country/Region Code" <> rec."Country/Region Code_New" then
-                                rec.validate("Country/Region Code", rec."Country/Region Code_New");
+                                rec."Country/Region Code" := rec."Country/Region Code_New";
                             if rec.County <> rec.County_New then
                                 rec.County := rec.County_New;
                             if rec."VAT Registration No." <> rec."VAT Registration No._New" then
-                                rec.validate("VAT Registration No.", rec."VAT Registration No._New");
+                                rec."VAT Registration No." := rec."VAT Registration No._New";
                             if rec.FBM_Group <> rec.FBM_Group_New then
-                                rec.validate(FBM_Group, rec.FBM_Group_New);
+                                rec.FBM_Group := rec.FBM_Group_New;
                             if rec.FBM_SubGroup <> rec.FBM_SubGroup_New then
-                                rec.validate(FBM_SubGroup, rec.FBM_SubGroup_New);
+                                rec.FBM_SubGroup := rec.FBM_SubGroup_New;
 
                             CurrPage.Update();
                             rec.Modify(true);
@@ -898,12 +903,12 @@ page 60133 FBM_CustCardMaster_DD
                 hasreq := true;
                 if REC.NAME <> REQ.NAME THEN
                     rec.Name_New := req.Name;
-                IF REC."Name 2" <> REQ."Name 2" THEN
-                    rec."Name 2_New" := req."Name 2";
+                IF REC."Name 2" <> REQ."Name 2b" THEN
+                    rec."Name 2_New" := req."Name 2b";
                 IF REC.AddreSS <> REQ.Address THEN
                     rec.Address_New := req.Address;
-                IF REC."Address 2" <> REQ."Address 2" THEN
-                    rec."Address 2_New" := req."Address 2";
+                IF REC."Address 2" <> REQ."Address 2b" THEN
+                    rec."Address 2_New" := req."Address 2b";
                 IF REC.City <> REQ.City THEN
                     rec.City_New := req.City;
                 IF REC."Post Code" <> REQ."Post Code" THEN

@@ -39,7 +39,7 @@ page 60111 FBM_CustomerChangeReq_DD
                     ApplicationArea = All;
 
                 }
-                field("Name 2"; Rec."Name 2")
+                field("Name 2"; Rec."Name 2b")
                 {
                     ApplicationArea = All;
 
@@ -49,7 +49,7 @@ page 60111 FBM_CustomerChangeReq_DD
                     ApplicationArea = All;
 
                 }
-                field("Address 2"; Rec."Address 2")
+                field("Address 2"; Rec."Address 2b")
                 {
                     ApplicationArea = All;
 
@@ -182,6 +182,7 @@ page 60111 FBM_CustomerChangeReq_DD
         cinfo: record "Company Information";
         pedit: Boolean;
         req: record FBM_CustSiteReq;
+        nprogr: Integer;
 
     procedure passpar(custsitecode: code[20]; edit: boolean)
     begin
@@ -239,35 +240,7 @@ page 60111 FBM_CustomerChangeReq_DD
 
     end;
 
-    local procedure fillfieldsE(cust: code[20])
-    begin
-        if rec.reqtype = rec.ReqType::Edit then begin
-            viscode := true;
-            custm.SetRange(ActiveRec, true);
-            custm.SetRange("No.", cust);
-            if custm.FindFirst() then begin
 
-                REC.ReqType := REC.ReqType::Edit;
-                rec.CustSiteCode := custm."No.";
-                rec.Name := custm.Name;
-                rec."Name 2" := custm."Name 2";
-                rec.Address := custm.Address;
-                rec."Address 2" := custm."Address 2";
-                rec."Post Code" := custm."Post Code";
-                rec.City := custm.City;
-                rec.County := custm.County;
-                rec."Country/Region Code" := custm."Country/Region Code";
-                rec."VAT registration No." := custm."VAT Registration No.";
-                rec.FBM_Group := custm.FBM_Group;
-                rec.FBM_Subgroup := custm.FBM_SubGroup;
-                rec.Ori_EntryNo := rec.EntryNo;
-                rec.Rectype := 'CUST';
-                REC.Status := REC.Status::Draft;
-                rec.Sender := UserId;
-                rec.Modify();
-            end;
-        end;
-    end;
 
     local procedure fillfields(cust: code[20])
     var
@@ -275,23 +248,23 @@ page 60111 FBM_CustomerChangeReq_DD
     begin
         if rec.reqtype = rec.ReqType::Edit then begin
             viscode := true;
-            custm.SetRange(ActiveRec, true);
-            custm.SetRange("No.", cust);
-            if custm.FindFirst() then begin
+            cmaster.SetRange(ActiveRec, true);
+            cmaster.SetRange("No.", cust);
+            if cmaster.FindFirst() then begin
                 rec.Init();
                 REC.ReqType := REC.ReqType::Edit;
-                rec.CustSiteCode := custm."No.";
-                rec.Name := custm.Name;
-                rec."Name 2" := custm."Name 2";
-                rec.Address := custm.Address;
-                rec."Address 2" := custm."Address 2";
-                rec."Post Code" := custm."Post Code";
-                rec.City := custm.City;
-                rec.County := custm.County;
-                rec."Country/Region Code" := custm."Country/Region Code";
-                rec."VAT registration No." := custm."VAT Registration No.";
-                rec.FBM_Group := custm.FBM_Group;
-                rec.FBM_Subgroup := custm.FBM_SubGroup;
+                rec.CustSiteCode := cmaster."No.";
+                rec.Name := cmaster.Name;
+                rec."Name 2b" := cmaster."Name 2";
+                rec.Address := cmaster.Address;
+                rec."Address 2b" := cmaster."Address 2";
+                rec."Post Code" := cmaster."Post Code";
+                rec.City := cmaster.City;
+                rec.County := cmaster.County;
+                rec."Country/Region Code" := cmaster."Country/Region Code";
+                rec."VAT registration No." := cmaster."VAT Registration No.";
+                rec.FBM_Group := cmaster.FBM_Group;
+                rec.FBM_Subgroup := cmaster.FBM_SubGroup;
                 rec.Ori_EntryNo := rec.EntryNo;
                 rec.Rectype := 'CUST';
                 REC.Status := REC.Status::Draft;
@@ -300,19 +273,25 @@ page 60111 FBM_CustomerChangeReq_DD
             end;
         end
         else begin
+            cmaster.SetRange(ActiveRec, true);
+            cmaster.FindFirst();
+            while (evaluate(nprogr, cmaster."No.")) and (cmaster.next <> 0) do begin
+
+            end;
+            nprogr += 1;
             rec.Init();
             REC.ReqType := REC.ReqType::New;
             rec.Status := rec.Status::Draft;
             rec.Ori_EntryNo := rec.EntryNo;
             rec.Rectype := 'CUST';
             rec.Sender := UserId;
-            rec.CustSiteCode := 'AAX001';
-            cmaster.SetRange("No.", 'AAX001');
+            rec.CustSiteCode := PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr);
+            cmaster.SetRange("No.", PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr));
             IF NOT cmaster.FindFirst() THEN begin
                 Cmaster.init;
                 cmaster.ActiveRec := true;
                 cmaster.Version := 0;
-                cmaster."No." := 'AAX001';
+                cmaster."No." := PadStr(' ', 8 - strlen(format(nprogr)), '0') + format(nprogr);
                 cmaster.Insert()
             end;
             viscode := false;
@@ -370,9 +349,9 @@ page 60111 FBM_CustomerChangeReq_DD
         jsonobject.Add('ReqType', format(preq.ReqType));
         jsonobject.Add('CustSiteCode', preq.CustSiteCode);
         jsonobject.Add('Name', preq.Name);
-        jsonobject.Add('Name_2', preq."Name 2");
+        jsonobject.Add('Name_2', preq."Name 2b");
         jsonobject.Add('Address', preq.Address);
-        jsonobject.Add('Address_2', preq."Address 2");
+        jsonobject.Add('Address_2', preq."Address 2b");
         jsonobject.Add('City', preq.City);
         jsonobject.Add('PostCode', preq."Post Code");
         jsonobject.Add('County', preq.County);

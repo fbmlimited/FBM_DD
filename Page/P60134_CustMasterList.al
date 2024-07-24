@@ -285,38 +285,80 @@ page 60134 FBM_CustListMaster_DD
     end;
 
     trigger
+    OnAfterGetCurrRecord()
+    begin
+        pendingreq := 0;
+        req.setrange(rectype, 'CUST');
+        REQ.SetFILTER(Status, '%1|%2', req.Status::Sent, req.status::Received);
+        if REQ.FindFirst() then
+            repeat
+                if (rec."No." = req.CustSiteCode) THEN begin
+                    if req.ReqType = req.ReqType::edit then begin
+                        rec.Name_New := req.Name;
+                        rec."Name 2_New" := req."Name 2b";
+                        rec.Address_New := req.Address;
+                        rec."Address 2_New" := req."Address 2b";
+                        rec.City_New := req.City;
+                        rec."Post Code_New" := req."Post Code";
+                        rec.County_New := req.County;
+                        rec."Country/Region Code_New" := req."Country/Region Code";
+                        rec."VAT Registration No._New" := req."VAT registration No.";
+                        rec.FBM_Group_New := req.FBM_Group;
+                        rec.FBM_SubGroup_New := req.FBM_Subgroup;
+                        REC.Modify();
+                    end;
+                    repeat
+                        req.Status := req.Status::Received;
+                        req.Modify();
+                    until req.Next() = 0;
+
+
+                    req.Reset();
+                    req.setrange(Rectype, 'CUST');
+                    REQ.SetRange(CustSiteCode, REC."No.");
+                    req.SetRange(Status, req.Status::Received);
+                    pendingreq := REQ.Count;
+                end;
+            until req.Next() = 0;
+
+    end;
+
+    trigger
     OnAfterGetRecord()
     begin
         pendingreq := 0;
         req.setrange(rectype, 'CUST');
         REQ.SetFILTER(Status, '%1|%2', req.Status::Sent, req.status::Received);
+        if REQ.FindFirst() then
+            repeat
+                if (rec."No." = req.CustSiteCode) THEN begin
+                    if req.ReqType = req.ReqType::edit then begin
+                        rec.Name_New := req.Name;
+                        rec."Name 2_New" := req."Name 2b";
+                        rec.Address_New := req.Address;
+                        rec."Address 2_New" := req."Address 2b";
+                        rec.City_New := req.City;
+                        rec."Post Code_New" := req."Post Code";
+                        rec.County_New := req.County;
+                        rec."Country/Region Code_New" := req."Country/Region Code";
+                        rec."VAT Registration No._New" := req."VAT registration No.";
+                        rec.FBM_Group_New := req.FBM_Group;
+                        rec.FBM_SubGroup_New := req.FBM_Subgroup;
+                        REC.Modify();
+                    end;
+                    repeat
+                        req.Status := req.Status::Received;
+                        req.Modify();
+                    until req.Next() = 0;
 
-        if (rec."No." = req.CustSiteCode) and REQ.FindFirst() THEN begin
-            if req.ReqType = req.ReqType::edit then begin
-                rec.Name_New := req.Name;
-                rec."Name 2_New" := req."Name 2";
-                rec.Address_New := req.Address;
-                rec."Address 2_New" := req."Address 2";
-                rec.City_New := req.City;
-                rec."Post Code_New" := req."Post Code";
-                rec.County_New := req.County;
-                rec."Country/Region Code_New" := req."Country/Region Code";
-                rec."VAT Registration No._New" := req."VAT registration No.";
-                rec.FBM_Group_New := req.FBM_Group;
-                rec.FBM_SubGroup_New := req.FBM_Subgroup;
-                REC.Modify();
-                repeat
-                    req.Status := req.Status::Received;
-                    req.Modify();
-                until req.Next() = 0;
-            end;
 
-
-            req.setrange(Rectype, 'CUST');
-            REQ.SetRange(CustSiteCode, REC."No.");
-            req.SetRange(Status, req.Status::Received);
-            pendingreq := REQ.Count;
-        end;
+                    req.Reset();
+                    req.setrange(Rectype, 'CUST');
+                    REQ.SetRange(CustSiteCode, REC."No.");
+                    req.SetRange(Status, req.Status::Received);
+                    pendingreq := REQ.Count;
+                end;
+            until req.Next() = 0;
 
     end;
 
