@@ -356,6 +356,10 @@ table 70001 FBM_Site
             Caption = 'Last Adquired Date';
 
         }
+        field(70152; LastPropagated; date)
+        {
+            caption = 'Last Propagation date';
+        }
 
     }
     keys

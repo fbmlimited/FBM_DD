@@ -884,6 +884,8 @@ page 60133 FBM_CustCardMaster_DD
 
     trigger OnOpenPage()
     begin
+        cinfo.get;
+        Editable := cinfo.FBM_IsOnMainServer;
         getmaxcust();
         if Rec.GetFilter("Date Filter") = '' then
             rec.SetRange("Date Filter", 0D, WorkDate());
@@ -1029,6 +1031,7 @@ page 60133 FBM_CustCardMaster_DD
 
 
     var
+        cinfo: record "Company Information";
         CalendarMgmt: Codeunit "Calendar Management";
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         CRMIntegrationManagement: Codeunit "CRM Integration Management";
@@ -1098,6 +1101,7 @@ page 60133 FBM_CustCardMaster_DD
         cust: record FBM_Customer;
         hasreq: Boolean;
         req: record FBM_CustSiteReq;
+
 
 
 

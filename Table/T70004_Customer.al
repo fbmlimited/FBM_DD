@@ -994,6 +994,10 @@ table 70004 FBM_Customer
         {
             caption = 'Source';
         }
+        field(70152; LastPropagated; date)
+        {
+            caption = 'Last Propagation date';
+        }
 
 
     }
