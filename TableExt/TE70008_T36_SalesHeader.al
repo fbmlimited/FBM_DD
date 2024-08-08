@@ -183,6 +183,17 @@ tableextension 70008 FBM_SalesHeaderExt_DD extends "Sales Header"
         field(70113; "FBM_Billing Statement"; Boolean)
         {
             Caption = 'Billing Statement';
+            trigger
+            OnValidate()
+            var
+                salessetup: record "Sales & Receivables Setup";
+            begin
+                salessetup.Get();
+                if rec."FBM_Billing Statement" then
+                    rec."Posting No. Series" := salessetup."FBM_Billing Statement Nos."
+                else
+                    rec."Posting No. Series" := salessetup."Posted Invoice Nos.";
+            end;
 
 
         }

@@ -17,6 +17,12 @@ tableextension 70029 FBM_GLSetupExt_DD extends "General Ledger Setup"
             caption = 'MAX Exch. Rate (PHP/USD)';
 
         }
+        field(70103; FBM_CheckMinMaMax; Boolean)
+        {
+            caption = 'Check Min/Max Exch. Rate (PHP/USD)';
+
+        }
+
 
 
     }

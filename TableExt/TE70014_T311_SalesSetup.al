@@ -15,6 +15,12 @@ tableextension 70014 FBM_SalesSetupExt_DD extends "Sales & Receivables Setup"
         {
 
         }
+        field(70104; "FBM_Billing Statement Nos."; Code[20])
+        {
+
+            Caption = 'Billing Statement Nos.';
+            TableRelation = "No. Series";
+        }
     }
     var
 }
