@@ -729,6 +729,11 @@ page 60133 FBM_CustCardMaster_DD
             //         SubPageLink = "No." = FIELD("No.");
             //         Visible = IsOfficeAddin;
             //     }
+            field(FBM_ExcludeSyncLocSite; Rec.FBM_ExcludeSyncLocSite)
+            {
+                ApplicationArea = all;
+
+            }
 
 
 
@@ -883,9 +888,12 @@ page 60133 FBM_CustCardMaster_DD
 
 
     trigger OnOpenPage()
+    var
+        usetup: record "User Setup";
     begin
+        usetup.get(UserId);
         cinfo.get;
-        Editable := cinfo.FBM_IsOnMainServer;
+        Editable := usetup.FBM_EditMaster;
         getmaxcust();
         if Rec.GetFilter("Date Filter") = '' then
             rec.SetRange("Date Filter", 0D, WorkDate());

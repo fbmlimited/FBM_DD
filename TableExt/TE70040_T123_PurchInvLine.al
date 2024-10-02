@@ -5,23 +5,25 @@ tableextension 70040 FBM_PurchInvLineExt_DD extends "Purch. Inv. Line"
         field(70131; "FBM_Pedimento1"; Text[2])
         {
             Caption = 'Ped1';
+            ObsoleteState = Removed;
 
 
         }
         field(70132; "FBM_Pedimento2"; Text[2])
         {
             Caption = 'Ped2';
+            ObsoleteState = Removed;
 
 
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped3';
+            Caption = 'Ped2 [4]';
 
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped4';
+            Caption = 'Ped3 [7]';
 
 
         }
@@ -29,6 +31,12 @@ tableextension 70040 FBM_PurchInvLineExt_DD extends "Purch. Inv. Line"
         {
             Caption = 'Pedimento';
             Editable = false;
+
+        }
+        field(70137; "FBM_Pedimento12"; Text[3])
+        {
+            Caption = 'Ped1 [3]';
+
 
         }
 

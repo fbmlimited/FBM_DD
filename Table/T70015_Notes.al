@@ -63,7 +63,7 @@ table 70015 FBM_Notes
         }
         field(5; LevelValue; text[20])
         {
-            Caption = 'LevelValue';
+            Caption = 'Value';
             DataClassification = ToBeClassified;
             TableRelation = if (level = const('SITE')) FBM_CustomerSite_C."Site Code" WHERE("Customer No." = field(Customer))
             else
@@ -77,9 +77,9 @@ table 70015 FBM_Notes
 
                 csite: record FBM_CustomerSite_C;
             begin
-
-
-
+                rec.desccust := '';
+                rec.descsite := '';
+                rec.descsubgroup := '';
                 rec.CalcFields(desccust, descsubgroup);
                 csite.SetRange("Site Code", rec.LevelValue);
                 if csite.FindFirst() then begin
@@ -110,6 +110,7 @@ table 70015 FBM_Notes
         field(8; Note; text[2048])
         {
             Caption = 'Note';
+            ObsoleteState = Removed;
 
 
         }
@@ -167,6 +168,13 @@ table 70015 FBM_Notes
         {
             Caption = 'Document Type';
         }
+        field(18; NoteBlob; Blob)
+        {
+
+            caption = 'Notes';
+
+
+        }
 
     }
     keys
@@ -176,7 +184,25 @@ table 70015 FBM_Notes
             Clustered = true;
         }
     }
+    procedure GetNote() Note: Text
+    var
+        TypeHelper: Codeunit "Type Helper";
+        InStream: InStream;
+    begin
+        CalcFields(NoteBlob);
+        NoteBlob.CreateInStream(InStream, TEXTENCODING::UTF8);
+        exit(TypeHelper.TryReadAsTextWithSepAndFieldErrMsg(InStream, TypeHelper.LFSeparator(), FieldName(NoteBlob)));
+    end;
 
+    procedure SetNote(NewNote: Text)
+    var
+        OutStream: OutStream;
+    begin
+        Clear(NoteBlob);
+        NoteBlob.CreateOutStream(OutStream, TEXTENCODING::UTF8);
+        OutStream.WriteText(NewNote);
+        Modify();
+    end;
 }
 
 

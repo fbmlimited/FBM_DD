@@ -354,6 +354,8 @@ page 60109 FBM_SiteMaster_DD
 
 
     }
+
+
     trigger
     OnNewRecord(BelowxRec: Boolean)
     var
@@ -366,7 +368,14 @@ page 60109 FBM_SiteMaster_DD
 
     trigger
                        OnOpenPage()
+    var
+        usetup: record "User Setup";
     begin
+        usetup.get(UserId);
+
+        Editable := usetup.FBM_EditMaster;
+
+
         getmaxsite();
 
     end;

@@ -73,7 +73,7 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         }
 
 
-        field(70013; "FBM_Billing Statement"; Boolean)
+        field(70113; "FBM_Billing Statement"; Boolean)
         {
             Caption = 'Billing Statement';
 

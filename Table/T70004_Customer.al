@@ -998,6 +998,10 @@ table 70004 FBM_Customer
         {
             caption = 'Last Propagation date';
         }
+        field(70153; FBM_ExcludeSyncLocSite; Boolean)
+        {
+            caption = 'Exclude from Sync Loc Site';
+        }
 
 
     }
@@ -1216,7 +1220,9 @@ table 70004 FBM_Customer
             maxver := cust.Version;
             if cust."Valid From" = Today then
                 stop := true;
-        end;
+        end
+        else
+            stop := true;
         if not stop then begin
             cust."Valid To" := Today;
 
@@ -1245,6 +1251,17 @@ table 70004 FBM_Customer
             cust.setrange(Name, '');
             cust.DeleteAll();
         end
+        else begin
+            cust.Name := rec.Name;
+            cust.Address := rec.Address;
+            cust."Address 2" := rec."Address 2";
+            cust.City := rec.City;
+            cust.County := rec.County;
+            cust."Country/Region Code" := rec."Country/Region Code";
+            cust."Post Code" := rec."Post Code";
+            cust."VAT Registration No." := rec."VAT Registration No.";
+            cust."Record Owner" := UserId;
+        end;
 
 
 

@@ -1,4 +1,4 @@
-table 70006 FBM_CustomerSite_C
+table 70018 FBM_CustomerSite_Ctmp
 {
     DataClassification = ToBeClassified;
     LookupPageId = FBM_CustSiteLookup_DD;
@@ -19,11 +19,7 @@ table 70006 FBM_CustomerSite_C
             TableRelation = FBM_Site;
             Caption = 'Site Group Code';
             ValidateTableRelation = false;
-            trigger
-            OnValidate()
-            begin
-                IncVersion();
-            end;
+
 
         }
         field(3; "Site Code"; Code[20])
@@ -96,9 +92,9 @@ table 70006 FBM_CustomerSite_C
 
                 IF (REC.status = rec.status::"HOLD OPERATION") or (rec.status = rec.status::OPERATIONAL) then begin
                     csite.SetRange(SiteGrCode, rec.SiteGrCode);
-                    csite.SetRange(ActiveRec, true);
                     csite.setfilter(status, '%1|%2', rec.Status::"HOLD OPERATION", rec.Status::OPERATIONAL);
                     CSITE.SetFilter("Site Code", '<>%1', REC."Site Code");
+                    csite.SetRange(ActiveRec, true);
                     if csite.FindFirst() then
                         error('Found an existing active record for this site with customer %1', csite."Customer No.");
                 end;
@@ -112,49 +108,30 @@ table 70006 FBM_CustomerSite_C
                     cos.Modify()
                 end
 ;
-                IncVersion();
             end;
         }
         field(11; "Contract Code"; Code[4])
         {
             Caption = 'Contract Code (Bingo)';
             DataClassification = ToBeClassified;
-            trigger
-                       OnValidate()
-            begin
-                IncVersion();
-            end;
+
 
         }
         field(12; "Vat Number"; Code[20])
         {
             DataClassification = ToBeClassified;
-            trigger
-           OnValidate()
-            begin
-                IncVersion();
-            end;
+
         }
         field(13; Contact; Text[250])
         {
             DataClassification = ToBeClassified;
-            trigger
-           OnValidate()
-            begin
-                IncVersion();
-            end;
+
         }
 
         field(14; "Contract Code2"; Code[4])
         {
             Caption = 'Contract Code (Spin)';
             DataClassification = ToBeClassified;
-            trigger
-           OnValidate()
-            begin
-                IncVersion();
-            end;
-
 
         }
         field(16; Typerec; enum FBM_Typerec_DD)
@@ -183,25 +160,17 @@ table 70006 FBM_CustomerSite_C
         {
             Caption = 'Change Note';
         }
-        field(70004; Version; Integer)
-        {
-            Caption = 'Version';
-            DataClassification = ToBeClassified;
-        }
+
         field(70005; ActiveRec; Boolean)
         {
             Caption = 'Active Record';
-        }
-        field(70152; LastPropagated; date)
-        {
-            caption = 'Last Propagation date';
         }
 
     }
 
     keys
     {
-        key(PK; "Customer No.", "Site Code", Version, ActiveRec)
+        key(PK; "Customer No.", "Site Code")
         {
             Clustered = true;
         }
@@ -219,21 +188,13 @@ table 70006 FBM_CustomerSite_C
         }
     }
 
-    trigger
-    OnModify()
-    begin
-        UpdateCustOpSite(rec);
 
-    end;
 
     trigger
     OnInsert()
     begin
+
         rec.ActiveRec := true;
-
-        UpdateCustOpSite(rec);
-
-
 
 
 
@@ -400,9 +361,7 @@ table 70006 FBM_CustomerSite_C
             maxver := csite.Version;
             if csite."Valid From" = Today then
                 stop := true;
-        end
-        else
-            stop := true;
+        end;
         if not stop then begin
             csite."Valid To" := Today;
 
@@ -428,16 +387,6 @@ table 70006 FBM_CustomerSite_C
             csite2.Modify();
             csite.setrange(SiteGrCode, '');
             csite.DeleteAll();
-        end
-        else begin
-            csite.SiteGrCode := rec.SiteGrCode;
-            csite.Status := rec.Status;
-            csite."Contract Code" := rec."Contract Code";
-            csite."Contract Code" := rec."Contract Code2";
-            csite."Vat Number" := rec."Vat Number";
-            csite.Contact := rec.Contact;
-            csite."Record Owner" := UserId;
-            csite.Modify();
         end;
 
 

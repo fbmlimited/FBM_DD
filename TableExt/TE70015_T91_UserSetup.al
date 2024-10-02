@@ -48,6 +48,12 @@ tableextension 70015 FBM_UserSetupExt_DD extends "User Setup"
             DataClassification = ToBeClassified;
 
         }
+        field(70027; "FBM_EditMaster"; boolean)
+        {
+            caption = 'Edit Master Tables';
+            DataClassification = ToBeClassified;
+
+        }
     }
     var
 }

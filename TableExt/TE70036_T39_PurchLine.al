@@ -23,6 +23,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
         field(70131; "FBM_Pedimento1"; Text[2])
         {
             Caption = 'Ped1';
+            ObsoleteState = Removed;
             trigger
             OnValidate()
             begin
@@ -33,6 +34,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
         field(70132; "FBM_Pedimento2"; Text[2])
         {
             Caption = 'Ped2';
+            ObsoleteState = Removed;
             trigger
             OnValidate()
             begin
@@ -42,7 +44,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped3';
+            Caption = 'Ped2 [4]';
             trigger
             OnValidate()
             begin
@@ -52,7 +54,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped4';
+            Caption = 'Ped3 [7]';
             trigger
             OnValidate()
             begin
@@ -66,7 +68,16 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
             Editable = false;
 
         }
+        field(70136; "FBM_Pedimento12"; Text[3])
+        {
+            Caption = 'Ped1 [3]';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
 
+        }
     }
     trigger
     OnInsert()
@@ -75,8 +86,8 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
     begin
         if purchheader.get(rec."Document Type", rec."Document No.") then
             if purchheader.FBM_Pedimento <> '' then begin
-                rec.FBM_Pedimento1 := purchheader.FBM_Pedimento1;
-                rec.FBM_Pedimento2 := purchheader.FBM_Pedimento2;
+                rec.FBM_Pedimento12 := purchheader.FBM_Pedimento12;
+
                 rec.FBM_Pedimento3 := purchheader.FBM_Pedimento3;
                 rec.FBM_Pedimento4 := purchheader.FBM_Pedimento4;
                 rec.FBM_Pedimento := purchheader.FBM_Pedimento;
@@ -90,7 +101,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
     begin
         if purchheader.get(rec."Document Type", rec."Document No.") then
             if purchheader.FBM_Pedimento = '' then
-                rec.FBM_Pedimento := rec.FBM_Pedimento1 + ' ' + rec.FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + ' ' + rec.FBM_Pedimento4
+                rec.FBM_Pedimento := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento4
             else
                 error('Pedimento in the header must be blank!');
 

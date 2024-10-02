@@ -41,6 +41,7 @@ page 61500 FBM_LinkedSite_DD
                     csite.ChangeCompany(comp.Name);
                     //csite.setrange(Status, csite.Status::OPERATIONAL);
                     csite.SetFilter("Customer No.", '<>%1', '');
+                    csite.SetRange(ActiveRec, true);
                     if csite.FindFirst() then
                         repeat
                             id += 1;

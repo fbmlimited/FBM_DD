@@ -57,15 +57,38 @@ page 60156 FBM_NotesCust_DD
                 {
                     ApplicationArea = All;
                 }
-                field(Note; Rec.Note)
+                // field(Note; Rec.Note)
+                // {
+                //     ApplicationArea = All;
+                //     MultiLine = true;
+
+
+                // }
+            }
+            group(Notes)
+            {
+                Caption = 'Notes';
+
+                usercontrol(WorkDescUserControl; "Microsoft.Dynamics.Nav.Client.WebPageViewer")
                 {
                     ApplicationArea = All;
-                    MultiLine = true;
 
+                    trigger ControlAddInReady(callbackUrl: Text)
+                    begin
+                        IsReady := true;
+                        FillAddIn();
+                    end;
 
+                    trigger Callback(data: Text)
+                    begin
+                        MyNote := data;
+                        Rec.SetNote(MyNote);
+                    end;
                 }
             }
+
         }
+
         area(factboxes)
         {
             part("Attached Documents"; FBM_CRMDocAttach_DD)
@@ -81,10 +104,13 @@ page 60156 FBM_NotesCust_DD
         }
 
     }
+
     var
 
         ssetup: Record "Sales & Receivables Setup";
         gdesc: text[100];
+        MyNote: Text;
+        IsReady: Boolean;
 
     trigger
     OnModifyRecord(): Boolean
@@ -138,5 +164,16 @@ page 60156 FBM_NotesCust_DD
 
         ssetup.FBM_Custtmp := pcust;
         ssetup.Modify();
+    end;
+
+    trigger
+    OnAfterGetRecord()
+    begin
+        MyNote := Rec.GetNote();
+    end;
+
+    local procedure FillAddIn()
+    begin
+        CurrPage.WorkDescUserControl.SetContent(StrSubstNo('<textarea Id="TextArea" maxlength="%2" style="width:100%;height:100%;resize: none; font-family:Segoe UI Segoe WP, Segoe, device-segoe, Tahoma, Helvetica, Arial, sans-serif; font-size: 12pt;" OnChange="window.parent.WebPageViewerHelper.TriggerCallback(document.getElementById(''TextArea'').value)">%1</textarea>', MyNote, 2048));
     end;
 }

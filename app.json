@@ -2,7 +2,8 @@
   "id": "9d836a4f-3b97-4179-ae7d-608f099ba7f3",
   "name": "FBM Data Dictionary",
   "publisher": "FBM Group",
-  "version": "122.1.152.0",
+  "version": "124.4.156.6",
+  
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -15,7 +16,7 @@
   ],
   "screenshots": [],
   "platform": "1.0.0.0",
-  "application": "22.0.0.0",
+  "application": "24.4.0.0",
   "idRanges": [
     {
       "from": 60000,
@@ -27,7 +28,7 @@
     "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "11.0",
+  "runtime": "13.0",
   "features": [
     "NoImplicitWith"
   ],

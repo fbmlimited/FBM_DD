@@ -57,6 +57,13 @@ tableextension 70031 FBM_Item_DD extends Item
                  rec.Multicat := '';
              end;*/
         }
+        field(70003; FBM_MachineType; enum FBM_MachineType_DD)
+        {
+
+            Caption = 'Machine Type';
+
+
+        }
         modify("Item Category Code")
         {
 

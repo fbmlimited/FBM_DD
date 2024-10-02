@@ -32,6 +32,13 @@ tableextension 70030 FBM_LocationExt_DD extends Location
             end;
 
         }
+        field(70003; FBM_TransitLoc; Boolean)
+        {
+            Caption = 'Temp Location before Installation';
+
+
+
+        }
         field(70100; FBM_Site; Code[20])
         {
             Caption = 'Site';

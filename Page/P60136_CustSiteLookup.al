@@ -36,6 +36,11 @@ page 60136 FBM_CustSiteLookup_DD
         }
 
     }
+    trigger
+    OnOpenPage()
+    begin
+        rec.SetRange(ActiveRec, true);
+    end;
 
 
 }

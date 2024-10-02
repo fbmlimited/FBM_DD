@@ -503,6 +503,16 @@ table 70001 FBM_Site
             site2.Modify();
             site.setrange("Site Name", '');
             site.DeleteAll();
+        end
+        else begin
+            site."Site Name" := rec."Site Name";
+            site.Address := rec.Address;
+            site."Address 2" := rec."Address 2";
+            site.City := rec.City;
+            site."Country/Region Code" := rec."Country/Region Code";
+            site."Post Code" := rec."Post Code";
+            site."Vat Number" := rec."Vat Number";
+            site."Record Owner" := UserId;
         end;
 
 
