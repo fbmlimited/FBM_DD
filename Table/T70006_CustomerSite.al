@@ -30,6 +30,11 @@ table 70006 FBM_CustomerSite_C
         {
             Caption = 'Site  Loc. Code';
             DataClassification = ToBeClassified;
+            trigger
+            OnValidate()
+            begin
+                UpdateCustOpSite(rec);
+            end;
         }
         field(4; "Site Name_FF"; Text[250])
         {
@@ -226,6 +231,9 @@ table 70006 FBM_CustomerSite_C
 
     end;
 
+
+
+
     trigger
     OnInsert()
     begin
@@ -358,11 +366,11 @@ table 70006 FBM_CustomerSite_C
                     if country.get(customer."Country/Region Code") then begin
 
                         country.testfield(FBM_Country3);
-                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", cos."Site Loc Code");
+                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", custsite."Site Code");
                     end;
                     COS.Modify();
                 end;
-
+                Commit();
             end;
         //end;
 

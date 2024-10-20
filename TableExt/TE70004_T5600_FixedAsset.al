@@ -228,8 +228,39 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         {
             caption = 'Last Propagation date';
         }
+        field(70153; FBM_AcquisitionCost; Decimal)
+        {
+            caption = 'Acquisition Cost';
+        }
+        field(70154; FBM_AcquisitionDate; Date)
+        {
+            caption = 'Acquisition Date';
+        }
+        field(70155; FBM_AcqCost; Decimal)
+        {
+            Caption = 'Acquisition Cost';
+            FieldClass = FlowField;
+            CalcFormula = sum("FA Ledger Entry".amount where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost")));
 
+        }
+        field(70156; FBM_Deprdate; Date)
+        {
+            Caption = 'Start Depreciation Date';
+            FieldClass = FlowField;
+            CalcFormula = min("FA Ledger Entry"."FA Posting Date" where("FA No." = field("No."), "FA Posting Type" = const("Depreciation")));
 
+        }
+        field(70157; FBM_DepreciationDate; Date)
+        {
+            caption = 'Start Depreciation Date';
+        }
+        field(70158; FBM_Acqdate; Date)
+        {
+            Caption = 'Start Depreciation Date';
+            FieldClass = FlowField;
+            CalcFormula = min("FA Ledger Entry"."FA Posting Date" where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost")));
+
+        }
     }
     keys
     {

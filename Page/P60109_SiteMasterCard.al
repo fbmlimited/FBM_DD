@@ -373,7 +373,7 @@ page 60109 FBM_SiteMaster_DD
     begin
         usetup.get(UserId);
 
-        Editable := usetup.FBM_EditMaster;
+        currpage.Editable := usetup.FBM_EditMaster;
 
 
         getmaxsite();

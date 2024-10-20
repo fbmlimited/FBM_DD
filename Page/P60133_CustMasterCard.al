@@ -893,7 +893,7 @@ page 60133 FBM_CustCardMaster_DD
     begin
         usetup.get(UserId);
         cinfo.get;
-        Editable := usetup.FBM_EditMaster;
+        currpage.Editable := usetup.FBM_EditMaster;
         getmaxcust();
         if Rec.GetFilter("Date Filter") = '' then
             rec.SetRange("Date Filter", 0D, WorkDate());
