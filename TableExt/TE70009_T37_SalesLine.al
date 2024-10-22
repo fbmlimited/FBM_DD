@@ -101,7 +101,7 @@ tableextension 70009 FBM_SalesLineExt_DD extends "Sales Line"
         //UpdateIsPeriodEnabled();  //DEVOPS #622
         // Message(Format("Line No."));
         if ("Line No." <> 0) then begin
-            if SalesHeader.get("Document Type", "Document No.") then begin
+            if SalesHeader.get(rec."Document Type", rec."Document No.") then begin
                 if SalesHeader."FBM_Period Start" <> 0D then
                     Rec.Validate("FBM_Period Start", SalesHeader."FBM_Period Start");
                 if SalesHeader."FBM_Period End" <> 0D then

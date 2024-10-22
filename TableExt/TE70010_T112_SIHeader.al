@@ -9,11 +9,10 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
         //DevOps #619 -- begin
         field(70101; "FBM_Contract Code"; Code[4])
         {
+            Caption = 'Contract';
 
 
-            trigger OnValidate()
-            begin
-            end;
+
         }
         //DevOps #619 -- end
         //DEVOPS #622 -- begin

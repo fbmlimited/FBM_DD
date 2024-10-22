@@ -261,6 +261,11 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             CalcFormula = min("FA Ledger Entry"."FA Posting Date" where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost")));
 
         }
+        field(70159; FBM_ReplicaStatus; enum FBM_ReplicaStatus_DD)
+        {
+            caption = 'Replica Status';
+
+        }
     }
     keys
     {
@@ -270,6 +275,14 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
 
         }
     }
+    trigger
+    OnAfterInsert()
+    begin
+        IF REC.FBM_ReplicaStatus = REC.FBM_ReplicaStatus::" " THEN
+            rec.FBM_ReplicaStatus := rec.FBM_ReplicaStatus::Pending;
+        rec.Modify();
+
+    end;
 
     var
         FA: Record "Fixed Asset";
