@@ -26,6 +26,18 @@ codeunit 61500 FBM_Utility_DD
         end;
     end;
 
+    procedure getcompanyname(badge: text[3]): text[30]
+    var
+        comp: record Company;
+        cinfo: record "Company Information";
+    begin
+        comp.FindFirst();
+        repeat
+            cinfo.ChangeCompany(comp.Name);
+            if cinfo."Custom System Indicator Text" = badge then
+                exit(comp.Name);
+        until comp.next = 0;
 
+    end;
 
 }

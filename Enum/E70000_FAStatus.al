@@ -9,7 +9,7 @@ enum 70000 "FBM_FA Status_DD"
     value(4; "D. Installed Op.") { Caption = 'D. Installed Operative'; }
     value(5; "E. Installed Non-Op.") { Caption = 'E. Installed Non-Operative'; }
     value(6; "F. Under Maintenance") { Caption = 'F. Under Maintenance'; }
-    value(7; "G. For Disposal") { Caption = 'G. For Disppsal'; }
+    value(7; "G. For Disposal") { Caption = 'G. For Disposal'; }
     value(8; "H. Scrapped") { Caption = 'H. Scrapped'; }
     value(9; "I. Sold") { Caption = 'I. Sold'; }
 }

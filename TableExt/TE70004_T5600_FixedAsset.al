@@ -240,7 +240,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         {
             Caption = 'Acquisition Cost';
             FieldClass = FlowField;
-            CalcFormula = sum("FA Ledger Entry".amount where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost")));
+            CalcFormula = sum("FA Ledger Entry".amount where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost"), "FA Posting Category" = filter(<> Disposal)));
 
         }
         field(70156; FBM_Deprdate; Date)
@@ -258,10 +258,16 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         {
             Caption = 'Start Depreciation Date';
             FieldClass = FlowField;
-            CalcFormula = min("FA Ledger Entry"."FA Posting Date" where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost")));
+            CalcFormula = min("FA Ledger Entry"."FA Posting Date" where("FA No." = field("No."), "FA Posting Type" = const("Acquisition Cost"), "FA Posting Category" = filter(<> Disposal)));
 
         }
         field(70159; FBM_ReplicaStatus; enum FBM_ReplicaStatus_DD)
+        {
+            caption = 'Replica Status';
+            ObsoleteState = Removed;
+
+        }
+        field(70160; FBM_ReplicaStatus2; enum FBM_ReplicaStatus_DD)
         {
             caption = 'Replica Status';
 
@@ -278,8 +284,8 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
     trigger
     OnAfterInsert()
     begin
-        IF REC.FBM_ReplicaStatus = REC.FBM_ReplicaStatus::" " THEN
-            rec.FBM_ReplicaStatus := rec.FBM_ReplicaStatus::Pending;
+        IF REC.FBM_ReplicaStatus2 = REC.FBM_ReplicaStatus2::" " THEN
+            rec.FBM_ReplicaStatus2 := rec.FBM_ReplicaStatus2::Pending;
         rec.Modify();
 
     end;
