@@ -99,6 +99,11 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Is On Main Server';
         }
+        field(70025; FBM_ScanCompany; Boolean)
+        {
+
+            caption = 'Scan Company';
+        }
     }
 
 }

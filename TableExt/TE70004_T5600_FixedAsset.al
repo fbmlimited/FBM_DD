@@ -235,6 +235,11 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
         field(70154; FBM_AcquisitionDate; Date)
         {
             caption = 'Acquisition Date';
+            trigger
+            OnValidate()
+            begin
+                IncVersion();
+            end;
         }
         field(70155; FBM_AcqCost; Decimal)
         {
@@ -340,6 +345,8 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
             fixass2."Valid From" := Today;
             fixass2."Valid To" := DMY2Date(31, 12, 2999);
             fixass2."Record Owner" := UserId;
+            fixass2.FBM_AcquisitionCost := rec.FBM_AcquisitionCost;
+            fixass2.FBM_AcquisitionDate := rec.FBM_AcquisitionDate;
 
             fixass2.Modify();
             fixass2.setrange(Description, '');
@@ -362,6 +369,8 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
                 fixass.FBM_Site := rec.FBM_Site;
                 fixass.FBM_DatePrepared := rec.FBM_DatePrepared;
                 fixass."Record Owner" := UserId;
+                fixass.FBM_AcquisitionCost := rec.FBM_AcquisitionCost;
+                fixass.FBM_AcquisitionDate := rec.FBM_AcquisitionDate;
                 fixass.Modify();
             end;
 

@@ -22,6 +22,30 @@ tableextension 70029 FBM_GLSetupExt_DD extends "General Ledger Setup"
             caption = 'Check Min/Max Exch. Rate (PHP/USD)';
 
         }
+        field(70104; FBM_PropExchRate; text[50])
+        {
+            caption = 'Propagate Exch. Rate From';
+            TableRelation = Company;
+
+            trigger
+            OnValidate()
+            var
+                glsetup: record "General Ledger Setup";
+            begin
+                glsetup.ChangeCompany(rec.FBM_PropExchRate);
+
+                glsetup.FBM_PropExchRateTo := (rec.FBM_PropExchRate <> '');
+                glsetup.Modify();
+            end;
+
+        }
+        field(70105; FBM_PropExchRateTo; Boolean)
+        {
+            caption = 'Propagate Exch. Rate To';
+
+
+        }
+
 
 
 

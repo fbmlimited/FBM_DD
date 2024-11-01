@@ -108,6 +108,15 @@ table 70019 FBM_FAHistory_DD
         {
             Caption = 'Active Record';
         }
+        field(70006; FBM_AcquisitionCost; Decimal)
+        {
+            caption = 'Acquisition Cost';
+        }
+        field(70007; FBM_AcquisitionDate; Date)
+        {
+            caption = 'Acquisition Date';
+
+        }
 
     }
 
