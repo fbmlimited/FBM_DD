@@ -4,26 +4,26 @@ tableextension 70039 FBM_PurchInvHeaderExt_DD extends "Purch. Inv. Header"
     {
         field(70131; "FBM_Pedimento1"; Text[2])
         {
-            Caption = 'Ped1';
-            ObsoleteState = Removed
-;
+            Caption = 'Ped1 [2]';
+            //ObsoleteState = Removed
+            ;
 
         }
         field(70132; "FBM_Pedimento2"; Text[2])
         {
-            Caption = 'Ped2';
-            ObsoleteState = Removed
-;
+            Caption = 'Ped2 [2]';
+            //ObsoleteState = Removed
+            ;
 
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped2 [4]';
+            Caption = 'Ped3 [4]';
 
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped3 [7]';
+            Caption = 'Ped4 [7]';
 
 
         }
@@ -35,7 +35,7 @@ tableextension 70039 FBM_PurchInvHeaderExt_DD extends "Purch. Inv. Header"
         }
         field(70137; "FBM_Pedimento12"; Text[3])
         {
-            Caption = 'Ped1 [3]';
+            Caption = 'Ped Alpha [3]';
 
 
         }

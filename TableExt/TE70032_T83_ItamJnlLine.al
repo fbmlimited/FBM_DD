@@ -22,28 +22,44 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70131; "FBM_Pedimento1"; Text[3])
         {
-            Caption = 'Ped1';
-            ObsoleteState = Removed;
-
+            Caption = 'Ped1 [2]';
+            //ObsoleteState = Removed;
+            trigger
+                        OnValidate()
+            begin
+                updateped();
+            end;
 
         }
         field(70132; "FBM_Pedimento2"; Text[4])
         {
-            Caption = 'Ped2';
-            ObsoleteState = Removed;
-
+            Caption = 'Ped2 [2]';
+            //ObsoleteState = Removed;
+            trigger
+                        OnValidate()
+            begin
+                updateped();
+            end;
 
         }
         field(70133; "FBM_Pedimento3"; Text[7])
         {
-            Caption = 'Ped2 [4]';
-
+            Caption = 'Ped3 [4]';
+            trigger
+                        OnValidate()
+            begin
+                updateped();
+            end;
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped3 [7]';
+            Caption = 'Ped4 [7]';
             //ObsoleteState = Removed;
-
+            trigger
+                        OnValidate()
+            begin
+                updateped();
+            end;
         }
         field(70135; "FBM_Pedimento"; Text[18])
         {
@@ -65,7 +81,12 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70137; "FBM_Pedimento12"; Text[3])
         {
-            Caption = 'Ped1 [3]';
+            Caption = 'Ped Alpha [3]';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
 
 
         }
@@ -120,4 +141,9 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         end;
     end;
 
+    local procedure updateped()
+    begin
+        rec.FBM_Pedimento := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento1 + ' ' + FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento4;
+        rec.Modify();
+    end;
 }

@@ -29,26 +29,26 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         }
         field(70131; "FBM_Pedimento1"; Text[2])
         {
-            Caption = 'Ped1';
-            ObsoleteState = Removed;
+            Caption = 'Ped1 [2]';
+            //ObsoleteState = Removed;
 
 
         }
         field(70132; "FBM_Pedimento2"; Text[2])
         {
-            Caption = 'Ped2';
-            ObsoleteState = Removed;
+            Caption = 'Ped2 [2]';
+            //ObsoleteState = Removed;
 
 
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped2 [4]';
+            Caption = 'Ped3 [4]';
 
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped3 [7]';
+            Caption = 'Ped4 [7]';
 
         }
         field(70135; "FBM_Pedimento"; Text[18])
@@ -69,7 +69,8 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
                     resentry.FBM_Pedimento := rec.FBM_Pedimento;
                     resentry.FBM_Pedimentobis := rec.FBM_Pedimentobis;
                     resentry.FBM_Pedimento12 := rec.FBM_Pedimento12;
-
+                    resentry.FBM_Pedimento1 := rec.FBM_Pedimento1;
+                    resentry.FBM_Pedimento2 := rec.FBM_Pedimento2;
                     resentry.FBM_Pedimento3 := rec.FBM_Pedimento3;
                     resentry.FBM_Pedimento4 := rec.FBM_Pedimento4;
                     resentry.Modify();
@@ -97,7 +98,7 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         }
         field(70138; "FBM_Pedimento12"; Text[3])
         {
-            Caption = 'Ped1 [3]';
+            Caption = 'Ped Alpha [3]';
 
 
         }

@@ -20,6 +20,13 @@ tableextension 70043 FBM_InvSetupext_DD extends "Inventory Setup"
 
 
         }
+        field(70003; FBM_TransferReceipt; Enum "Item Ledger Document Type")
+        {
+            caption = 'Doc Type for Rec.Transfers';
+
+
+        }
+
     }
 
 }

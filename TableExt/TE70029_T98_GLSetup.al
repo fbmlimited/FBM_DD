@@ -45,6 +45,12 @@ tableextension 70029 FBM_GLSetupExt_DD extends "General Ledger Setup"
 
 
         }
+        field(70106; FBM_EmailAR; text[250])
+        {
+            caption = 'AR Email';
+
+
+        }
 
 
 
