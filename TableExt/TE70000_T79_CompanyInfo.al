@@ -104,11 +104,7 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Scan Company';
         }
-        field(70026; FBM_SendAlert; text[250])
-        {
 
-            caption = 'Alert e-mail';
-        }
     }
 
 }
