@@ -35,8 +35,16 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
         }
         field(70015; FBM_FAProperty; text[3])
         {
+            ObsoleteState = Removed;
             Caption = 'Property';
-            TableRelation = FBM_Subsidiary.EGM_Property;
+            TableRelation = Company.Name;
+            ValidateTableRelation = false;
+
+        }
+        field(70115; FBM_FAProperty2; text[30])
+        {
+            Caption = 'Property';
+            TableRelation = Company.Name;
             ValidateTableRelation = false;
             trigger
             OnValidate()
@@ -44,7 +52,7 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
                 fasetup: record "FA Setup";
             begin
                 fasetup.Get();
-                fasetup."FBM_FA Company" := rec.FBM_FAProperty;
+                fasetup."FBM_FA Company" := rec.FBM_FAProperty2;
                 fasetup.Modify();
 
             end;

@@ -33,6 +33,11 @@ tableextension 70024 FBM_FASetupExt_DD extends "FA Setup"
             Caption = 'Contract Dimension';
             TableRelation = Dimension.Code;
         }
+        field(70106; "FBM_FAsubclassImport"; Code[10])
+        {
+            Caption = 'FA Subclass for Import';
+            TableRelation = "FA Subclass";
+        }
     }
     var
 }
