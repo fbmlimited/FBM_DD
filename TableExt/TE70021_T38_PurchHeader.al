@@ -73,7 +73,7 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         }
         field(70131; "FBM_Pedimento1"; Text[2])
         {
-            Caption = 'Ped1 [2]';
+            Caption = 'Año Validaciòn [2]';
             //ObsoleteState = Removed;
             trigger
             OnValidate()
@@ -84,7 +84,7 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         }
         field(70132; "FBM_Pedimento2"; Text[2])
         {
-            Caption = 'Ped2 [2]';
+            Caption = 'Aduana Despacho [2]';
             // ObsoleteState = Removed;
             trigger
             OnValidate()
@@ -95,7 +95,7 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped3 [4]';
+            Caption = 'Nro Patente [4]';
             trigger
             OnValidate()
             begin
@@ -105,10 +105,12 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped4 [7]';
+            Caption = 'Nro Progr. de Despacho [6]';
+            ObsoleteState = Removed;
             trigger
             OnValidate()
             begin
+
                 updateped();
             end;
 
@@ -117,16 +119,45 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         {
             Caption = 'Pedimento';
             Editable = false;
+            ObsoleteState = Removed;
 
         }
         field(70136; "FBM_Pedimento12"; Text[3])
         {
-            Caption = 'Ped Alpha [3]';
+            Caption = 'Referencia JYM [3]';
             trigger
             OnValidate()
             begin
                 updateped();
             end;
+
+        }
+        field(70137; "FBM_Pedimento34"; Text[1])
+        {
+            Caption = 'Ultimo digito año en curso [1]';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70138; "FBM_Pedimento42"; Text[6])
+        {
+            Caption = 'Nro Progr. de Despacho [6]';
+
+            trigger
+            OnValidate()
+            begin
+
+                updateped();
+            end;
+
+        }
+        field(70139; "FBM_Pedimento_2"; Text[22])
+        {
+            Caption = 'Pedimento';
+            Editable = false;
 
         }
 
@@ -137,12 +168,12 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
         purchline: record "Purchase Line";
     begin
 
-        rec.FBM_Pedimento := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento1 + ' ' + FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento4;
+        rec.FBM_Pedimento_2 := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento1 + ' ' + FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento34 + rec.FBM_Pedimento42;
         purchline.SetRange("Document Type", rec."Document Type");
         purchline.SetRange("Document No.", rec."No.");
-        purchline.SetFilter(FBM_Pedimento, '<>%1', '');
+        purchline.SetFilter(FBM_Pedimento_2, '<>%1', '');
         if purchline.FindFirst() then begin
-            if purchline.FBM_Pedimento <> '' then begin
+            if purchline.FBM_Pedimento_2 <> '' then begin
                 if confirm('This change will overwrite the Pedimento in all the lines. Do you want to continue?') then begin
                     purchline.Reset();
                     purchline.SetRange("Document Type", rec."Document Type");
@@ -151,8 +182,10 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
                     purchline.ModifyAll(FBM_Pedimento1, rec.FBM_Pedimento1);
                     purchline.ModifyAll(FBM_Pedimento2, rec.FBM_Pedimento2);
                     purchline.ModifyAll(FBM_Pedimento3, rec.FBM_Pedimento3);
-                    purchline.ModifyAll(FBM_Pedimento4, rec.FBM_Pedimento4);
-                    purchline.ModifyAll(FBM_Pedimento, rec.FBM_Pedimento);
+                    purchline.ModifyAll(FBM_Pedimento34, rec.FBM_Pedimento34);
+
+                    purchline.ModifyAll(FBM_Pedimento42, rec.FBM_Pedimento42);
+                    purchline.ModifyAll(FBM_Pedimento_2, rec.FBM_Pedimento_2);
                 end;
             end;
         end
@@ -164,8 +197,8 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             purchline.ModifyAll(FBM_Pedimento1, rec.FBM_Pedimento1);
             purchline.ModifyAll(FBM_Pedimento2, rec.FBM_Pedimento2);
             purchline.ModifyAll(FBM_Pedimento3, rec.FBM_Pedimento3);
-            purchline.ModifyAll(FBM_Pedimento4, rec.FBM_Pedimento4);
-            purchline.ModifyAll(FBM_Pedimento, rec.FBM_Pedimento);
+            purchline.ModifyAll(FBM_Pedimento42, rec.FBM_Pedimento42);
+            purchline.ModifyAll(FBM_Pedimento_2, rec.FBM_Pedimento_2);
         end;
 
     end;

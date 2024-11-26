@@ -112,6 +112,26 @@ tableextension 70000 FBM_CompanyInfoExt_DD extends "Company Information"
 
             caption = 'Scan Company';
         }
+        field(70026; FBM_GDPR_Company; Text[250])
+        {
+
+            caption = 'GDPR Company Name';
+        }
+        field(70027; FBM_GDPR_Address; Text[250])
+        {
+
+            caption = 'GDPR Company Address';
+        }
+        field(70028; FBM_GDPR_email; Text[250])
+        {
+
+            caption = 'GDPR Company Email';
+        }
+        field(70029; FBM_GDPR_Url; Text[250])
+        {
+
+            caption = 'GDPR Url';
+        }
 
     }
 

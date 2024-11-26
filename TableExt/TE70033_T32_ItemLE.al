@@ -29,32 +29,34 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         }
         field(70131; "FBM_Pedimento1"; Text[2])
         {
-            Caption = 'Ped1 [2]';
+            Caption = 'Año Validaciòn [2]';
             //ObsoleteState = Removed;
 
 
         }
         field(70132; "FBM_Pedimento2"; Text[2])
         {
-            Caption = 'Ped2 [2]';
+            Caption = 'Aduana Despacho [2]';
             //ObsoleteState = Removed;
 
 
         }
         field(70133; "FBM_Pedimento3"; Text[4])
         {
-            Caption = 'Ped3 [4]';
+            Caption = 'Nro Patente [4]';
 
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped4 [7]';
+            Caption = 'Nro Progr. de Despacho [6]';
+            ObsoleteState = Removed;
 
         }
         field(70135; "FBM_Pedimento"; Text[18])
         {
             Caption = 'Pedimento';
             Editable = false;
+            ObsoleteState = Removed;
             trigger
             OnValidate()
             var
@@ -66,13 +68,13 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
                 resentry.SetRange("Item Ledger Entry No.", rec."Entry No.");
                 if resentry.FindFirst() then begin
                     resentry.FBM_Site := rec.FBM_Site;
-                    resentry.FBM_Pedimento := rec.FBM_Pedimento;
+                    resentry.FBM_Pedimento_2 := rec.FBM_Pedimento_2;
                     resentry.FBM_Pedimentobis := rec.FBM_Pedimentobis;
                     resentry.FBM_Pedimento12 := rec.FBM_Pedimento12;
                     resentry.FBM_Pedimento1 := rec.FBM_Pedimento1;
                     resentry.FBM_Pedimento2 := rec.FBM_Pedimento2;
                     resentry.FBM_Pedimento3 := rec.FBM_Pedimento3;
-                    resentry.FBM_Pedimento4 := rec.FBM_Pedimento4;
+                    resentry.FBM_Pedimento42 := rec.FBM_Pedimento42;
                     resentry.Modify();
                 end;
 
@@ -87,7 +89,7 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
                         OnValidate()
             begin
                 if (FBM_Pedimentobis <> 'N/A') and (FBM_Pedimentobis <> '0') and (FBM_Pedimentobis <> '') then
-                    FBM_Pedimento := FBM_Pedimentobis;
+                    FBM_Pedimento_2 := FBM_Pedimentobis;
             end;
         }
         field(70137; FBM_FromOrion; Boolean)
@@ -100,6 +102,48 @@ tableextension 70033 FBM_ItemLE_DD extends "Item Ledger Entry"
         {
             Caption = 'Ped Alpha [3]';
 
+
+        }
+
+        field(70139; "FBM_Pedimento34"; Text[1])
+        {
+            Caption = 'Ultimo digito año en curso [1]';
+
+
+        }
+        field(70140; "FBM_Pedimento42"; Text[6])
+        {
+            Caption = 'Nro Progr. de Despacho [6]';
+
+
+
+        }
+        field(70141; "FBM_Pedimento_2"; Text[22])
+        {
+            Caption = 'Pedimento';
+            Editable = false;
+            trigger
+            OnValidate()
+            var
+                resentry: record "Reservation Entry";
+
+
+
+            begin
+                resentry.SetRange("Item Ledger Entry No.", rec."Entry No.");
+                if resentry.FindFirst() then begin
+                    resentry.FBM_Site := rec.FBM_Site;
+                    resentry.FBM_Pedimento_2 := rec.FBM_Pedimento_2;
+                    resentry.FBM_Pedimentobis := rec.FBM_Pedimentobis;
+                    resentry.FBM_Pedimento12 := rec.FBM_Pedimento12;
+                    resentry.FBM_Pedimento1 := rec.FBM_Pedimento1;
+                    resentry.FBM_Pedimento2 := rec.FBM_Pedimento2;
+                    resentry.FBM_Pedimento3 := rec.FBM_Pedimento3;
+                    resentry.FBM_Pedimento42 := rec.FBM_Pedimento42;
+                    resentry.Modify();
+                end;
+
+            end;
 
         }
     }

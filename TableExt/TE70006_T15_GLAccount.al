@@ -17,7 +17,16 @@ tableextension 70006 FBM_GLAccountExt_DD extends "G/L Account"
             caption = 'Withholding Tax';
 
         }
+        field(70103; "FBM_IsFreight"; Boolean)
+        {
+            caption = 'Is Freight?';
 
+        }
+        field(70104; "FBM_IsWht"; Boolean)
+        {
+            caption = 'Is Withholding?';
+
+        }
     }
 
 }

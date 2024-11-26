@@ -70,6 +70,16 @@ tableextension 70031 FBM_Item_DD extends Item
             TableRelation = "Item Category" where(FBM_Standard = const(true));
 
         }
+        field(70103; "FBM_IsFreight"; Boolean)
+        {
+            caption = 'Is Freight?';
+
+        }
+        field(70104; "FBM_IsWht"; Boolean)
+        {
+            caption = 'Is Withholding?';
+
+        }
 
     }
 }

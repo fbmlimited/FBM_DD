@@ -22,7 +22,7 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70131; "FBM_Pedimento1"; Text[3])
         {
-            Caption = 'Ped1 [2]';
+            Caption = 'Año Validaciòn [2]';
             //ObsoleteState = Removed;
             trigger
                         OnValidate()
@@ -33,7 +33,7 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70132; "FBM_Pedimento2"; Text[4])
         {
-            Caption = 'Ped2 [2]';
+            Caption = 'Aduana Despacho [2]';
             //ObsoleteState = Removed;
             trigger
                         OnValidate()
@@ -44,7 +44,7 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70133; "FBM_Pedimento3"; Text[7])
         {
-            Caption = 'Ped3 [4]';
+            Caption = 'Nro Patente [4]';
             trigger
                         OnValidate()
             begin
@@ -53,8 +53,8 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         }
         field(70134; "FBM_Pedimento4"; Text[7])
         {
-            Caption = 'Ped4 [7]';
-            //ObsoleteState = Removed;
+            Caption = 'Nro Progr. de Despacho [6]';
+            ObsoleteState = Removed;
             trigger
                         OnValidate()
             begin
@@ -65,9 +65,10 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
         {
             Caption = 'Pedimento';
             Editable = false;
+            ObsoleteState = Removed;
 
         }
-        field(70136; "FBM_Pedimentobis"; Text[18])
+        field(70136; "FBM_Pedimentobis"; Text[22])
         {
             Caption = 'Pedimento 2';
             Editable = false;
@@ -75,19 +76,47 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
             OnValidate()
             begin
                 if (FBM_Pedimentobis <> 'N/A') and (FBM_Pedimentobis <> '0') and (FBM_Pedimentobis <> '') then
-                    FBM_Pedimento := FBM_Pedimentobis;
+                    FBM_Pedimento_2 := FBM_Pedimentobis;
             end;
 
         }
         field(70137; "FBM_Pedimento12"; Text[3])
         {
-            Caption = 'Ped Alpha [3]';
+            Caption = 'Referencia JYM [3]';
             trigger
             OnValidate()
             begin
                 updateped();
             end;
 
+
+        }
+        field(70138; "FBM_Pedimento34"; Text[1])
+        {
+            Caption = 'Ultimo digito año en curso [1]';
+            trigger
+            OnValidate()
+            begin
+                updateped();
+            end;
+
+        }
+        field(70139; "FBM_Pedimento42"; Text[6])
+        {
+            Caption = 'Nro Progr. de Despacho [6]';
+
+            trigger
+            OnValidate()
+            begin
+
+                updateped();
+            end;
+
+        }
+        field(70140; "FBM_Pedimento_2"; Text[22])
+        {
+            Caption = 'Pedimento';
+            Editable = false;
 
         }
         field(70002; FBM_FromOrion; Boolean)
@@ -143,7 +172,7 @@ tableextension 70032 FBM_ItenJnlLineExt_DD extends "Item Journal Line"
 
     local procedure updateped()
     begin
-        rec.FBM_Pedimento := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento1 + ' ' + FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento4;
+        rec.FBM_Pedimento_2 := rec.FBM_Pedimento12 + ' ' + rec.FBM_Pedimento1 + ' ' + FBM_Pedimento2 + ' ' + rec.FBM_Pedimento3 + '-' + rec.FBM_Pedimento34 + '-' + rec.FBM_Pedimento42;
         rec.Modify();
     end;
 }
