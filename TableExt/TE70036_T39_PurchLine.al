@@ -112,12 +112,48 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
         }
         field(70103; "FBM_IsFreight"; Boolean)
         {
-            caption = 'Is Freight?';
+            caption = 'Is Freight';
 
         }
         field(70104; "FBM_IsWht"; Boolean)
         {
-            caption = 'Is Withholding?';
+            caption = 'Is Withholding';
+
+        }
+        field(70140; "FBM_TotProd"; Decimal)
+        {
+            Caption = 'Total Products';
+            Editable = false;
+
+        }
+        field(70141; "FBM_TotDiscount"; Decimal)
+        {
+            Caption = 'Total Discount';
+            Editable = false;
+
+        }
+        field(70142; "FBM_TotFreight"; Decimal)
+        {
+            Caption = 'Total Freight';
+            Editable = false;
+
+        }
+        field(70143; "FBM_TotWht"; Decimal)
+        {
+            Caption = 'Total Withholdings';
+            Editable = false;
+
+        }
+        field(70144; "FBM_TotVAT"; Decimal)
+        {
+            Caption = 'Total VAT';
+            Editable = false;
+
+        }
+        field(70145; "FBM_GrandTot"; Decimal)
+        {
+            Caption = 'Grand Total';
+            Editable = false;
 
         }
         modify("No.")

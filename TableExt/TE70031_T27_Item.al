@@ -72,13 +72,24 @@ tableextension 70031 FBM_Item_DD extends Item
         }
         field(70103; "FBM_IsFreight"; Boolean)
         {
-            caption = 'Is Freight?';
+            caption = 'Is Freight';
+            trigger
+            OnValidate()
+            begin
+                if rec.FBM_IsFreight then
+                    rec.FBM_IsWht := false;
+            end;
 
         }
         field(70104; "FBM_IsWht"; Boolean)
         {
-            caption = 'Is Withholding?';
-
+            caption = 'Is Withholding';
+            trigger
+                       OnValidate()
+            begin
+                if rec.FBM_IsWht then
+                    rec.FBM_IsFreight := false;
+            end;
         }
 
     }

@@ -160,6 +160,42 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             Editable = false;
 
         }
+        field(70140; "FBM_TotProd"; Decimal)
+        {
+            Caption = 'Total Products';
+            Editable = false;
+
+        }
+        field(70141; "FBM_TotDiscount"; Decimal)
+        {
+            Caption = 'Total Discount';
+            Editable = false;
+
+        }
+        field(70142; "FBM_TotFreight"; Decimal)
+        {
+            Caption = 'Total Freight';
+            Editable = false;
+
+        }
+        field(70143; "FBM_TotWht"; Decimal)
+        {
+            Caption = 'Total Withholdings';
+            Editable = false;
+
+        }
+        field(70144; "FBM_TotVAT"; Decimal)
+        {
+            Caption = 'Total VAT';
+            Editable = false;
+
+        }
+        field(70145; "FBM_GrandTot"; Decimal)
+        {
+            Caption = 'Grand Total';
+            Editable = false;
+
+        }
 
     }
 
@@ -197,6 +233,7 @@ tableextension 70021 FBM_PurchHeaderExt_DD extends "Purchase Header"
             purchline.ModifyAll(FBM_Pedimento1, rec.FBM_Pedimento1);
             purchline.ModifyAll(FBM_Pedimento2, rec.FBM_Pedimento2);
             purchline.ModifyAll(FBM_Pedimento3, rec.FBM_Pedimento3);
+            purchline.ModifyAll(FBM_Pedimento34, rec.FBM_Pedimento34);
             purchline.ModifyAll(FBM_Pedimento42, rec.FBM_Pedimento42);
             purchline.ModifyAll(FBM_Pedimento_2, rec.FBM_Pedimento_2);
         end;
