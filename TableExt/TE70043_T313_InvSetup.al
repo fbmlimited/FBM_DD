@@ -26,6 +26,12 @@ tableextension 70043 FBM_InvSetupext_DD extends "Inventory Setup"
 
 
         }
+        field(70004; FBM_OrionEmail; text[250])
+        {
+            caption = 'E-mail for Orion';
+
+
+        }
 
     }
 

@@ -30,7 +30,7 @@ tableextension 70006 FBM_GLAccountExt_DD extends "G/L Account"
         field(70104; "FBM_IsWht"; Boolean)
         {
             caption = 'Is Withholding';
-            -
+
             trigger
                                    OnValidate()
             begin
