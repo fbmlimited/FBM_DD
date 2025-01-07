@@ -75,6 +75,13 @@ tableextension 70038 FBM_RevEntryExt_DD extends "Reservation Entry"
             Editable = false;
 
         }
+        field(70003; FBM_MachineType; enum FBM_MachineType_DD)
+        {
+
+            Caption = 'Machine Type';
+
+
+        }
     }
 
 }

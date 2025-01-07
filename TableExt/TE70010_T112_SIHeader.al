@@ -85,7 +85,36 @@ tableextension 70010 FBM_SIHeaderExt_DD extends "Sales Invoice Header"
 
         }
 
+        field(70124; "FBM_TotSales"; Decimal)
+        {
+            caption = 'Total Sales';
 
+
+        }
+        field(70125; "FBM_TotDeductions"; Decimal)
+        {
+            caption = 'Total Deductions';
+
+
+        }
+        field(70126; "FBM_VATable"; Decimal)
+        {
+            caption = 'VATable Sales';
+
+
+        }
+        field(70127; "FBM_VATexempt"; Decimal)
+        {
+            caption = 'VAT-exempt Sales';
+
+
+        }
+        field(70128; "FBM_ZeroRated"; Decimal)
+        {
+            caption = 'VATable Sales';
+
+
+        }
     }
     var
 }
