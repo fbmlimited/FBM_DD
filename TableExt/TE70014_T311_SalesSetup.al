@@ -57,6 +57,7 @@ tableextension 70014 FBM_SalesSetupExt_DD extends "Sales & Receivables Setup"
             Caption = 'Billing Statement Date Issued';
 
         }
+
     }
     var
 }
