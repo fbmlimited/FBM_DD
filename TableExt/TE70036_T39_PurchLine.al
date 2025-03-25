@@ -163,6 +163,7 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
             var
                 item: record Item;
                 glacc: record "G/L Account";
+                ich: record "Item Charge";
 
             begin
                 if rec.type = rec.type::Item then
@@ -174,6 +175,11 @@ tableextension 70036 FBM_PurchLineExt_DD extends "Purchase Line"
                     if glacc.get("No.") then begin
                         rec.FBM_IsFreight := glacc.FBM_IsFreight;
                         rec.FBM_IsWht := glacc.FBM_IsWht;
+                    end;
+                if rec.type = rec.type::"Charge (Item)" then
+                    if ich.get("No.") then begin
+                        rec.FBM_IsFreight := ich.FBM_IsFreight;
+                        rec.FBM_IsWht := ich.FBM_IsWht;
                     end;
 
 

@@ -319,7 +319,7 @@ table 70018 FBM_CustomerSite_Ctmp
                     if country.get(customer."Country/Region Code") then begin
 
                         country.testfield(FBM_Country3);
-                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", cos."Site Loc Code");
+                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", cos."Site Loc Code", cos.Version);
                     end;
                     COS.Modify();
                 end;

@@ -412,7 +412,7 @@ table 70001 FBM_Site
             req.DeleteAll();
         cos.SetRange("Site Code", xrec."Site Code");
         if cos.findfirst then
-            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", cos."Site Loc Code");
+            cos.Rename(cos.Subsidiary, cos."Customer No.", cos."Operator No.", cos."Site Loc Code", cos.Version);
         comp.FindFirst();
         repeat
             cinfo.ChangeCompany(comp.Name);

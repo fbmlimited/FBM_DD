@@ -51,6 +51,13 @@ tableextension 70029 FBM_GLSetupExt_DD extends "General Ledger Setup"
 
 
         }
+        field(70107; FBM_BAccountCloseInc; code[20])
+        {
+            caption = 'Budg. Acc for Close Income Stmt.';
+            TableRelation = "Dimension Value".code where("Dimension Code" = CONST('BUDGET_ACCOUNT'));
+
+
+        }
 
 
 

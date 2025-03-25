@@ -105,7 +105,7 @@ table 70002 FBM_CustOpSite
     }
     keys
     {
-        key(PK; Subsidiary, "Cust Loc Code", "Op Loc Code", "Site Loc Code")
+        key(PK; Subsidiary, "Cust Loc Code", "Op Loc Code", "Site Loc Code", version)
         {
             Clustered = true;
         }

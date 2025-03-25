@@ -32,6 +32,12 @@ tableextension 70043 FBM_InvSetupext_DD extends "Inventory Setup"
 
 
         }
+        field(70005; FBM_SendAlertEmail; text[250])
+        {
+            caption = 'E-mail for Sending stock alert';
+
+
+        }
 
     }
 

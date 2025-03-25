@@ -366,7 +366,7 @@ table 70006 FBM_CustomerSite_C
                     if country.get(customer."Country/Region Code") then begin
 
                         country.testfield(FBM_Country3);
-                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", custsite."Site Code");
+                        cos.rename(CompanyInfo.FBM_FALessee + ' ' + country.FBM_Country3, cos."Cust Loc Code", cos."Op Loc Code", custsite."Site Code", custsite.version);
                     end;
                     COS.Modify();
                 end;

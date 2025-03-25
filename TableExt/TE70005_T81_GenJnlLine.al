@@ -21,6 +21,8 @@ tableextension 70005 FBM_GenJnlLineExt_DD extends "Gen. Journal Line"
         field(70104; FBM_Site; Code[20])
         {
             Caption = 'Site';
+            TableRelation = FBM_CustomerSite_C."Site Code";
+            ValidateTableRelation = false;
 
 
         }

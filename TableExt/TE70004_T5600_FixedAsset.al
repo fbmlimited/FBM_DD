@@ -291,7 +291,7 @@ tableextension 70004 FBM_FixedAssetExt_DD extends "Fixed Asset"
     begin
         IF REC.FBM_ReplicaStatus2 = REC.FBM_ReplicaStatus2::" " THEN
             rec.FBM_ReplicaStatus2 := rec.FBM_ReplicaStatus2::Pending;
-        rec.Modify();
+        // rec.Modify();
 
     end;
 
